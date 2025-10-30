@@ -1,0 +1,65 @@
+---
+description: Don't fall prey to the liquidation bots - protect your funds!
+---
+
+# How to avoid liquidations
+
+Liquidations are there to protect liquidity providers' capital which by default shouldn't be exposed to directional market risk which traders & farmers take. As a leverage user - you can avoid liquidations, which also saves you from the [fees](../../overview/protocol-fees.md) paid to liquidators & the protocol.
+
+{% content-ref url="../../overview/liquidations/" %}
+[liquidations](../../overview/liquidations/)
+{% endcontent-ref %}
+
+[Health Factor ](../../overview/liquidations/#what-is-a-health-factor)is the representation of your Credit Account's performance. Keep it high enough, and it should generally be fine - unless a major market event comes where your positions could go down 25% or more in a matter of minutes. Make sure to keep it high and watch out!
+
+{% hint style="info" %}
+Keep your health factor as high as possible. **Make sure it doesn't drop below 1.**
+{% endhint %}
+
+### What I can do if my Health Factor is close to 1?&#x20;
+
+{% hint style="success" %}
+In case you are in position which has correlated collateral to debt \[like stablecoin debt to a stablecoin farm [leveraged-stablecoin-farming.md](../strategies/leveraged-stablecoin-farming.md "mention"), or an ETH debt to leveraged liquid staking position [leveraged-liquid-staking.md](../strategies/leveraged-liquid-staking.md "mention") - you can take higher leverage as the LTVs of your position <> debt are essentially correlated. As such, it allows you to take 9x+ leverage in some extreme cases. Still, beware that oracles can fluctuate, so don't max out.
+
+Read about that in [pro-leverage-bible.md](../pro-leverage-bible.md "mention").
+{% endhint %}
+
+1. **Add collateral**: the easiest method to improve your Health Factor is by adding more collateral.
+
+<div>
+
+<figure><img src="../../.gitbook/assets/Farm addc.png" alt=""><figcaption><p>For farming</p></figcaption></figure>
+
+ 
+
+<figure><img src="../../.gitbook/assets/Leverage Add Collateral.png" alt=""><figcaption><p>For margin trading</p></figcaption></figure>
+
+</div>
+
+&#x20;2\.  **Change your strategy or farm:** If you are in a strategy that has a directional trade that's leading to the HF dropping, a possible better idea could be to change to a strategy with lesser volatile/base asset to preserve your Credit Account. If your debt is ETH and you are short ETH in a bull market... _maybe join the ultrasound side, anon-kun._
+
+&#x20;3\.  **Decrease debt:** Add some of the collateral back to the Credit Account in the form of the base asset you borrowed, this will help you lower your leverage and thus improve your health factor
+
+{% content-ref url="how-to-close-account.md" %}
+[how-to-close-account.md](how-to-close-account.md)
+{% endcontent-ref %}
+
+### Checking Health Factor of your Credit Account
+
+In the [Credit Account's page](https://app.beta.gearbox.fi/accounts) you can check health factors of all your farming position or leverage position by clicking on it and going to the manage tab:
+
+<div>
+
+<figure><img src="../../.gitbook/assets/Farm HF.png" alt=""><figcaption><p>For farming</p></figcaption></figure>
+
+ 
+
+<figure><img src="../../.gitbook/assets/Leverage Health.png" alt=""><figcaption><p>For margin trading</p></figcaption></figure>
+
+</div>
+
+For Margin Trading, the liquidation point will also be visualised on the Chart. For farming, you can also check health factor inside the Credit Account. _All of these stats are of course also fully onchain and do not require any trust, just so you know_. _You can count them in excel sheets or with your own tooling._
+
+{% hint style="info" %}
+Anybody can run a liquidator bot and secure the protocol. You can chat about setting up your bot and other liquidator-things in [Discord](https://discord.gg/wmydr8JfcP). Help users minimize the [risks](../../risk-and-security/risks-terms.md)!
+{% endhint %}

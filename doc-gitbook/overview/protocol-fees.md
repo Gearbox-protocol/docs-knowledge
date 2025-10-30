@@ -1,0 +1,76 @@
+---
+description: The protocol takes fees for different operations.
+---
+
+# Protocol Fees
+
+{% hint style="info" %}
+1. All protocol fees that DAO earns go to the [fee guard](../governance/setup/guards-multisigs.md#fee-temporary-guard-5-10). Nothing is assumed for the core contributors or the foundation. The protocol is fully operated by holders. The fees, collected in dTokens, automatically become a [Reserve Fund unless unwrapped](liquidations/insurance-fund.md).
+2. Because Gearbox is modular, fees are not the same everywhere. They can be different from one Credit Manager to another, depending on the integrations inside.
+3. Most of the fees are static and are voted in via the [main governance process](../governance/setup/), however, [Gauges](../governance/quotas-and-gauges/) are voted on separately onchain every epoch by [GEAR stakers](../gear-token/utility-and-staking.md).
+{% endhint %}
+
+### **Liquidation Fee**
+
+_Goes only to the DAO._
+
+If a Credit Account is liquidated, some percentage goes to a third-party liquidator who liquidated the account - and some percentage goes to Gearbox Protocol. These fees can vary from one Credit Manager to another, depending on how safe the margin for liquidation error should be.
+
+* Fee going to the liquidator: depends on the [Credit Manager](credit-account/allowedlist-integrations/). 3-4%.
+* Fee going to the protocol: depends on the [Credit Manager](credit-account/allowedlist-integrations/). 1-1.5%.
+
+<figure><img src="../.gitbook/assets/Screenshot 2023-12-08 at 11.40.56.png" alt=""><figcaption></figcaption></figure>
+
+### Base APY Rate
+
+_Split between passive lenders and the DAO._
+
+The protocol takes spread as a fee between the APY which lenders receive and the fee & farmers pay for borrowing their assets. The exact value of this fee is calculated as following:
+
+* Each pool has it’s interest rate curve. This interest rate curve represents borrow APY that lenders receive as a function of pool’s utilization r(u). See details and formulas in [tech paper](whitepaper.md).
+* Borrowers pay borrow APY to liquidity providers and pay spread fee to DAO spreadFee. That means effective borrow rate for borrowers is calculated as r(u)\*(1+spreadFee). DAO receives r(u)\*spreadFee.
+
+<figure><img src="../.gitbook/assets/Screenshot 2023-12-08 at 11.51.40.png" alt=""><figcaption></figcaption></figure>
+
+### Gauges: Quota APY Rate
+
+_Split between passive lenders and the DAO._
+
+Gauges help apply an extra quota interest rate applied to every different asset separately. Every asset your Credit Account has on its balance sheet - demands a separate extra quota interest rate to be paid. It is taken per-block just like the regular interest rate. This rate is voted on separately from the main DAO voting and is not static. It changes every epoch with gauges voted by GEAR stakers:
+
+{% content-ref url="../governance/quotas-and-gauges/" %}
+[quotas-and-gauges](../governance/quotas-and-gauges/)
+{% endcontent-ref %}
+
+<figure><img src="../.gitbook/assets/Screenshot 2023-12-08 at 12.11.26.png" alt=""><figcaption></figcaption></figure>
+
+### Quota Rate: Flat Fee
+
+_Goes only to the DAO._
+
+This fee is similar to a trading fee, but not fully. It is applied whenever you buy a quota. That can happen when entering a position for the first time, rebalancing (trading) into different assets inside the already open position, or when increasing your leverage or borrowing power.
+
+{% hint style="info" %}
+You can see this as a credit line: you open a credit line for a fixed amount at first, and then you can to increase or decrease it. Whenever you trade or increase/decrease leverage - the interfaces help you manage the quota at the optimal ratio.
+{% endhint %}
+
+These fees are also different from one Credit Manager to another. For example, a 0.01% fee can be taken for an ETH long/short, while a 0.03% could be taken for medium-tail assets. For example:
+
+* Let's say, you open a position where you end up with $100,000 worth of ETH long or an ETH farm token, for example, [leverage staking](../traders-and-farmers/strategies/leveraged-liquid-staking.md). As such, you pay that specific fee on the entry into this position (buying a quota for it). For example, at 0.01% that is just $10.
+
+<figure><img src="../.gitbook/assets/Screenshot 2023-12-08 at 12.00.12.png" alt=""><figcaption></figcaption></figure>
+
+* Then, you don't trade into anything but that $100K position grows in value and you want to make sure its bigger size (the surplus) is counted towards Health Factor. Let's say it appreciated by $10K. You pay only on that $10K difference. That would be $1 in this case.
+* Alternatively, you decide to trade a part of that $100K into different assets of the same position size. As such, you pay another specific fee for entering into every different asset. Let's say those assets' quota fees are 0.03% and 0.05%. That means you pay $26 in this case.
+
+<figure><img src="../.gitbook/assets/Screenshot 2024-01-02 at 11.14.23.png" alt=""><figcaption></figcaption></figure>
+
+That is why you can kind of see it as a trading fee, but the second example provided above shows that it's not always about trading. **It's about "buying quota allocation" or "extending credit line".**
+
+{% hint style="info" %}
+For the exact math behind the fees and the split, see Tech Paper:
+{% endhint %}
+
+{% content-ref url="whitepaper.md" %}
+[whitepaper.md](whitepaper.md)
+{% endcontent-ref %}
