@@ -8,7 +8,7 @@ This passive approach is perfect if you want to put your assets to work without 
 
 Depositing to a pool takes just a few minutes, and once you're set up, your assets start earning immediately. Here's how it works.
 
-### Step 1: Choose a pool
+### Step 1 — Choose a pool
 
 Navigate to the Pools section in the Gearbox interface, and you'll see all available lending pools for your network. Different networks support different assets, so what you see depends on where you're connected. Common options include USDC, WETH, WBTC, and others, each with their own APY rates and utilization levels.
 
@@ -18,7 +18,7 @@ TODO: Add exact navigation path to Pools section and current list of available p
 
 SCREENSHOT: Pools page showing available pools with APY rates and deposit options
 
-### Step 2: Enter deposit amount
+### Step 2 — Enter deposit amount
 
 Once you've chosen a pool, specify how much you want to deposit. You can enter a specific amount or click MAX to deposit your full available balance. Before confirming, make sure you have enough of the asset in your wallet and sufficient gas for the transaction.
 
@@ -28,7 +28,7 @@ TODO: Add exact location of deposit form and fields shown (balance, APY, estimat
 
 VERIFY: Balance displayed matches your wallet balance for the selected asset
 
-### Step 3: Approve and deposit
+### Step 3 — Approve and deposit
 
 For your first deposit of any asset, you'll need to approve the protocol to use your tokens. This is a standard DeFi security measure—approval is a one-time requirement per asset that grants the protocol permission to move those tokens. After that, you can deposit as many times as you want without re-approving.
 
@@ -45,12 +45,14 @@ When you deposit to a pool, you receive Diesel Tokens (also called dTokens), whi
 You can hold these tokens in your wallet—there's no need to claim interest separately because it's already baked into the token value. The longer you hold, the more value they accrue, making them a simple way to track your position without managing separate interest claims.
 
 In V3, your dTokens are typically staked automatically (becoming sdTokens), which makes you eligible for additional rewards like GEAR tokens. This staking is handled automatically, so you benefit from extra rewards without extra steps.
+VERIFY: confirm auto-staking of dTokens to sdTokens in current version
 
 **Important:** While Gearbox has been operational for over 3 years without incidents, if a pool were to suffer losses from bad liquidations or security issues, your Diesel Tokens value could decrease. This risk exists in all DeFi lending, but Gearbox's track record and security measures help mitigate it.
 
 ## Withdraw & expected yield
 
 Withdrawal is just as straightforward as deposit. There are no lockups or withdrawal fees from Gearbox, so you can exit whenever you're ready.
+VERIFY: confirm fee policy (no protocol withdrawal fees) in the current version
 
 ### Partial or full withdrawal
 
@@ -79,6 +81,7 @@ TODO: Add exact locations in UI where yield and rewards are displayed
 **APR (Annual Percentage Rate)** is the simple interest rate without compounding. APY is usually higher because it accounts for the fact that interest compounds over time.
 
 Your yield comes from a few sources. Utilization-based rates mean borrowers pay interest based on how much of the pool is being used—higher utilization generally translates to higher rates, which benefits lenders. Gauge rates add another layer determined by GEAR token stakers, which can vary over time based on governance decisions. And there may be extra rewards like GEAR tokens distributed to lenders as additional incentives.
+SOURCE-CONFLICT: Gauge-based lender rewards vs Permissionless curator-set fixed risk premiums and bootstrapping rewards; keep both until confirmed
 
 **Variable yield:** It's important to understand that APY is variable and can change based on pool utilization, borrow rates (which follow a utilization curve), gauge rates (set by governance), and overall market conditions. Your actual earnings depend on how long you keep your deposit in the pool and how APY changes over that time period.
 
@@ -95,6 +98,7 @@ While lending on Gearbox is designed to be safer than active trading, it's impor
 ### Smart contract risk
 
 Gearbox Protocol consists of smart contracts on blockchain networks, and like all smart contracts, they carry inherent risks. While Gearbox has been live for over 3 years without exploits or bad debt and has undergone multiple security audits from top firms, smart contract risk always exists. The protocol team has invested over $3M in security, which provides significant confidence, but no system is completely risk-free.
+VERIFY: confirm years live, audits count, and security spend in current official materials
 
 ### Variable yield
 
@@ -111,6 +115,7 @@ In extreme cases where borrowers cannot be liquidated in time or liquidation res
 However, this risk cannot be completely eliminated in DeFi lending. Gearbox's strong track record and security infrastructure minimize the likelihood, but understanding the risk helps you make appropriate decisions about how much to lend and where.
 
 For more detailed information about risks and security, see the [Risks & Security section](../risks-and-security).
+TODO: add link to official Risks & Security page
 
 ---
 

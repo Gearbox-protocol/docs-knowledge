@@ -5,6 +5,7 @@ Gearbox is a leverage protocol built for DeFi. Think of it as having more capita
 What makes Gearbox different? Unlike traditional lending protocols that lock your leverage into isolated pools, Gearbox gives you real assets that interact with the entire DeFi ecosystem. Your trades happen on Uniswap using their liquidity. Your farms run on Curve using their pools. The leverage comes from Gearbox, but execution happens wherever you choose, using the global liquidity of established protocols you already know.
 
 The protocol serves two types of users. If you're looking for passive income, you can deposit assets into lending pools and earn APY without impermanent loss, fees, or lockups. Your assets are lent to active users who need leverage, and you earn interest on what you supply. On the other side, traders, farmers, and even other protocols borrow those assets to create leveraged positions—often up to 10x leverage, depending on your collateral and strategy.
+VERIFY: confirm maximum leverage values for current markets and assets
 
 SCREENSHOT: Main dashboard showing Pools and Credit Account sections
 
@@ -27,8 +28,13 @@ Traditional lending protocols give you leverage, but it often comes with limitat
 Another key difference is composability. On many platforms, you can either lend or borrow, but your collateral sits locked in their system. With Gearbox, your Credit Account acts like a smart wallet. You can borrow funds, use them to farm on Curve, then swap the farm tokens, stake on Lido, and run complex strategies—all from the same account, all using the leverage you borrowed.
 
 There's also no funding rates to worry about. Since Gearbox doesn't create its own trading pairs or maintain short-long ratios, you don't pay the funding fees common in perpetual trading. Your leverage is based on real spot assets, executed through real DEX liquidity.
+VERIFY: confirm absence of funding rates in the current version and UI terminology
+VERIFY: confirm absence of funding rates in the current version and UI terminology
 
 For lenders, the experience is similar to other protocols—deposit assets and earn yield. But Gearbox's unique architecture means your funds are used more efficiently. Because borrowers can deploy leverage across multiple protocols and strategies, there tends to be higher demand, which often translates to better yields for lenders.
+
+Today, Gearbox operates in a Permissionless model: curators configure markets and parameters at the smart‑contract level, while you continue to use familiar DeFi protocols through your Credit Account. This keeps UX simple for users and accelerates market coverage without central bottlenecks.
+VERIFY: confirm Permissionless phrasing and scope in the current docs
 
 The bottom line? Gearbox isn't trying to replace the protocols you already use. It's enhancing them by giving you more capital to work with, while you keep using the DEXes, farms, and strategies you're already comfortable with.
 
@@ -73,6 +79,7 @@ TODO: Add specific limit values from current protocol parameters
 What you pay depends on what you're doing. If you're lending, there are no fees from Gearbox—what you see in terms of APY is what you earn. Your earnings come from the interest borrowers pay.
 
 If you're borrowing, you'll pay borrow interest that fluctuates based on pool utilization. The more of the pool that's being used, the higher the rates tend to be. Some collateral assets also have quota fees—additional dynamic fees that reflect the risk profile of the asset. These fees go to the protocol and help balance risk across different types of positions.
+SOURCE-CONFLICT: Legacy quota/gauge fees vs Permissionless curator-set fixed risk premiums and bootstrapping; keep both until confirmed
 
 The only other fee borrowers might encounter is liquidation fees, which only apply if your position gets liquidated. All fees are displayed in the interface before you confirm any transaction, so you always know what to expect.
 
@@ -85,6 +92,7 @@ Using Gearbox, like any DeFi protocol, comes with risks. Understanding these ris
 ### Smart contract risk
 
 Gearbox Protocol consists of smart contracts deployed on blockchain networks. Like all smart contracts, they carry inherent risks. While Gearbox has undergone multiple security audits from top firms and has been live for over 3 years without exploits or bad debt, smart contract risk always exists. The protocol team has invested over $3M in security, but no system is completely risk-free.
+VERIFY: confirm years live, audits count, and security spend in current official materials
 
 ### Market risk
 
@@ -103,6 +111,8 @@ If you're lending, understand that APY is variable and depends on pool utilizati
 If pool utilization is high, you may not be able to withdraw all your liquidity immediately. This doesn't mean the protocol lost money or that your funds are at risk. It simply means that liquidity is currently being used by borrowers. In such cases, APY typically increases to attract more lenders, which helps restore balance. You can usually still withdraw partially even when utilization is high.
 
 For more details on risks, security audits, and safety practices, see the [Risks & Security section](../risks-and-security) and [FAQ](../faq-troubleshooting).
+TODO: add link to official Risks & Security page
+TODO: add link to FAQ page in the current docs structure
 
 ---
 

@@ -8,7 +8,7 @@ What makes Credit Accounts powerful is their flexibility. You're not locked into
 
 Opening a Credit Account is your first step toward using leverage. The process is straightforward, and once you understand the basics, you'll be able to open accounts for different strategies as needed.
 
-### Pick base asset
+### Step 1 — Pick base asset
 
 Start by selecting the asset you want to borrow—this is your "underlying" or "debt asset." Common options include USDC, WETH, or other assets available in Gearbox pools on your network. The asset you choose determines which pool you're borrowing from, what interest rate you'll pay, and what assets you can use as collateral.
 
@@ -16,9 +16,10 @@ This choice matters because different assets have different characteristics. USD
 
 TODO: Add exact location where you select the base asset and list of available options
 
-### Enter amount and leverage
+### Step 2 — Enter amount and leverage
 
 Once you've chosen your base asset, you'll specify how much you want to leverage. This involves entering the amount of collateral you're depositing and selecting your leverage factor—how much you want to borrow relative to your collateral. Common leverage levels are 3x, 5x, or 10x, though the maximum depends on your collateral type and the protocol's current parameters.
+VERIFY: confirm maximum leverage values and available leverage steps in the current app
 
 The interface shows you everything upfront: your total position size (collateral plus borrowed amount), what your Health Factor will be after opening, the estimated interest rate you'll pay, and the maximum leverage available for your chosen collateral. This transparency helps you make informed decisions about risk and potential returns.
 
@@ -30,7 +31,7 @@ TODO: Add exact form fields and preview calculations shown
 
 SCREENSHOT: Open Credit Account form showing amount, leverage selector, Health Factor preview, and Confirm button
 
-### Confirm and open
+### Step 3 — Confirm and open
 
 After entering your parameters, review everything carefully. Check that your leverage, Health Factor, and interest rate match what you want. If it's your first time using a particular collateral asset, you'll need to approve the protocol to use those tokens—this is a one-time requirement per asset.
 

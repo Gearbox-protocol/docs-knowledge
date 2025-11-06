@@ -10,11 +10,11 @@ Before you dive in, you'll need a Web3 wallet and to understand which networks G
 
 ### Supported networks
 
-Gearbox Protocol is deployed on multiple EVM-compatible networks, giving you flexibility in where you operate. Currently supported networks include Ethereum Mainnet, Arbitrum, Optimism, BNB Chain, and Sonic, with more networks potentially coming as the protocol expands.
+Gearbox Protocol is deployed on multiple EVM-compatible networks, and the exact list may change over time.
 
 Keep in mind that different networks may have different pools, assets, and features available. The interface makes it easy to switch between networks, and you'll see which networks support which functionality as you explore.
 
- SUPPORT: Verify complete list of supported networks in current deployment
+VERIFY: confirm supported networks in current app
 
 ### Connect a wallet
 
@@ -34,7 +34,8 @@ If you need to use Gearbox on a different network—maybe you want to trade on A
 
 TODO: Add exact location and steps for switching networks in the current UI
 
-When you select a different network, the app will typically prompt your wallet to switch as well. Make sure you have enough gas tokens for whichever network you're switching to. Gas requirements vary: Ethereum Mainnet, Arbitrum, and Optimism use ETH, while BNB Chain uses BNB and Sonic uses S tokens.
+When you select a different network, the app will typically prompt your wallet to switch as well. Make sure you have enough native gas token for the selected network. Gas requirements and the exact token vary by network.
+VERIFY: confirm gas token requirements per network in the current app
 
 ### Gas requirements
 
@@ -126,7 +127,7 @@ Never enter your seed phrase or private keys anywhere, including the Gearbox int
 
 Before interacting with the protocol, verify you're on the correct network. Check the network name in both your wallet and the app interface. Confirm that contract addresses match the official deployments list. Double-check that you have enough gas for the network you're using.
 
-TODO: Add link to official deployments/contract addresses page
+TODO: add link to official deployments list
 
 If something looks wrong or addresses don't match what you expect, disconnect immediately and verify you're on the legitimate site. It's better to take a moment to double-check than to risk interacting with a malicious contract.
 
