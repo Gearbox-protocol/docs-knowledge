@@ -8,13 +8,10 @@
 ## Solutions
 - [Gearbox for asset issuers](solutions/gearbox-for-asset-issuers.md)
 - [Gearbox for curators](solutions/gearbox-for-curators.md)
-- [Gearbox for fintechs](solutions/gearbox-for-fintechs.md)
 - [Gearbox for wallets](solutions/gearbox-for-wallets.md)
 - [Gearbox for RWAs](solutions/gearbox-for-rwas.md)
-- [Gearbox for chains](solutions/gearbox-for-chains.md)
 
 ## Gearbox v3.1
-- [Products overview](gearbox-v3-1/products-overview.md)
 - [Earn](gearbox-v3-1/earn.md)
 - [Leveraged strategies](gearbox-v3-1/leveraged-strategies.md)
 - [Borrow](gearbox-v3-1/borrow.md)
