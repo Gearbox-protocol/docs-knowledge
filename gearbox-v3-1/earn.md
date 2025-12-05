@@ -33,3 +33,6 @@ Gearbox Markets use distinct roles to separate powers and keep governance visibl
 - **Pausable admin:** can pause pools and credit managers to halt activity during incidents.  
 
 - **Unpausable admin:** can restore normal operations once safeguards are satisfied and conditions stabilize.
+
+# Fees
+Curators are able to configure Interest Fee, redirecting a fraction of borrow interest to Curator & Gearbox DAO.
