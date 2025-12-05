@@ -8,11 +8,11 @@ A Credit Account is user-owned smart-contract wallet, not a slice of a shared va
 ## What problem do Credit Accounts solve?
 Traditional lending protocols silo users' funds in protocol-global pools, limiting capabilities to actively operate with collateral.
 
-![alt text](/docs/files/legacy-lending.png "Traditional lending")
+![Traditional lending](/files/legacy-lending.png "Traditional borrowing")
 
 By putting collateral, debt, and execution routes inside a single smart contract wallet, users keep ownership while moving through swaps, farming, or RWA flows without repacking positions. Solvency checks sit behind every action so convenience stays aligned with risk discipline.
 
-![alt text](/docs/files/ca-lending.png "Credit Account lending")
+![Credit Account lending](/files/ca-lending.png "Credit Account borrowing")
 
 ## What Credit Accounts enable?
 - **Wider reach to users for apps and institutions:** Complex multi-transaction operations gate non-professional users. Credit accounts abstract execution allowing to focus on effective use of capital.  
