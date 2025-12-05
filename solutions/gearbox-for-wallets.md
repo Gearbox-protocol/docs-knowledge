@@ -1,57 +1,46 @@
-[MODE=PRODUCT]
+# Wallet-native Credit powered by Credit Accounts Abstraction
+## Transforming Wallets into Crypto Neobanks
 
-# Gearbox for Wallets
+Gearbox changes the landscape of decentralized finance by embedding a credit layer directly into wallets through emerging Account Abstraction (AA) standards. In this new paradigm, wallets evolve from passive storage devices into “Crypto Neobanks”, instantly granting users access to credit lines against their existing collateral.
 
-## Wallet-native credit & prime brokerage
+This new paradigm allows users to instantly upgrade their everyday crypto wallet into a prime brokerage account, unlocking the value of their assets without selling them. Gearbox serves here as the invisible “credit rails,” while the Wallet Provider acts as the user-facing financial app.
 
-## UX patterns and flows
+Imagine if your bank account only let you store money, but never borrow against it or use credit. That is the current state of most crypto wallets.
 
-## Monetization & differentiation for wallet providers
+Gearbox changes this. By integrating a Credit Account, Wallet Providers gains a "sub-account" structure similar to modern banking (Debit + Credit/Investment). Users can keep their long-term holds in their main vault while seamlessly activating a Credit Account to spend, trade, and farm with up to 10x leverage—all within the native interface they already love.
 
-Gearbox: The Premier Prime Brokerage for RWA Leverage
-Gearbox is the definitive platform for leveraging Real-World Assets (RWA). Fully live since December 2021 , Gearbox offers a seamless, all-in-one prime brokerage experience, right from your favorite wallet. It is easy to manage and easy to track.
+One Click, Infinite Utility: No more bridging to external dApps. No more locking assets in inaccessible vaults. Your wallet is the protocol.
 
-Addressing Core Inefficiencies in RWA Leverage
-Traditional looping methods are inefficient for leverage. Gearbox solves critical issues faced by both asset issuers and users.
+## 💎 Key Value Propositions
 
-For Asset Issuers: Eliminate Costly DEX Dependence
-Other lending protocols must treat Real-World Assets (RWA) like standard tokens and rely on DEX liquidity to enable looping. Building and maintaining deep DEX liquidity is slow and expensive, leading to thin books, low collateral limits, and unhappy users. Furthermore, asset issuers often have to pay to seed and maintain DEX liquidity.
+1. Native Credit Integration via Account Abstraction  
+Leveraging the power of Account Abstraction, Gearbox Credit Accounts run as a layer inside the wallet.  
 
-Gearbox's Solution:
-Zero DEX Liquidity Required: With Gearbox, leverage can go live on day one. It eliminates the need for DEX liquidity seeding, working at any size.
-Direct Integration: Leverage works via direct smart contract integration, allowing 1:1 deposits and withdrawals at face value.
-Compliance Enforcement: It is almost impossible to enforce transfer-agent/compliance obligations on-chain in traditional pools-based lendings. Gearbox is designed for compliant, credit-account access.
-For Users: Superior UX and Performance
-Users typically suffer slippage every time they open or close a leveraged position. Adjusting leverage is a trade-off between committing more capital and waiting longer. Additionally, funds are often mixed up in pools , which is problematic from a regulatory standpoint.
+Invisible Complexity: The user doesn't see complex smart contract interactions. They simply toggle "Credit Mode" or switch to their "Credit Account" tab.
+Unified Interface: Just like switching between a Credit and Savings account, users manage their standard assets and their credit line in one view.
+2. Universal Collateral & Liquid Utility  
+Unlike traditional lending protocols that lock your assets away:  
 
-Gearbox's Benefits:
+Your Tokens, Your Collateral: The system recognizes tokens in the wallet as collateral automatically.  
+100% Composable: Users don't just "borrow" funds; they use them. The credit line works across major DeFi protocols (Uniswap, Curve, Pendle).  
 
-Zero Slippage: Enjoy direct interaction with contracts and 1:1 assets, resulting in zero slippage.
-Best-in-Class UX: Offers one-click opening and closing of leveraged positions.
-Risk Control: Features flexible deleveraging settings to reduce liquidation risk , plus built-in automation and risk controls - no external bots or tooling needed.
-Compliant Credit Accounts by Design
-Gearbox provides a robust framework for compliance and regulatory clarity:
+3. Two Modes, One Wallet  
+The Credit Account adapts to the user's needs, whether they are a spender or a trader.  
 
-Position Isolation: Each user's position is fully isolated, preventing the mixing of assets or risk between accounts.
-Access Control: Supports KYC- and rules-based access control, including per-account whitelists, jurisdiction filters, and configurable limits.
-On-Chain Enforcement: Built-in position freezing and granular operation controls (what can be traded, where, and when) allows curator to enforce regulatory obligations on-chain.
-Direct Redemptions for Semi-Liquid Assets
-Direct redemptions address the challenge of low instant liquidity for collateral tokens by utilizing Gearbox's unique Credit Account structure to bypass expensive, time-locked, or low-liquidity secondary markets.
+### For the Spender (The "Crypto Credit Card"):
 
-Benefits of Direct Redemption:
+Spend stables, keep Crypto: Integrate with Gnosis Pay/Holyheld or other crypto cards. Users can pay for groceries and daily needs using a stablecoin credit line.  
+Auto-Adjusting Credit: Spending automatically adjusts the credit utilization, allowing users to HODL their portfolio while living off their credit line.  
 
-Save time up to 8 periods of native redemption in comparison with manual unwinding looped positions
-Capital requirements are reduced by 10x.
-User saves fees equal to a month (or even more) of farming yield.
-How It Works
+### For the Trader (The "DeFi Powerhouse"):
 
-The Credit Account holds an xRWA token and has an outstanding USDT debt.
-The user starts the redemption process.
-The Credit Account sends the xRWA token to the redemption contract.
-In return, the Credit Account receives a redemption receipt token, which represents a future claim on the underlying asset.
-The Credit Account now holds the redemption receipt token and still has the USDT debt.
-After the Redemption Window:
-Once the redemption window has passed, the user can finalize the redemption.
-The Credit Account burns the redemption receipt token.
-The Credit Account receives the underlying asset.
-The Credit Account always stays overcollateralized, it's just the collateral which transfrom from xRWA into redemption receipt token and eventually into liquid underlying.
+Leverage access: Access up to 10x leverage for farming, staking, or trading.  
+One-Click Execution: Execute complex strategies (e.g., "Long ETH with 5x leverage on Uniswap") directly from the wallet UI. No need for external operational overhead.  
+
+## Technical Edge: How It Works
+
+Smart Contract Wallets: The Gearbox Credit Account is an isolated smart contract that acts as a "Smart Wallet" extension. It holds the user's funds and borrowed capital together.  
+AllowedList Security: To ensure safety while allowing DeFi-freedom, the Credit Account can interact with a wide range of whitelisted protocols (The "AllowedList"). After each interaction, the Credit Account executes a post-execution hook to verify that the position remains overcollateralized. This prevents fund draining while enabling true DeFi composability.  
+Seamless PoC (Coinbase Wallet Example): As demonstrated, the integration requires no clunky approvals for every action. The wallet recognizes the Credit Account as a native environment, enabling a smooth, "Web2-like" financial experience:  
+
+https://www.dropbox.com/scl/fi/q70zcv4ijvgwwecq7vm6e/Gearbox-CAA.mp4?rlkey=my15oouox343sz72ace6qm518&dl=0
