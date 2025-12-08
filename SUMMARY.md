@@ -12,7 +12,9 @@
 - [Gearbox for RWAs](solutions/gearbox-for-rwas.md)
 
 ## Gearbox v3.1
+- [Market Structure](gearbox-v3-1/market-structure.md)
 - [Earn](gearbox-v3-1/earn.md)
+- [Operate with Credit Account](gearbox-v3-1/operate-ca.md)
 - [Leveraged strategies](gearbox-v3-1/leveraged-strategies.md)
 - [Borrow](gearbox-v3-1/borrow.md)
 - [Market curators](gearbox-v3-1/market-curators.md)

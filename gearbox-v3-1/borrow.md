@@ -1,6 +1,11 @@
 [MODE=BALANCED]
 
 # Borrowing
+Getting more tokens without selling your collateral unlocks liquidity. Take advantage of permissionless lending with familiar UX:
+
+- **Select a pool** which accepts the target asset as collateral.
+
+- **Supply collateral to credit account** and receive borrowed tokens to your wallet.
 
 [MODE=PRODUCT]
 ## Familiar UX: borrow against your collateral
