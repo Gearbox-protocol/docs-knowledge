@@ -14,9 +14,11 @@
 ## Gearbox v3.1
 - [Market Structure](gearbox-v3-1/market-structure.md)
 - [Earn](gearbox-v3-1/earn.md)
-- [Operate with Credit Account](gearbox-v3-1/operate-ca.md)
-- [Leveraged strategies](gearbox-v3-1/leveraged-strategies.md)
+  - [Key Pool metrics](gearbox-v3-1/monitor-pools.md)
 - [Borrow](gearbox-v3-1/borrow.md)
+  - [Leveraged strategies](gearbox-v3-1/leveraged-strategies.md)
+  - [Key Credit Account metrics](gearbox-v3-1/account-metrics.md)
+  - [Credit Account operations](gearbox-v3-1/operate-ca.md)
 - [Market curators](gearbox-v3-1/market-curators.md)
 - [Multichain deployments](gearbox-v3-1/multichain-deployments.md)
 - [Fees](gearbox-v3-1/fees.md)

@@ -6,7 +6,7 @@
 A Credit Account is user-owned smart-contract wallet, not a slice of a shared vault. Users add assets to unlock a credit line and use that account to trade, invest, or stake across integrated protocols while keeping ownership and portability. The protocol checks solvency on every move so risk stays controlled.
 
 ## What Credit Accounts enable?
-- **Wider reach to users for apps and institutions:** Complex multi-transaction operations gate non-professional users. Credit accounts abstract execution allowing to focus on effective use of capital.  
+- **Wider reach to users for apps and institutions:** Complex multi-transaction operations gate non-professional users. Credit accounts abstract execution by batching multiple onchain actions into single transaction, allowing to focus on effective use of capital.
 
 - **Fees and time saving for investors:** Direct redemptions of semi-liquid tokens preserve months of yield, and batched transactions via multicall cut gas cost.  
 
