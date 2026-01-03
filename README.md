@@ -1,35 +1,65 @@
-# Gearbox Docs Workspace
+# Manual Deleveraging When UI Actions Are Unavailable
 
-This repository is the working space for the new version of Gearbox user documentation.
+If the **Close** or **Swap** action is unavailable or fails, you can exit your position manually by following the steps below.
 
-## What’s inside
+{% stepper %}
+{% step %}
+## Withdraw collateral
 
-- `structure.md` — the approved two-level structure of user docs (what we write and in what order).
-- `rules_for_model.md` — rules for the model that works on top of existing docs. It must use the dumped materials (mainly `dev_docs` and `doc_gitbook`) and leave markers: `TODO:`, `VERIFY:`, `SOURCE-CONFLICT:`, `SCREENSHOT:`.
-- `rules_for_agent.md` — rules for the UI agent: how to walk the forked frontend, how to resolve markers, what to update, and what to leave untouched.
-- `user_docs_model.md` — user docs produced by the model from existing data (drafts with markers).
-- `user_docs_agent.md` — user docs after the agent pass (markers resolved where possible).
-- other files — legacy/old docs used as reference.
+Withdrawing collateral sends the token to your wallet, where you can swap it freely using external liquidity sources outside of Gearbox.
 
-## UI agent connection
+{% hint style="warning" %}
+Withdrawing collateral reduces your position’s **Health Factor**. A large withdrawal may push the position into liquidation risk. \
+\
+Always check the projected **Health Factor** before each withdrawal.
+{% endhint %}
 
-The agent is expected to work against the current draft frontend:
+<details>
 
-- App: `http://draft.client-v3.pages.dev/?dev-mode=false`
-- Related change: `613c722 - feat: mock connection`
+<summary>Withdraw collateral in the UI</summary>
 
-The agent should use this build to confirm button labels, screen names, and step order.
+<figure><img src=".gitbook/assets/Screenshot 2025-12-23 at 13.34.37.png" alt=""><figcaption></figcaption></figure>
 
+</details>
 
+{% hint style="success" %}
+If your current **Health Factor** does not allow for a safe withdrawal, repay part of your debt first using the Debt Token from your wallet (see **Step 3**).
+{% endhint %}
+{% endstep %}
 
-### Important information for contributors
+{% step %}
+## Swap collateral into the Debt Token
 
-As a contributor to the Gearbox Protocol GitHub repository, your pull requests indicate acceptance of our Gearbox Contribution Agreement. This agreement outlines that you assign the Intellectual Property Rights of your contributions to the Gearbox Foundation. This helps safeguard the Gearbox protocol and ensure the accumulation of its intellectual property. Contributions become part of the repository and may be used for various purposes, including commercial. As recognition for your expertise and work, you receive the opportunity to participate in the protocol's development and the potential to see your work integrated within it. The full Gearbox Contribution Agreement is accessible within the [repository](/ContributionAgreement) for comprehensive understanding. [Let's innovate together!]
+Swap the withdrawn collateral into the Debt Token using external liquidity sources.
 
+Recommended options include:
 
-## How to work with it
+* DEX aggregators
+* Official liquidity venues provided by the collateral issuer
+{% endstep %}
 
-1. Read `structure.md` first and create a page **with exactly the same name**.
-2. The model writes a `.md` page and leaves all unknown/UI-dependent parts as markers.
-3. The agent goes through the actual frontend above, resolves markers, and fills in real button/screen names.
-4. After that the file can go to human review and publication.
+{% step %}
+## Repay debt using Debt Token from your wallet
+
+{% hint style="info" %}
+Repay the debt using the **same token the debt is denominated in**, directly from your wallet.
+{% endhint %}
+
+{% hint style="success" %}
+Check whether the updated **Health Factor** allows for further withdrawal.
+{% endhint %}
+
+<details>
+
+<summary>Repay debt in the UI</summary>
+
+<figure><img src=".gitbook/assets/Screenshot 2025-12-23 at 13.42.19.png" alt=""><figcaption></figcaption></figure>
+
+</details>
+{% endstep %}
+
+{% step %}
+## Repeat Steps 1-3 until your Credit Account reaches the desired state or is fully unwound
+{% endstep %}
+{% endstepper %}
+
