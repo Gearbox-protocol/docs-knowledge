@@ -1,35 +1,45 @@
-# Gearbox Docs Workspace
+---
+layout:
+  width: default
+  title:
+    visible: true
+  description:
+    visible: true
+  tableOfContents:
+    visible: true
+  outline:
+    visible: true
+  pagination:
+    visible: true
+  metadata:
+    visible: true
+metaLinks:
+  alternates:
+    - https://app.gitbook.com/s/yE16Xb3IemPxJWydtPOj/getting-started/quickstart
+---
 
-This repository is the working space for the new version of Gearbox user documentation.
+# Powering Onchain Credit
 
-## What’s inside
+<h2 align="center">Meet Gearbox</h2>
 
-- `structure.md` — the approved two-level structure of user docs (what we write and in what order).
-- `rules_for_model.md` — rules for the model that works on top of existing docs. It must use the dumped materials (mainly `dev_docs` and `doc_gitbook`) and leave markers: `TODO:`, `VERIFY:`, `SOURCE-CONFLICT:`, `SCREENSHOT:`.
-- `rules_for_agent.md` — rules for the UI agent: how to walk the forked frontend, how to resolve markers, what to update, and what to leave untouched.
-- `user_docs_model.md` — user docs produced by the model from existing data (drafts with markers).
-- `user_docs_agent.md` — user docs after the agent pass (markers resolved where possible).
-- other files — legacy/old docs used as reference.
+### Permissionless Lending Rails for Onchain Credit
 
-## UI agent connection
+At Gearbox, we are making the transition to operating lending businesses onchain frictionless. Purpose built for institutions, asset-issuers and fintechs, our enterprise grade lending stack enables lenders to deploy no-code credit markets instantly.
 
-The agent is expected to work against the current draft frontend:
+<table data-view="cards"><thead><tr><th></th><th></th><th></th><th data-hidden data-card-target data-type="content-ref"></th><th data-hidden data-card-cover data-type="image">Cover image</th></tr></thead><tbody><tr><td><h4><i class="fa-toolbox">:toolbox:</i></h4></td><td><strong>Create Permissionless Markets</strong></td><td>Build onchain lending businesses on best-in-class infrastructure.</td><td><a href="/broken/pages/zprNEvdKVY4g4Id3sfKE">Broken link</a></td><td><a href=".gitbook/assets/gearboxdocscurate.png">gearboxdocscurate.png</a></td></tr><tr><td><h4><i class="fa-money-bill-transfer">:money-bill-transfer:</i></h4></td><td><strong>Lend or Borrow</strong></td><td>Learn how to make the most of curated opportunities.</td><td><a href="https://app.gitbook.com/o/dtja0dpftnVBhpMHCZ5y/s/UQ4ExmqTk5ZgqG4luwpC/">User docs</a></td><td><a href=".gitbook/assets/gearboxdocsborrow.png">gearboxdocsborrow.png</a></td></tr><tr><td><h4><i class="fa-gear-complex">:gear-complex:</i></h4></td><td><strong>Understanding Gearbox</strong></td><td>Learn about unlocking onchain credit and Gearbox Permissionless.</td><td><a href="https://app.gitbook.com/o/dtja0dpftnVBhpMHCZ5y/s/viVygst6ymEvrLTl74w1/">About Gearbox</a></td><td><a href=".gitbook/assets/gearboxdocsmain.png">gearboxdocsmain.png</a></td></tr></tbody></table>
 
-- App: `http://draft.client-v3.pages.dev/?dev-mode=false`
-- Related change: `613c722 - feat: mock connection`
+{% columns %}
+{% column %}
+<figure><img src=".gitbook/assets/gearboxdocuses.png" alt=""><figcaption></figcaption></figure>
+{% endcolumn %}
 
-The agent should use this build to confirm button labels, screen names, and step order.
+{% column %}
+### Learn more about Gearbox's unique usecases
 
+RWAs, Vaults, Prediction Markets, Onchain Assets, No-DEX lending. Learn about the opportunities Gearbox unlocks.
 
-
-### Important information for contributors
-
-As a contributor to the Gearbox Protocol GitHub repository, your pull requests indicate acceptance of our Gearbox Contribution Agreement. This agreement outlines that you assign the Intellectual Property Rights of your contributions to the Gearbox Foundation. This helps safeguard the Gearbox protocol and ensure the accumulation of its intellectual property. Contributions become part of the repository and may be used for various purposes, including commercial. As recognition for your expertise and work, you receive the opportunity to participate in the protocol's development and the potential to see your work integrated within it. The full Gearbox Contribution Agreement is accessible within the [repository](/ContributionAgreement) for comprehensive understanding. [Let's innovate together!]
+<a href="/broken/pages/NnGeV01vemI7jvTkqshe" class="button primary" data-icon="book-open">Helping Mellow x P2P lrt grow 2x</a>&#x20;
 
 
-## How to work with it
-
-1. Read `structure.md` first and create a page **with exactly the same name**.
-2. The model writes a `.md` page and leaves all unknown/UI-dependent parts as markers.
-3. The agent goes through the actual frontend above, resolves markers, and fills in real button/screen names.
-4. After that the file can go to human review and publication.
+{% endcolumn %}
+{% endcolumns %}
