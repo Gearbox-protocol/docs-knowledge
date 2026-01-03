@@ -1,35 +1,32 @@
-# Gearbox Docs Workspace
+# Key concepts & system overview
 
-This repository is the working space for the new version of Gearbox user documentation.
+## Key concepts and system overview
 
-## What’s inside
+With permissionless architecture Gearbox has became even more composable, evolving into a techical stack that allows growing lending businesses, developing DeFi ecosystems and deploy lending markets on any chain by enyone having interest and capacity to do so.
 
-- `structure.md` — the approved two-level structure of user docs (what we write and in what order).
-- `rules_for_model.md` — rules for the model that works on top of existing docs. It must use the dumped materials (mainly `dev_docs` and `doc_gitbook`) and leave markers: `TODO:`, `VERIFY:`, `SOURCE-CONFLICT:`, `SCREENSHOT:`.
-- `rules_for_agent.md` — rules for the UI agent: how to walk the forked frontend, how to resolve markers, what to update, and what to leave untouched.
-- `user_docs_model.md` — user docs produced by the model from existing data (drafts with markers).
-- `user_docs_agent.md` — user docs after the agent pass (markers resolved where possible).
-- other files — legacy/old docs used as reference.
+[https://permissionless.gearbox.foundation/](https://permissionless.gearbox.foundation/) is the entrypoint for no-code deployment, curation and collaboration with Gearbox.
 
-## UI agent connection
+#### What is permissionless?
 
-The agent is expected to work against the current draft frontend:
+Anyone can deploy Market Configurator to create and manage Gearbox Markets without needing governance approval.
 
-- App: `http://draft.client-v3.pages.dev/?dev-mode=false`
-- Related change: `613c722 - feat: mock connection`
+#### What is Gearbox Market?
 
-The agent should use this build to confirm button labels, screen names, and step order.
+Gearbox Market is a set of modular contracts allowing to facilitate lending, borrowing and productive usage of collaterals at rules set by Curator.\
+Properties of a single market include but are not limited to Underlying Token, its Price Feed, Interest Rate Model, collateral-specific Limits and Additional Rates.
 
+#### What is Gearbox Instance?
 
+**Instance** = **Chain ID** activated by DAO for deployment + Chain-specific address of **DAO Treasury** + **Instance Owne**r multisig that helps configure chain-specific parameters but can't affect Markets configuration.
 
-### Important information for contributors
+#### What can curator change?
 
-As a contributor to the Gearbox Protocol GitHub repository, your pull requests indicate acceptance of our Gearbox Contribution Agreement. This agreement outlines that you assign the Intellectual Property Rights of your contributions to the Gearbox Foundation. This helps safeguard the Gearbox protocol and ensure the accumulation of its intellectual property. Contributions become part of the repository and may be used for various purposes, including commercial. As recognition for your expertise and work, you receive the opportunity to participate in the protocol's development and the potential to see your work integrated within it. The full Gearbox Contribution Agreement is accessible within the [repository](/ContributionAgreement) for comprehensive understanding. [Let's innovate together!]
+The Curator can adjust all Market parameters, with a mandatory 24-hour timelock enforced at the smart-contract level for any changes.
 
+#### What is possible with permissionless curation?
 
-## How to work with it
+Each market consists of tens of contracts, including Pool, Oracle, IRM, Loss policy, Credit Managers and Adapters. Such modular architecture allows creating products with market-best flexibility and granular parametrization making Gearbox Protocol the premier platform for crafting sophisticated financial products that address specific market demands and drive long-term value creation.
 
-1. Read `structure.md` first and create a page **with exactly the same name**.
-2. The model writes a `.md` page and leaves all unknown/UI-dependent parts as markers.
-3. The agent goes through the actual frontend above, resolves markers, and fills in real button/screen names.
-4. After that the file can go to human review and publication.
+Below is a diagram of the contracts and parameters that a curator can configure, so you can get an idea of how detailed market configuration can be.
+
+<figure><img src="https://494588385-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F9n0QLqkiJru3BYkpyr8F%2Fuploads%2FFhZMeAVeKxLdtB3RUd7z%2Fsystem.jpg?alt=media&#x26;token=f4eea86c-3a96-4eba-8306-5db461c6cd9e" alt=""><figcaption></figcaption></figure>
