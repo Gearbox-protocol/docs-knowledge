@@ -2,7 +2,7 @@
 
 Gearbox Permissionless provides the operational rails for institutions, asset managers, and fintechs to deploy onchain credit markets.
 
-As a **Curator**, you act as the operator of a standalone lending vertical. This role is designed for entities seeking to retain full ownership of their market's risk parameters and economic model, while leveraging Gearbox’s battle-tested settlement engine to handle execution, solvency, and compliance.
+**Curator**, acts as the operator of a standalone lending vertical. This role is designed for entities seeking to retain full ownership of their market's risk parameters and economic model, while leveraging Gearbox’s battle-tested settlement engine to handle execution, solvency, and compliance.
 
 This page outlines the operational model and strategic advantages of the Gearbox curation stack.
 
@@ -13,9 +13,9 @@ In many onchain lending models, curation requires active capital reallocation, m
 **The Gearbox Approach:**\
 Curators manage **Parameters**, not **Funds**.
 
-* **Non-Custodial:** You define the rules (LTVs, Interest Rate Models), but you never possess or control user funds.
-* **Automated Execution:** The protocol automatically routes liquidity and enforces solvency based on your pre-defined logic.
-* **Compliance Benefit:** This passive model allows you to operate a lending business without engaging in active fund management activities.vv
+* **Non-Custodial:** Curator defines the rules (LTVs, Interest Rate Models), but never possesses or controls user funds.
+* **Automated Execution:** The protocol automatically allows credit usage within allowed limits and enforces solvency based on pre-defined logic.
+* **Compliance Benefit:** This passive model allows you to operate a lending business without engaging in active fund management activities.
 
 ## Structured Credit Products
 
