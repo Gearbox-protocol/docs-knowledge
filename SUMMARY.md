@@ -14,9 +14,9 @@
 * [Create a new Curator (Market Configurator)](curation-step-by-step/create-a-new-curator-market-configurator.md)
 * [Create a Market](curation-step-by-step/create-a-market.md)
 * [Allow leverage strategies](curation-step-by-step/allow-leverage-strategies.md)
-* [Claim accrued fees](curation-step-by-step/claim-accrued-fees.md)
-* [Test transaction on chain fork](curation-step-by-step/test-transaction-on-chain-fork.md)
+* [Verify & Simulate](curation-step-by-step/test-transaction-on-chain-fork.md)
 * [Execute transactions onchain](curation-step-by-step/execute-transactions-onchain.md)
+* [Claim accrued fees](curation-step-by-step/claim-accrued-fees.md)
 
 ## Operational standards
 
