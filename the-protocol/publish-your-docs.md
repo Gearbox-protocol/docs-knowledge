@@ -51,16 +51,16 @@ While the Credit Account provides the user experience, the safety is enforced by
 
 The **Credit Manager** is the "Brain" of the system. It checks every transaction against the Oracle prices and Liquidation Thresholds defined by the Curator. If an action would make the account insolvent, it reverts.
 
-* [**Learn how Credit Managers enforce risk compliance**](../gearbox-permissionless/gearbox-markets/credit-suite-the-strategy-module.md)
+* [**Learn how Credit Managers enforce risk compliance**](../core-architecture/credit-suite-the-strategy-module.md)
 
 #### 2. How do I interact with DeFi?
 
 Credit Accounts cannot talk to arbitraty external protocols (like Uniswap or Lido) directly due to security reasons. They use **Adapters:** specialized connectors that translate user intent into safe, protocol-compliant transactions.
 
-* [**Learn how Adapters enable composability**](../gearbox-permissionless/superior-ux-and-native-execution/adapters-purpose-specific-execution-rules.md)
+* [**Learn how Adapters enable composability**](../core-architecture/adapters-purpose-specific-execution-rules.md)
 
 #### 3. Where does the liquidity come from?
 
 Credit Accounts borrow funds from **Liquidity Pools**. These pools are passive reservoirs of capital (e.g., USDC, ETH) supplied by lenders. The cost of this capital is determined by the Interest Rate Model and can be adjusted for specific collateral types.
 
-* [**Learn about Pools and Interest Rates**](https://www.google.com/url?sa=E\&q=..%2Fgearbox-permissionless%2Fgearbox-markets%2Fpool-the-liquidity-vault.md)
+* [**Learn about Pools**](https://www.google.com/url?sa=E\&q=..%2Fgearbox-permissionless%2Fgearbox-markets%2Fpool-the-liquidity-vault.md)

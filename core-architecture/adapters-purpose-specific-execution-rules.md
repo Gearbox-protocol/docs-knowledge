@@ -13,7 +13,7 @@ Gearbox’s modular architecture unifies credit and execution.
 
 This allows Curators to design Financial Products tailored for specific use cases. One product might be optimized for **Prediction Markets** (interacting with order books), while another is optimized for **Yield Farming** (interacting with vaults).
 
-<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 ## The Security Problem: Unrestricted Execution
 
@@ -40,7 +40,7 @@ DeFi strategies are rarely simple. A user might want to "Zap" from USDC directly
 
 The Gearbox Router calculates the optimal path across all enabled Adapters and bundles these steps into a single **Multicall**.
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
 ## Curator Responsibilities
 
@@ -62,4 +62,4 @@ Curators can browse the library of available integrations to design unique finan
 
 Purpose-specific execution improves both UX and capital efficiency, and even unlocks new credit interactions that were not previously possible.
 
-* [**See: Direct redemptions for semi-liquid assets**](usecase-direct-redemptions-for-semi-liquid-assets.md)
+* [**See: Direct redemptions for semi-liquid assets**](superior-ux-and-native-execution/usecase-direct-redemptions-for-semi-liquid-assets.md)

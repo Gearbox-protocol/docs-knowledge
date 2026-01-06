@@ -4,31 +4,42 @@
 
 * [Powering Onchain Credit](README.md)
 * [Credit Accounts](the-protocol/publish-your-docs.md)
+* [Markets](the-protocol/markets.md)
+* [Omni-EVM Architecture](the-protocol/omni-evm-architecture.md)
 
-## Gearbox Permissionless
+## Core Architecture
 
-* [Gearbox V3.1 (Permissionless) overview](gearbox-permissionless/gearbox-v3.1-permissionless-overview/README.md)
-  * [Market Curators](gearbox-permissionless/gearbox-v3.1-permissionless-overview/market-curators.md)
-  * [Chain-specific governance](gearbox-permissionless/gearbox-v3.1-permissionless-overview/chain-specific-governance.md)
-  * [Protocol-level governance](gearbox-permissionless/gearbox-v3.1-permissionless-overview/protocol-level-governance.md)
-* [Gearbox Markets](gearbox-permissionless/gearbox-markets/README.md)
-  * [Roles and contract-level specification](gearbox-permissionless/gearbox-markets/roles-and-contract-level-specification.md)
-  * [Pool (The Liquidity Vault)](gearbox-permissionless/gearbox-markets/pool-the-liquidity-vault.md)
-  * [Pool Quota Keeper (Collateral Exposure Controller)](gearbox-permissionless/gearbox-markets/pool-quota-keeper-collateral-exposure-controller.md)
-  * [Interest Rate Model (The Cost Engine)](gearbox-permissionless/gearbox-markets/interest-rate-model-the-cost-engine.md)
-  * [Price Oracle (The Valuation Engine)](gearbox-permissionless/gearbox-markets/price-oracle-the-valuation-engine.md)
-  * [Credit Suite (The Strategy module)](gearbox-permissionless/gearbox-markets/credit-suite-the-strategy-module.md)
-* [Omni-EVM Architecture](gearbox-permissionless/omni-evm-architecture.md)
-* [Superior UX and native execution](gearbox-permissionless/superior-ux-and-native-execution/README.md)
-  * [Adapters & Integrations](gearbox-permissionless/superior-ux-and-native-execution/adapters-purpose-specific-execution-rules.md)
-  * [Usecase: direct redemptions for semi-liquid assets](gearbox-permissionless/superior-ux-and-native-execution/usecase-direct-redemptions-for-semi-liquid-assets.md)
-  * [Versatile collateral support](gearbox-permissionless/superior-ux-and-native-execution/versatile-collateral-support.md)
-* [Collateral-specific rates](gearbox-permissionless/collateral-specific-rates.md)
-* [Smart Oracles](gearbox-permissionless/smart-oracles/README.md)
-  * [Dual-oracle system](gearbox-permissionless/smart-oracles/dual-oracle-system.md)
-  * [Loss policy](gearbox-permissionless/smart-oracles/loss-policy.md)
-* [One Pool, Many Markets](gearbox-permissionless/one-pool-many-markets.md)
-* [Built for Real World](gearbox-permissionless/built-for-real-world.md)
+* [Pool (The Liquidity Vault)](core-architecture/pool-the-liquidity-vault.md)
+* [Credit Suite (The Strategy module)](core-architecture/credit-suite-the-strategy-module.md)
+* [Adapters & Integrations](core-architecture/adapters-purpose-specific-execution-rules.md)
+* [Gearbox V3.1 (Permissionless) overview](core-architecture/gearbox-v3.1-permissionless-overview/README.md)
+  * [Market Curators](core-architecture/gearbox-v3.1-permissionless-overview/market-curators.md)
+  * [Chain-specific governance](core-architecture/gearbox-v3.1-permissionless-overview/chain-specific-governance.md)
+  * [Protocol-level governance](core-architecture/gearbox-v3.1-permissionless-overview/protocol-level-governance.md)
+* [Gearbox Markets](core-architecture/gearbox-markets/README.md)
+  * [Roles and contract-level specification](core-architecture/gearbox-markets/roles-and-contract-level-specification.md)
+* [Superior UX and native execution](core-architecture/superior-ux-and-native-execution/README.md)
+  * [Usecase: direct redemptions for semi-liquid assets](core-architecture/superior-ux-and-native-execution/usecase-direct-redemptions-for-semi-liquid-assets.md)
+  * [Versatile collateral support](core-architecture/superior-ux-and-native-execution/versatile-collateral-support.md)
+* [Collateral-specific rates](core-architecture/collateral-specific-rates.md)
+
+## Economics and Risk controls
+
+* [Interest Rate Model (The Cost Engine)](economics-and-risk-controls/interest-rate-model-the-cost-engine.md)
+* [Pool Quota Keeper (Collateral Exposure Controller)](economics-and-risk-controls/pool-quota-keeper-collateral-exposure-controller.md)
+* [Price Oracle (The Valuation Engine)](economics-and-risk-controls/price-oracle-the-valuation-engine.md)
+* [Smart Oracles](economics-and-risk-controls/smart-oracles/README.md)
+  * [Dual-oracle system](economics-and-risk-controls/smart-oracles/dual-oracle-system.md)
+  * [Loss policy](economics-and-risk-controls/smart-oracles/loss-policy.md)
+* [Liquidation dynamics](economics-and-risk-controls/liquidation-dynamics.md)
+
+## Exploration paths
+
+* [For Lenders/LPs](exploration-paths/for-lenders-lps.md)
+* [For Borrowers/Farmers](exploration-paths/for-borrowers-farmers.md)
+* [For Curators](exploration-paths/for-curators.md)
+* [For Ecosystems/Chains](exploration-paths/for-ecosystems-chains.md)
+* [For Asset Issuers/Protocols](exploration-paths/for-asset-issuers-protocols.md)
 
 ## THE TOKEN
 

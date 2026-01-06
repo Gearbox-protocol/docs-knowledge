@@ -4,7 +4,7 @@ The **Credit Manager** is the "Brain" of a lending market. While the Pool holds 
 
 By configuring a Credit Manager, a Curator creates a specific **Financial Product** (e.g., "Stablecoin Farming Strategy" or "Leveraged ETH Staking").
 
-#### 1. The Credit Manager (The Accountant)
+## 1. The Credit Manager (The Accountant)
 
 This contract is the central ledger. It tracks the debt and collateral of every individual Credit Account.
 
@@ -12,7 +12,7 @@ This contract is the central ledger. It tracks the debt and collateral of every 
   * _Manager A_ might allow only Blue-Chip assets (Low Risk).
   * _Manager B_ might allow Volatile assets (High Risk).
 
-#### 2. The Credit Facade (The Gatekeeper)
+## 2. The Credit Facade (The Gatekeeper)
 
 This is the contract borrowers interact with. It acts as a firewall for the Credit Account.
 
@@ -32,13 +32,13 @@ If Account holds $100 of ETH with an LT of 90%, the system values it at $90 for 
 * [**Deep Dive: Full Liquidation Math & Formulas**](https://www.google.com/url?sa=E\&q=..%2Fgearbox-markets%2Fliquidation-dynamics.md)
 {% endhint %}
 
-#### 3. The Credit Configurator (The Control Panel)
+## 3. The Credit Configurator (The Control Panel)
 
 Credit Configurator stores the key risk parameters of the Strategy, like liquidation Threshold, Liquidation premium, which are referenced by Facade and Manager on logic execution.
 
 * **Safety:** The Configurator validates every change (e.g., "Is this Liquidation Threshold valid?") before applying it to the live system.
 
-### Deep Dive
+## Deep Dive
 
 Now that you understand the container, explore the mechanics that govern it.
 
