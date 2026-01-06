@@ -42,3 +42,25 @@ By putting collateral, debt, and execution routes inside a single smart contract
 * **Wider reach to users for apps and institutions:** Complex multi-transaction operations gate non-professional users. Credit accounts abstract execution allowing to focus on effective use of capital.
 * **Fees and time saving for investors:** Direct redemptions of semi-liquid tokens preserve months of yield, and batched transactions cut gas cost.
 * **Largest set of supported collaterals:** redemption receipts or Convex-staked positions become usable in a non-custodial, programmable account instead of being limited to prime broker clients.
+
+### Architecture & Safety
+
+While the Credit Account provides the user experience, the safety is enforced by the underlying infrastructure.
+
+#### 1. How is solvency enforced?
+
+The **Credit Manager** is the "Brain" of the system. It checks every transaction against the Oracle prices and Liquidation Thresholds defined by the Curator. If an action would make the account insolvent, it reverts.
+
+* [**Learn how Credit Managers enforce risk compliance**](../gearbox-permissionless/gearbox-markets/credit-suite-the-strategy-module.md)
+
+#### 2. How do I interact with DeFi?
+
+Credit Accounts cannot talk to arbitraty external protocols (like Uniswap or Lido) directly due to security reasons. They use **Adapters:** specialized connectors that translate user intent into safe, protocol-compliant transactions.
+
+* [**Learn how Adapters enable composability**](../gearbox-permissionless/superior-ux-and-native-execution/adapters-purpose-specific-execution-rules.md)
+
+#### 3. Where does the liquidity come from?
+
+Credit Accounts borrow funds from **Liquidity Pools**. These pools are passive reservoirs of capital (e.g., USDC, ETH) supplied by lenders. The cost of this capital is determined by the Interest Rate Model and can be adjusted for specific collateral types.
+
+* [**Learn about Pools and Interest Rates**](https://www.google.com/url?sa=E\&q=..%2Fgearbox-permissionless%2Fgearbox-markets%2Fpool-the-liquidity-vault.md)

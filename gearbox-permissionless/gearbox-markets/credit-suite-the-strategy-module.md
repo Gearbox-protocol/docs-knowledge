@@ -1,56 +1,100 @@
 # Credit Suite (The Strategy module)
 
-The Credit Suite is the Strategy Execution Module attached to the Pool. While the Pool manages the passive liquidity providers, the Credit Suite **serves** the active borrowers.
+The **Credit Manager** is the "Brain" of a lending market. While the Pool holds the money, the Credit Manager defines **how that money can be used**.
 
-It acts as a strict operating environment that defines **what a borrower can do** with the funds. By configuring a Credit Suite, a Curator defines a specific **Strategy** — a user-facing credit product with defined collateral assets, maximum leverage, and liquidation rules.
+By configuring a Credit Manager, a Curator creates a specific **Financial Product** (e.g., "Stablecoin Farming Strategy" or "Leveraged ETH Staking").
 
-### 1. Credit Manager (Collateral & Debt Accountant)
+#### 1. The Credit Manager (The Accountant)
 
-The Credit Manager acts as the central accounting unit for the strategy. Unlike standard lending protocols where collateral is often pooled, the Credit Manager tracks the specific balances of **each** Credit Account individually.
+This contract is the central ledger. It tracks the debt and collateral of every individual Credit Account.
 
-**Risk Isolation:** Each Credit Manager enforces rules specific to its strategy. For example, the same collateral token can hold different risk weights (Liquidation Thresholds) in two different Credit Managers, ensuring risk in one strategy does not contaminate another.
+* **Risk Isolation:** A single Liquidity Pool (e.g., USDC) can fund multiple Credit Managers.
+  * _Manager A_ might allow only Blue-Chip assets (Low Risk).
+  * _Manager B_ might allow Volatile assets (High Risk).
 
-### 2. Credit Facade (Unified Execution Engine)
+#### 2. The Credit Facade (The Gatekeeper)
 
-The Credit Facade acts as the gateway for users. It allows them to execute complex operations via **Multicall,** bundling actions like borrowing, swapping, and farming into a single atomic transaction.
+This is the contract borrowers interact with. It acts as a firewall for the Credit Account.
 
-**Check-on-Exit:** The module enforces an atomic **Solvency Check** after every Multicall. It verifies that `Total Weighted Value >= Total Debt`. This model allows for immense flexibility within the transaction as long as the Account ends up solvent.
+**The "Check-on-Exit" Rule:**\
+Users can perform complex actions (swap, trade, farm) within a single transaction. The Facade allows _any_ action as long as the account remains solvent at the end of the transaction.
 
-### 3. Credit Configurator (The Control Panel)
+The check is simple: **Is the Health Factor (HF) greater than 1?**
 
-The Credit Configurator serves as the parameter repository and the Curator's interface. While the Credit Manager holds the logic (formulas), the Configurator holds the **inputs** (risk variables).
+* _If HF > 1:_ Transaction succeeds.
+* _If HF < 1:_ Transaction reverts.
 
-**Safety & Validation:** Curators interact exclusively with the Configurator. It validates every parameter change, such as adding tokens or updating fees, before pushing them to the Credit Manager.
+{% hint style="info" %}
+**HF** calculation is based on **Total Weighted Value (TWV)** of collateral. This is not just the market value; it is the market value _discounted_ by the Liquidation Threshold (LT).
+
+If Account holds $100 of ETH with an LT of 90%, the system values it at $90 for solvency purposes.
+
+* [**Deep Dive: Full Liquidation Math & Formulas**](https://www.google.com/url?sa=E\&q=..%2Fgearbox-markets%2Fliquidation-dynamics.md)
+{% endhint %}
+
+#### 3. The Credit Configurator (The Control Panel)
+
+Credit Configurator stores the key risk parameters of the Strategy, like liquidation Threshold, Liquidation premium, which are referenced by Facade and Manager on logic execution.
+
+* **Safety:** The Configurator validates every change (e.g., "Is this Liquidation Threshold valid?") before applying it to the live system.
+
+### Deep Dive
+
+Now that you understand the container, explore the mechanics that govern it.
+
+#### 1. What are the core risk parameters?
+
+Curators control the market by tuning specific variables (LTV, Supply Caps, Fees). Understanding these inputs is critical for both managing a market and using one.
+
+* [**See: Roles & Contract Specification**](https://www.google.com/url?sa=E\&q=roles-and-contract-level-specification.md)
+
+#### 2. How do liquidations work?
+
+The system relies on third-party liquidators to maintain solvency. Learn the rules, incentives, and math that determine when an account is liquidated.
+
+* [**See: Liquidation Dynamics**](https://www.google.com/url?sa=E\&q=liquidation-dynamics.md)
 
 ***
 
-## Curator Controls (Via Credit Configurator)
+### Curator Controls
 
-Curators use the Credit Configurator to define the boundaries of the strategy.
+Curators use the **Credit Configurator** to define the boundaries of the strategy.
 
-#### 1. Risk & Solvency Logic
+#### Risk & Solvency
 
-* **Liquidation Thresholds:** Sets the "Max Leverage" for each asset. It determines how much an asset counts towards solvency (e.g., LT 90% ≈ 10x max leverage).
-* **Ramping:** Allows for **gradual updates** of risk parameters. Ramping lowers the LT slowly rather than instantly, giving borrowers time to adjust positions and avoiding unfair liquidations.
-* **Loss Policy:** Defines the logic executed when a liquidation results in **Bad Debt** (loss). It acts as a safety hook to validate the event or handle the accounting.
-* **Token Status:** Controls the asset list. Curators can add new tokens or strictly forbid existing ones if they become too risky.
+* **Liquidation Thresholds:** Sets the "Max Leverage" for each asset (e.g., LT 90% ≈ 10x leverage).
+* **Ramping:** Allows for gradual updates of risk parameters to avoid unfair immediate liquidations.
+* **Loss Policy:** Defines the logic executed when a liquidation results in Bad Debt (e.g., triggering a secondary oracle check).
+* **Token Status:** Controls the asset allowlist (Add/Forbid tokens).
 
-#### 2. Strategy Constraints
+#### Strategy Constraints
 
-* **Position Sizing:** Sets the **Min and Max Debt** per single account. This prevents "dust" accounts (unprofitable to liquidate) and limits the protocol's exposure to any single whale.
-* **Velocity Limits:** Limits the **Total New Debt** that can be opened in a single block. This prevents "Flash Loan Attacks" where an attacker tries to max out the pool in one transaction to manipulate rates.
-* **Lifecycle Management:** Sets a "shutdown date" for the strategy. Useful for fixed-term lending products. After this date, users can no longer borrow, only repay or close positions. Accounts may become liquidatable regardless of health factor to ensure the pool winds down.
+* **Position Sizing:** Sets Min/Max Debt per account to prevent dust and limit whale exposure.
+* **Velocity Limits:** Limits total new debt per block to prevent Flash Loan attacks.
+* **Lifecycle Management:** Sets a "shutdown date" for fixed-term strategies.
 
-#### 3. Financial Model
+#### Financial Model
 
-* **Liquidation Premium:** The bonus paid to liquidators to ensure they prioritize cleaning up bad debt.
-* **Liquidation Fee:** The revenue cut taken by the Curator and the DAO from liquidation proceeds.
-* **Interest Fee:** A percentage of the interest paid by borrowers is captured as revenue instead of passing to lenders. This fee is typically shared between the **Curator** and the **DAO**, incentivizing Curators to build active, healthy markets.
+* **Liquidation Premium:** Bonus paid to liquidators to ensure fast response.
+* **Liquidation Fee:** Protocol revenue from liquidations.
+* **Interest Fee:** A % of borrowing interest captured as revenue for the Curator and DAO.
 
-#### 4. Protocol Integration
+#### Protocol Integration
 
-* **Allowed Actions:** Defines the "Allowlist" of external protocols. Curators specify exactly which contracts are accessible. If an adapter isn't whitelisted, the borrower cannot interact with it.
+* **Allowed Actions:** The "Allowlist" of external protocols (Uniswap, Curve, etc.). If an adapter isn't listed, users cannot touch it.
 
-#### 5. Emergency Controls
+#### Emergency Controls
 
-* **Pause Borrowing:** A "Soft Pause" mechanism for safety. It stops new loans from being taken while **always allowing** existing users to repay debt, add collateral, or close positions. Curators use this during market turbulence to cap exposure without trapping users.
+* **Pause Borrowing:** A "Soft Pause" that stops new loans but allows repayments and closures.
+
+***
+
+### Operational Mechanics
+
+_Critical behaviors for Curators and Integrators._
+
+* **Liquidations during Pause:** If the Credit Facade is paused, liquidations become whitelisted to Emergency Liquidators who can still execute liquidations to prevent bad debt accumulation.
+* **Expiration Behavior:** If a strategy has an expiration date, **all** accounts become liquidatable/closable after that timestamp, regardless of their Health Factor. Borrowing is disabled; only repayment is allowed.
+* **Token Enablement:** Simply sending a token to a Credit Account does not count it as collateral. The user must explicitly `enableToken` for it to be included in the Health Factor calculation.
+
+***
