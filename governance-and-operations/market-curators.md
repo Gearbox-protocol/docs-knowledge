@@ -4,7 +4,7 @@
 
 Curator is a set of Chain-specific addresses which have access to modify key parameters of lending markets controlled by them.
 
-<figure><img src="../../.gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
 
 ### Curation Roles
 

@@ -1,4 +1,4 @@
-# Protocol-level governance
+# Protocol DAO
 
 ### Cross Chain Multisig (Cross-chain governance) <a href="#cross-chain-multisig-cross-chain-governance" id="cross-chain-multisig-cross-chain-governance"></a>
 

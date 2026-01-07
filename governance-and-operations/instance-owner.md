@@ -1,4 +1,4 @@
-# Chain-specific governance
+# Instance Owner
 
 Different blockchain networks have unique characteristics, especially when it comes to oracles and ecosystem-specific protocols, and these differences are critical for correct Gearbox integrations. Even when configuration processes are simple, operating at scale across hundreds of assets and price feeds increases the risk of purely technical misconfigurations.
 

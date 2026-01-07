@@ -1,4 +1,4 @@
-# Roles and contract-level specification
+# Risk configuration dictionary
 
 Flexibility is at the core of Gearbox’s design. Credit Accounts support a wide range of on-chain assets as collateral, which requires a risk framework capable of handling diverse asset properties.&#x20;
 

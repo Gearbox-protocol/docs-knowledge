@@ -44,10 +44,4 @@ For the exact list of configurable parameters and limits, refer to the specifica
 
 Gearbox uses a composite rate model. The final cost to the borrower (and yield to the lender) is the sum of the base utilization rate plus any collateral-specific premiums.
 
-* [**See: Interest Rate Model and Collateral-specific rates**](../economics-and-risk-controls/interest-rate-model-the-cost-engine.md)
-
-#### 2. **What are the specific risks for Lenders?**
-
-Lenders face distinct risks compared to borrowers, including liquidity risk (high utilization blocking withdrawals) and bad debt socialization.<br>
-
-* See: [**Risks of Lenders**](https://www.google.com/url?sa=E\&q=risks-of-lenders.md)
+* [**See: Interest Rate Model and Collateral-specific rates**](../economics-and-risk/interest-rate-model-the-cost-engine.md)

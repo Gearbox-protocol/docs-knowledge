@@ -62,4 +62,4 @@ Curators can browse the library of available integrations to design unique finan
 
 Purpose-specific execution improves both UX and capital efficiency, and even unlocks new credit interactions that were not previously possible.
 
-* [**See: Direct redemptions for semi-liquid assets**](superior-ux-and-native-execution/usecase-direct-redemptions-for-semi-liquid-assets.md)
+* [**See: Direct redemptions for semi-liquid assets**](../reference/usecase-direct-redemptions-for-semi-liquid-assets.md)
