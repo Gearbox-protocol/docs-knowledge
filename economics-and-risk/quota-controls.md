@@ -1,4 +1,4 @@
-# Quota Limits & Concentration
+# Collateral Limits & Specific rates
 
 The Quota Control system is the protocol's mechanism for managing concentration risk and pricing asset-specific exposure. While the Liquidity Pool provides a shared source of capital, the Quota system enforces strict limits on how that capital can be allocated toward specific collateral assets and applies additional risk premiums where necessary.
 
@@ -42,12 +42,11 @@ This separation allows for granular risk pricing within a single pool:
 
 This ensures that borrowers using safe collateral do not subsidize the risk of those using volatile collateral, improving capital efficiency for low-risk strategies while properly pricing tail risk.
 
-### Further Reading
+#### Learn More
 
-* **Base Interest Calculation:** For details on how the underlying pool utilization determines the base cost of capital, see Interest Rate Model.
-* **Parameter Configuration:** To understand who configures these limits and the specific parameter ranges, see the Risk Configuration Dictionary.
-*   **Protocol Fees**
-
-    A portion of the interest paid is captured as revenue for the Protocol DAO and the Market Curator.
-
-    * **See:** [Fee Sharing](https://www.google.com/url?sa=E\&q=..%2Fintroduction%2Ffee-sharing.md)
+* **Base interest calculation:** How does pool utilization determine the underlying cost of capital?
+  * [interest-rate-model.md](interest-rate-model.md "mention")
+* **Parameter configuration:** Who configures these limits and what parameter ranges are allowed?
+  * [risk-configuration-dictionary.md](../reference/risk-configuration-dictionary.md "mention")
+* **Protocol fees:** How is interest revenue captured and shared between the Protocol DAO and the Market Curator?
+  * [dao-and-curators-business-model.md](dao-and-curators-business-model.md "mention")

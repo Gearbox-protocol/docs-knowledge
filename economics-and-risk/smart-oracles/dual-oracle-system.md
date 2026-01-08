@@ -87,9 +87,9 @@ While the protocol uses the `min()` logic continuously, significant divergence b
 
 ***
 
-#### Further Reading
+#### Learn More
 
-* **Question:** How does the protocol handle bad debt if price safety fails?
-  * See Loss Policy
-* **Question:** Where do the raw price feeds (Main/Reserve) come from?
-  * See Price Oracle
+* **Bad debt handling:** How does the protocol handle bad debt if price safety mechanisms fail?
+  * [loss-policy.md](loss-policy.md "mention")
+* **Price feed sources:** Where do the raw Main and Reserve price feeds originate?
+  * [.](./ "mention")

@@ -100,11 +100,11 @@ $$
 1. **Fee Buffer:** Unclaimed protocol fees (Curator/DAO share) are burned to cover the deficit.
 2. **Socialization:** If fees are insufficient, the remaining loss is socialized among Liquidity Providers by reducing the exchange rate of the Diesel Token (LP token).
 
-### Further Reading
+#### Learn More
 
-* **Data Sources:** How the protocol obtains asset prices for TWV calculations.
-  * See: Price Oracle
-* **Parameter Control:** Who sets the $LT$, Premiums, and Fees.
-  * See: Risk Configuration Dictionary
-* **Quota Mechanics:** How Quota limits are defined and adjusted.
-  * See: Quota Limits & Concentration
+* **Data sources:** How does the protocol obtain asset prices for Total Weighted Value (TWV) calculations?
+  * [price-oracle.md](price-oracle.md "mention")
+* **Parameter control:** Who sets liquidation thresholds (LT), premiums, and fees?
+  * [risk-configuration-dictionary.md](../reference/risk-configuration-dictionary.md "mention")
+* **Quota mechanics:** How are quota limits defined and adjusted?
+  * [quota-controls.md](quota-controls.md "mention")

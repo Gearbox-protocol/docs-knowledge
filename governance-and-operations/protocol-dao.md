@@ -34,7 +34,7 @@ To preserve the permissionless nature of the protocol, the DAO's power is strict
 
 This separation of powers ensures that Curators retain full sovereignty over their lending businesses.
 
-### Related Pages
+#### Learn More
 
-* **Who manages the risk parameters and daily operations?**
-  * [Market Curators](https://www.google.com/url?sa=E\&q=market-curators.md)
+* **Risk management & operations:** Who manages risk parameters and oversees day-to-day market operations?
+  * [market-curators.md](market-curators.md "mention")

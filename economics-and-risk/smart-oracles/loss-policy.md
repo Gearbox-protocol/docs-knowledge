@@ -34,8 +34,7 @@ The Loss Policy acts as a conditional circuit breaker during the liquidation pro
    * **No:** The protocol assumes the market price is temporarily dislocated (flash crash). Liquidation is blocked to prevent realizing the loss at a distressed price.
    * **Yes:** The asset is fundamentally insolvent. Liquidation proceeds.
 
-### Outcome
+#### Learn More
 
-If the liquidation proceeds under the Loss Policy (Step 3 = Yes), the protocol acknowledges the bad debt.
-
-* **See:** [Bad Debt Coverage & Socialization](https://www.google.com/url?sa=E\&q=..%2Fliquidation-dynamics.md%23bad-debt)
+* **Bad debt acknowledgment:** What happens when a liquidation proceeds under the Loss Policy and bad debt is realized?
+  * [liquidation-dynamics.md](../liquidation-dynamics.md "mention")

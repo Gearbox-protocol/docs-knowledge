@@ -24,12 +24,13 @@
 ## Economics & Risk
 
 * [Interest Rate Model](economics-and-risk/interest-rate-model.md)
-* [Quota Limits & Concentration](economics-and-risk/quota-controls.md)
+* [Collateral Limits & Specific rates](economics-and-risk/quota-controls.md)
 * [Liquidation Dynamics](economics-and-risk/liquidation-dynamics.md)
 * [Price Oracle](economics-and-risk/price-oracle.md)
 * [Smart Oracles](economics-and-risk/smart-oracles/README.md)
   * [Dual-Oracle System](economics-and-risk/smart-oracles/dual-oracle-system.md)
   * [Loss Policy](economics-and-risk/smart-oracles/loss-policy.md)
+* [DAO & Curators' business model](economics-and-risk/dao-and-curators-business-model.md)
 
 ## Governance & Operations
 

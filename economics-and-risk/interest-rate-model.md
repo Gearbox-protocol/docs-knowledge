@@ -75,14 +75,9 @@ Curators can configure the market to strictly forbid new borrowing once utilizat
 
 The Interest Rate Model determines the **Base Rate** of the pool. The final cost to a borrower includes additional collateral-specific rate.
 
-#### Asset-Specific Risk Premiums
+#### Learn More
 
-Borrowers holding specific collateral assets may incur an additional **Quota Rate** on top of the base rate.
-
-* **See:** [Quota Limits & Concentration](https://www.google.com/url?sa=E\&q=quota-controls.md)
-
-#### Protocol Fees
-
-A portion of the interest paid is captured as revenue for the Protocol DAO and the Market Curator.
-
-* **See:** [Fee Sharing](https://www.google.com/url?sa=E\&q=..%2Fintroduction%2Ffee-sharing.md)
+* **Asset-specific risk premiums:** Borrowers holding specific collateral assets may incur an additional Quota Rate on top of the base rate.
+  * [quota-controls.md](quota-controls.md "mention")
+* **Protocol fees:** A portion of the interest paid is captured as revenue for the Protocol DAO and the Market Curator.
+  * [dao-and-curators-business-model.md](dao-and-curators-business-model.md "mention")

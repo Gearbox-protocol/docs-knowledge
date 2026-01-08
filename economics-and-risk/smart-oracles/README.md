@@ -14,4 +14,4 @@ Gearbox oracle and solvency checks structure allows creating pricing methods wit
 Gearbox supports major price feed providers, including Chainlink, Redstone (both pull and push models), and Pyth.&#x20;
 
 Custom audited smart-contract feeds allow pricing of DeFi assets, including Pendle PT, Curve & Balancer LP tokens and more.\
-Read more: [Broken link](/broken/pages/rt0BIKer7KMdGpbqq8Xc "mention")
+Read more: [price-oracle.md](../price-oracle.md "mention")

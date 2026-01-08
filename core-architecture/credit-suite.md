@@ -51,10 +51,9 @@ The Credit Configurator provides the administrative interface for Market Curator
 3. **Accounting:** The Facade routes instructions to the **Credit Manager**, which updates the Credit Account's state and interacts with the **Pool** or **Adapters**.
 4. **Verification:** The Facade requests a final solvency check from the Credit Manager before finalizing the transaction.
 
-### Further Reading
+### Learn More
 
-**Question: How is solvency strictly enforced via liquidations?**\
-→ [Liquidation Dynamics](https://www.google.com/url?sa=E\&q=..%2Feconomics-and-risk%2Fliquidation-dynamics.md)
-
-**Question: What is the complete list of parameters that affect behavior?**\
-→ [Risk Configuration Dictionary](https://www.google.com/url?sa=E\&q=..%2Freference%2Frisk-configuration-dictionary.md)
+* **Solvency enforcement:** How liquidations work?
+  * [liquidation-dynamics.md](../economics-and-risk/liquidation-dynamics.md "mention")
+* **Risk controls:** What is the complete list of parameters that define the strategy?
+  * [risk-configuration-dictionary.md](../reference/risk-configuration-dictionary.md "mention")

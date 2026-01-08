@@ -66,12 +66,7 @@ This architecture enables Curators to list productive assets (Vaults, LPs, Deriv
 
 ***
 
-#### Safety & Manipulation Resistance
+#### Learn More
 
-While the Price Oracle standardizes values, relying on a single data source introduces risks such as oracle manipulation or flash crashes.
-
-**Question: How does the system protect against manipulation or extreme market conditions?**
-
-> The protocol employs a **Dual-Oracle System** that cross-references Main and Reserve feeds to detect anomalies.
->
-> * [**See: Dual-Oracle System**](https://www.google.com/url?sa=E\&q=smart-oracles%2Fdual-oracle-system.md)
+* **Safety & manipulation resistance:** How does the system protect against oracle manipulation and extreme market conditions?
+  * [dual-oracle-system.md](smart-oracles/dual-oracle-system.md "mention")

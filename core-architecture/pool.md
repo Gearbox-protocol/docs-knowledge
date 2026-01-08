@@ -42,11 +42,11 @@ A single Pool can fund multiple Credit Suites simultaneously. The Market Curator
 * **Allocation Limits:** The Curator defines the maximum capital available to each Suite (e.g., 80% to a Low-Risk Suite, 20% to a High-Risk Suite).
 * **Firewalling:** If a specific Strategy (Credit Suite) suffers a failure or bad debt, the loss is contained within that Suite's allocation. The Pool's exposure is limited to the capital lent to that specific branch, protecting the remaining liquidity.
 
-### See Also
+### Learn More
 
-* **How is the utilization-driven interest rate calculated?**
-  * [Interest Rate Model](https://www.google.com/url?sa=E\&q=..%2Feconomics-and-risk%2Finterest-rate-model.md)
-* **How are collateral-specific rates and collateral exposure limits handled?**
-  * [Quota Limits & Concentration](https://www.google.com/url?sa=E\&q=..%2Feconomics-and-risk%2Fquota-controls.md)
-* **Where is the liquidity actually used or lent to?**
-  * [Credit Suite (The Strategy Module)](https://www.google.com/url?sa=E\&q=..%2Fcore-architecture%2Fcredit-suite.md)
+* **Yield source:** How is the utilization-driven interest rate calculated?
+  * [interest-rate-model.md](../economics-and-risk/interest-rate-model.md "mention")
+* **Yield optimization & risk control:** How are collateral-specific rates and collateral exposure limits handled?
+  * [quota-controls.md](../economics-and-risk/quota-controls.md "mention")
+* **Deposits utilization:** Where is the liquidity actually used or lent to?
+  * [credit-suite.md](credit-suite.md "mention")

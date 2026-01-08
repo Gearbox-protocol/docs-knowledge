@@ -52,16 +52,9 @@ As a Curator, the choice of Adapters defines the **Utility** of the market.
 2. **Enable Yield:** To offer a "Farming Strategy," the Curator must enable the specific Adapter for that farm (e.g., the Convex Adapter or Midas vault adapter).
 3. **Risk Management:** If a specific external protocol is hacked or becomes risky, the Curator can **Disable** that specific Adapter instantly via the Emergency Admin, protecting the pool from further exposure.
 
-### Deep Dive
+### Learn More
 
-**1. How are these interactions checked for solvency?**
-
-Every interaction through an adapter is subject to a solvency check by the Credit Manager. The system ensures that the account remains overcollateralized after the execution of the multicall.
-
-* [**See: Credit Suite (Solvency Checks)**](https://www.google.com/url?sa=E\&q=credit-suite.md)
-
-**2. What are unique usecases allowed by Credit Accounts & Adapters?**
-
-Purpose-specific execution improves both UX and capital efficiency, and even unlocks new credit interactions that were not previously possible, such as redeeming semi-liquid assets directly.
-
-* [**See: Direct redemptions for semi-liquid assets**](https://www.google.com/url?sa=E\&q=..%2Freference%2Fdirect-redemptions.md)
+* **Solvency checks:**  How accounts are kept overcollateralized after each operation?
+  * [credit-suite.md](credit-suite.md "mention")
+* **Unique usecases:** How Credit Accounts and adapters unlock new credit interactions.
+  * [direct-redemptions.md](../reference/direct-redemptions.md "mention")
