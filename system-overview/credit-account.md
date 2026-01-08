@@ -61,19 +61,11 @@ From the perspective of an external protocol, the Credit Account appears as a st
 
 ***
 
-### Architecture Navigation
+### Learn More
 
-#### Risk Enforcement
-
-The logic for calculating the Health Factor and enforcing solvency is managed by the Credit Manager and Credit Facade.\
-→ [Credit Suite (The Strategy Module)](https://www.google.com/url?sa=E\&q=..%2Fcore-architecture%2Fcredit-suite.md)
-
-#### External Interactions
-
-The mechanism for connecting Credit Accounts to external DeFi protocols is defined by the Adapter system.\
-→ [Adapters & Integrations](https://www.google.com/url?sa=E\&q=..%2Fcore-architecture%2Fadapters-integrations.md)
-
-#### Liquidity Source
-
-The capital borrowed by the Credit Account is sourced from the passive Liquidity Pool.\
-→ [Pool (The Liquidity Vault)](https://www.google.com/url?sa=E\&q=..%2Fcore-architecture%2Fpool.md)
+* **Risk Enforcement:** the logic for calculating the Health Factor and enforcing solvency is managed by the Credit Manager and Credit Facade.
+  * &#x20;[credit-suite.md](../core-architecture/credit-suite.md "mention")
+* **External Interactions:** The mechanism for connecting Credit Accounts to external DeFi protocols is defined by the Adapter system.
+  * [adapters-integrations.md](../core-architecture/adapters-integrations.md "mention")
+* **Liquidity Source:** The capital borrowed by the Credit Account is sourced from the passive Liquidity Pool.
+  * [pool.md](../core-architecture/pool.md "mention")

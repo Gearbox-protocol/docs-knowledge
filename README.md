@@ -54,6 +54,6 @@ This abstracts the complexity of multiple markets away from the lender. The lend
 ### Learn More
 
 * **Technical Implementation:** How the passive vault handles deposits and withdrawals.
-  * [Pool (The Liquidity Vault)](https://www.google.com/url?sa=E\&q=..%2Fcore-architecture%2Fpool.md)
+  * [pool.md](core-architecture/pool.md "mention")
 * **Market Configuration:** How specific rules and strategies are defined for each branch.
-  * [Credit Suite (The Strategy Module)](https://www.google.com/url?sa=E\&q=..%2Fcore-architecture%2Fcredit-suite.md)
+  * [credit-suite.md](core-architecture/credit-suite.md "mention")

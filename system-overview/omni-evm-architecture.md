@@ -36,11 +36,11 @@ Because Instances are independent, governance is split into **Global** (Code & I
 | **Instance Owner**  | Local (One Chain)        | A technical multisig responsible for chain-specific infrastructure, such as whitelisting local price feeds. |
 | **Market Curators** | Local (Specific Markets) | Independent operators who deploy lending markets and manage economic risk parameters (LTVs, Rates).         |
 
-#### Further Reading
+### Learn More
 
-* **How are the token holders' financial interests and the delivery of the core codebase managed?**\
-  [See: Protocol DAO](https://www.google.com/url?sa=E\&q=..%2Fgovernance-and-operations%2Fprotocol-dao.md)
-* **Who oversees local chain parameters specifically?**\
-  [See: Instance Owner](https://www.google.com/url?sa=E\&q=..%2Fgovernance-and-operations%2Finstance-owner.md)
-* **Who manages business building and specific risk parameters?**\
-  [See: Market Curators](https://www.google.com/url?sa=E\&q=..%2Fgovernance-and-operations%2Fmarket-curators.md)
+* **Protocol ownership:** How are the token holders' financial interests and the delivery of the core codebase managed?
+  * [protocol-dao.md](../governance-and-operations/protocol-dao.md "mention")
+* **Chain-specific oversight:** Safe operation within a chain.
+  * [instance-owner.md](../governance-and-operations/instance-owner.md "mention")
+* **Markets growth:** Who manages business building and specific risk parameters?
+  * [market-curators.md](../governance-and-operations/market-curators.md "mention")
