@@ -1,7 +1,5 @@
 # Instance Owner
 
-## Instance Owner
-
 The Instance Owner is a chain-specific technical multisig responsible for maintaining the integrity of the local Gearbox deployment. It acts as a **technical gatekeeper**, ensuring that critical infrastructure, specifically the Price Feed Store, remains secure, verified, and consistent across networks.
 
 Unlike Market Curators, who manage financial risk parameters, the Instance Owner operates under a strict mandate of **business neutrality**. It does not assess the economic viability of assets or strategies but ensures the underlying data feeds function correctly.

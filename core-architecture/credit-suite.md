@@ -1,7 +1,5 @@
 # Credit Suite (The Strategy Module)
 
-## Credit Suite (The Strategy Module)
-
 The Credit Suite is the architectural assembly responsible for managing the asset side of the protocol's balance sheet. While the Liquidity Pool manages passive capital (liabilities), the Credit Suite defines the logic, risk parameters, and execution boundaries for active borrowers (assets).
 
 A single Liquidity Pool can be connected to multiple Credit Suites, each representing a distinct **Credit Manager** with unique risk configurations, allowed collateral assets, and borrowing limits. This isolation allows the protocol to compartmentalize risk strategies without fragmenting underlying liquidity.

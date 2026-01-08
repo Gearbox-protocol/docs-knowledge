@@ -1,7 +1,5 @@
 # Omni-EVM Architecture
 
-## Omni-EVM Architecture
-
 Gearbox Protocol is designed as a **Deployable Primitive** rather than a monolithic cross-chain application. It does not rely on bridges for message passing or state synchronization between chains. Instead, every deployment on a new chain is a standalone, self-contained **Instance**.
 
 This architecture ensures that risk is isolated to the specific chain and that the protocol can scale permissionlessly to any EVM-compatible network without waiting for centralized bridge infrastructure.

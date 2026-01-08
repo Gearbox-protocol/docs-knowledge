@@ -1,7 +1,5 @@
 # Pool (The Liquidity Vault)
 
-## Pool (The Liquidity Vault)
-
 The **Liquidity Pool** serves as the liability side of the Gearbox Protocol balance sheet. It is a passive, ERC-4626 compliant smart contract where lenders deposit assets (e.g., USDC, WETH) to earn yield.
 
 Unlike traditional lending protocols where a pool interacts directly with individual borrowers, the Gearbox Pool operates on a **Wholesale Banking Model**. It does not lend directly to users; instead, it allocates capital to **Credit Suites** (Credit Managers), which act as specialized lending branches with distinct risk configurations.

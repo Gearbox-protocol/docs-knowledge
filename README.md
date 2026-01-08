@@ -1,7 +1,5 @@
 # One Pool, Many Markets
 
-## One Pool, Many Markets
-
 Gearbox Protocol separates the source of liquidity from the utilization of liquidity. This architecture allows a single passive liquidity source to fund diverse, isolated lending strategies simultaneously.
 
 <figure><img src=".gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>

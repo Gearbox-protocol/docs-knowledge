@@ -1,7 +1,5 @@
 # Adapters & Integrations
 
-## Adapters & Integrations
-
 A Credit Account is a secure "Container." By default, it cannot interact with the outside world because the protocol cannot guarantee the safety of external smart contracts.
 
 **Adapters** are the solution. They are specialized "Translation Contracts" that allow Credit Accounts to interact with specific DeFi protocols (like Uniswap, Curve, or Lido) while maintaining the strict solvency checks required by Gearbox.

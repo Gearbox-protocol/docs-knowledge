@@ -1,7 +1,5 @@
 # Interest Rate Model
 
-## Objective
-
 The Interest Rate Model (IRM) functions as the protocol's algorithmic central bank. Its primary objective is to balance **capital efficiency** (maximizing yield for lenders) with **liquidity availability** (ensuring lenders can withdraw assets).
 
 It achieves this by dynamically adjusting the Base Borrow Rate based on the **Utilization Rate** of the Liquidity Pool.

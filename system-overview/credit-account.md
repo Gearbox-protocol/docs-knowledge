@@ -21,8 +21,6 @@ metaLinks:
 
 # Credit Accounts (The Primitive)
 
-## Credit Accounts (The Primitive)
-
 The Credit Account is the fundamental primitive of the Gearbox Protocol. It functions as a user-owned, isolated smart contract wallet that holds both collateral and borrowed funds, enabling leveraged execution across DeFi protocols.
 
 ### Core Concept: Isolated Smart Contract Wallet
