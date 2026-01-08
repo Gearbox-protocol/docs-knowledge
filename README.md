@@ -1,61 +1,59 @@
----
-layout:
-  width: default
-  title:
-    visible: true
-  description:
-    visible: true
-  tableOfContents:
-    visible: true
-  outline:
-    visible: true
-  pagination:
-    visible: true
-  metadata:
-    visible: true
-metaLinks:
-  alternates:
-    - https://app.gitbook.com/s/yE16Xb3IemPxJWydtPOj/getting-started/quickstart
----
+# One Pool, Many Markets
 
-# System overview
+## One Pool, Many Markets
 
-<h2 align="center">Meet Gearbox</h2>
+Gearbox Protocol separates the source of liquidity from the utilization of liquidity. This architecture allows a single passive liquidity source to fund diverse, isolated lending strategies simultaneously.
 
-### Permissionless Lending Rails for Onchain Credit
+<figure><img src=".gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>
 
-At Gearbox, we are making the transition to operating lending businesses onchain frictionless. Purpose built for institutions, asset-issuers and fintechs, our enterprise grade lending stack enables lenders to deploy no-code credit markets instantly.
+### The Wholesale Bank Model
 
-After the V3.1 update, Gearbox market creation and management became permissionless. This shift is enabled by two core design choices:
+To understand the flow of capital, view the architecture through the analogy of a banking system:
 
-### Strict role segregation
+#### 1. The Pool (The Wholesale Bank)
 
-Access rights and responsibilities are programmatically enforced at the contract level. This promotes specialization among participants while limiting the power of any single role - an essential property for preserving a non-custodial user experience while still enabling flexible operations.
+The Liquidity Pool acts as a **Wholesale Bank**. It is a massive, passive reservoir of capital (e.g., USDC, WETH, or DAI).
 
-### Verifiable deployment
+* **Role:** It accepts deposits from lenders and holds the funds securely.
+* **Mandate:** It does not lend directly to end-users. Instead, it lends capital to "Retail Branches" (Credit Suites) based on strict credit limits.
 
-A functional Gearbox market is highly modular and consists of dozens of contracts. With V3.1, this deployment process is brought fully onchain for the first time, enabling transparent, verifiable market launches and trustless scaling across existing and future chains.
+#### 2. Credit Suites (The Retail Branches)
 
-## Governance structure <a href="#strict-roles-segregation" id="strict-roles-segregation"></a>
+Credit Suites (technically "Credit Managers") act as **Retail Branches**. Each branch is a specialized lending product with a specific mandate.
 
-Gearbox is modular at its core, with governance roles designed to streamline operations while keeping access tightly controlled and enabling clear specialization across participants.
+* **Role:** They borrow liquidity from the Wholesale Bank (Pool) to fund Credit Accounts for users.
+* **Mandate:** Each suite defines a specific strategy, such as "Low-Risk Stablecoin Farming" or "High-Leverage ETH Staking."
 
-<table><thead><tr><th width="238.94140625">Entity</th><th width="141.1953125">Scope</th><th width="201.203125">Allowance</th><th>Affects users?</th></tr></thead><tbody><tr><td>DAO (tokenholders) <a data-mention href="/broken/pages/eSt3gZvAlH3S9bveINVd">Broken link</a></td><td>All chains</td><td>Deliver new versions<br>Configure fee split</td><td>No</td></tr><tr><td>Instance (chain) <br><a data-mention href="/broken/pages/5wuqwvNPhoX2zKSJaB7e">Broken link</a><br></td><td>One chain</td><td>Whitelist price feeds</td><td>No</td></tr><tr><td>Risk Curators<br><a data-mention href="/broken/pages/QnbfYpgf8WK7O8lSNQHY">Broken link</a><br></td><td>Owned markets</td><td>Change risk parameters</td><td>Yes<br>Subject to timelock</td></tr></tbody></table>
+<figure><img src=".gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
 
-<table data-view="cards"><thead><tr><th></th><th></th><th></th><th data-hidden data-card-target data-type="content-ref"></th><th data-hidden data-card-cover data-type="image">Cover image</th></tr></thead><tbody><tr><td><h4><i class="fa-toolbox">:toolbox:</i></h4></td><td><strong>Create Permissionless Markets</strong></td><td>Build onchain lending businesses on best-in-class infrastructure.</td><td><a href="/broken/pages/zprNEvdKVY4g4Id3sfKE">Broken link</a></td><td><a href=".gitbook/assets/gearboxdocscurate.png">gearboxdocscurate.png</a></td></tr><tr><td><h4><i class="fa-money-bill-transfer">:money-bill-transfer:</i></h4></td><td><strong>Lend or Borrow</strong></td><td>Learn how to make the most of curated opportunities.</td><td><a href="https://app.gitbook.com/o/dtja0dpftnVBhpMHCZ5y/s/UQ4ExmqTk5ZgqG4luwpC/">User docs</a></td><td><a href=".gitbook/assets/gearboxdocsborrow.png">gearboxdocsborrow.png</a></td></tr><tr><td><h4><i class="fa-gear-complex">:gear-complex:</i></h4></td><td><strong>Understanding Gearbox</strong></td><td>Learn about unlocking onchain credit and Gearbox Permissionless.</td><td><a href="https://app.gitbook.com/o/dtja0dpftnVBhpMHCZ5y/s/viVygst6ymEvrLTl74w1/">About Gearbox</a></td><td><a href=".gitbook/assets/gearboxdocsmain.png">gearboxdocsmain.png</a></td></tr></tbody></table>
+This separation allows the protocol to offer low-risk and high-risk products side-by-side without fragmenting liquidity.
 
-{% columns %}
-{% column %}
-<figure><img src=".gitbook/assets/gearboxdocuses.png" alt=""><figcaption></figcaption></figure>
-{% endcolumn %}
+### Risk Isolation (Debt Ceilings)
 
-{% column %}
-### Learn more about Gearbox's unique usecases
+In a monolithic lending protocol, bad debt in one asset can drain the entire pool. Gearbox prevents this via **Risk Isolation**.
 
-RWAs, Vaults, Prediction Markets, Onchain Assets, No-DEX lending. Learn about the opportunities Gearbox unlocks.
+The Pool assigns a **Debt Ceiling** to each Credit Suite. This is the maximum amount of capital that specific branch can borrow from the bank.
 
-<a href="/broken/pages/NnGeV01vemI7jvTkqshe" class="button primary" data-icon="book-open">Helping Mellow x P2P lrt grow 2x</a>&#x20;
+* **Scenario:** A Pool holds $100M USDC.
+* **Allocation:**
+  * $80M is allocated to a "Blue Chip Strategy" (Low Risk).
+  * $10M is allocated to an "Emerging Asset Strategy" (High Risk).
+* **Isolation:** If the "Emerging Asset Strategy" suffers a catastrophic failure, the maximum loss to the Pool is capped at $10M. The remaining $90M is mathematically isolated from that specific risk vector.
 
+This ensures that lenders are protected from the tail risks of specific aggressive strategies, while still benefiting from the higher utilization they generate.
 
-{% endcolumn %}
-{% endcolumns %}
+### The Diesel Token (Unified Yield)
+
+Lenders interact only with the Pool. When they deposit assets, they receive **Diesel Tokens** (e.g., dUSDC, dWETH).
+
+* **Unified Exposure:** The Diesel Token represents a pro-rata share of the entire Wholesale Bank's assets.
+* **Aggregated Yield:** The yield is generated by the interest paid by _all_ connected Credit Suites. Whether the capital is used for staking, farming, or trading, the interest flows back to the Pool and appreciates the value of the Diesel Token.
+
+This abstracts the complexity of multiple markets away from the lender. The lender provides liquidity once and earns a blended yield from a diversified basket of on-chain credit strategies.
+
+### Learn More
+
+* **Technical Implementation:** How the passive vault handles deposits and withdrawals.
+  * [Pool (The Liquidity Vault)](https://www.google.com/url?sa=E\&q=..%2Fcore-architecture%2Fpool.md)
+* **Market Configuration:** How specific rules and strategies are defined for each branch.
+  * [Credit Suite (The Strategy Module)](https://www.google.com/url?sa=E\&q=..%2Fcore-architecture%2Fcredit-suite.md)

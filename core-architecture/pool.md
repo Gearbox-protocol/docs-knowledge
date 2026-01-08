@@ -1,47 +1,52 @@
 # Pool (The Liquidity Vault)
 
-The **Liquidity Pool** is the central reservoir of capital for a Gearbox market. It is a passive smart contract where lenders deposit assets (e.g., USDC, WETH) to earn yield.
+## Pool (The Liquidity Vault)
 
-While Credit Managers define the _strategy_ (how funds are used), the Pool defines the _capacity_. It acts as a "Wholesale Bank," lending funds to various Credit Managers (Retail Branches) based on limits defined by the Curator.
+The **Liquidity Pool** serves as the liability side of the Gearbox Protocol balance sheet. It is a passive, ERC-4626 compliant smart contract where lenders deposit assets (e.g., USDC, WETH) to earn yield.
 
-## Core Aspects
+Unlike traditional lending protocols where a pool interacts directly with individual borrowers, the Gearbox Pool operates on a **Wholesale Banking Model**. It does not lend directly to users; instead, it allocates capital to **Credit Suites** (Credit Managers), which act as specialized lending branches with distinct risk configurations.
 
-### **1. The Passive Vault (ERC-4626) & Yield Mechanics**
+### Core Mechanics
 
-The Pool is designed to be simple and secure. It follows the ERC-4626 standard for tokenized vaults.
+#### 1. Passive Liquidity & ERC-4626
 
-* **Deposit:** Lenders deposit the underlying asset (e.g., USDC).
-* **Receipt (Diesel Tokens):** The Pool issues **Diesel Tokens** (e.g., dUSDC). These represent the lender's pro-rata share of the pool.
-* **Yield Accrual:** Diesel Tokens are **non-rebasing**. The quantity of tokens in the user's wallet does not change. Instead, the **Exchange Rate** increases over time as borrowers pay interest into the pool.
-  * _Formula:_ `Exchange Rate = Total Assets (Principal + Interest) / Total Supply of dTokens`
-* **Withdrawal:** Lenders burn Diesel Tokens to redeem their underlying asset plus the accrued interest, provided there is unborrowed liquidity available in the pool.
+The Pool is strictly passive. It holds the underlying asset and issues **Diesel Tokens** (dTokens) to depositors as a receipt of liquidity provision.
 
-### **2. Risk Isolation (The "Branch" Model)**
+* **Standard:** Fully compliant with [ERC-4626](https://www.google.com/url?sa=E\&q=https%3A%2F%2Feips.ethereum.org%2FEIPS%2Feip-4626) (Tokenized Vault Standard).
+* **Fungibility:** Diesel Tokens are fungible and transferable, allowing them to be used as collateral in other DeFi protocols.
 
-A single Pool can fund multiple Credit Managers. This is critical for risk management.
+#### 2. Diesel Tokens (Non-Rebasing Yield)
 
-The Pool lends to **Credit Managers**, not directly to users. The Curator sets a **Debt Ceiling** for each Manager.
+Yield accrual in Gearbox is reflected through the **Exchange Rate**, not through balance updates.
 
-* _Example:_ A $100M USDC Pool might allocate a $10M limit to a higher-risk "Emerging Asset Strategy" and $90M to a lower-risk "Blue Chip Strategy."
-* _Result:_ Even if the risky strategy fails, the maximum loss for the Pool is capped at $10M (10% of the pool). The remaining capital is isolated from that specific risk
+* **Non-Rebasing:** Unlike aTokens (Aave), the wallet balance of Diesel Tokens does not increase over time.
+* **Value Accrual:** As borrowers pay interest, the amount of underlying assets in the Pool grows while the supply of Diesel Tokens remains constant. Consequently, the exchange rate increases.
 
-### Curator Controls — Lenders' Risk and Return
+$$
+Exchange\ Rate = \frac{Total\ Assets\ (Principal + Interest)}{Total\ Supply\ of\ dTokens}
+$$
 
-The primary role of the Market configuration is to define the risk profile for the Liquidity Providers (LPs). Since LPs cannot choose which specific borrowers they fund, they rely on the Curator to set the limits defining the aggregate exposure.
+#### 3. The Branch Model (Wholesale Lending)
 
-By adjusting the **Borrow Caps** for each connected Credit Manager, the Curator determines the blend of the portfolio:
+The Pool delegates the complexity of risk management and borrower interaction to **Credit Suites**.
 
-* **Conservative Profile:** Allocating the majority of capital to Credit Managers with strict LTVs and blue-chip collateral. This results in lower risk but potentially lower utilization and yield.
-* **Aggressive Profile:** Allocating more capital to Credit Managers allowing volatile assets or higher leverage. This increases the potential yield from borrowing fees but exposes LPs to higher risks.
+* **The Pool (Wholesale Bank):** Aggregates liquidity from lenders. It has no knowledge of individual borrowers, collateral types, or liquidation logic. Its only function is to lend capital to approved Credit Suites up to a defined limit.
+* **Credit Suites (Retail Branches):** Borrow liquidity from the Pool to fund Credit Accounts. Each Suite enforces specific risk parameters (LTV, allowed assets, liquidation rules).
 
-For the exact list of configurable parameters and limits, refer to the specification page.
+This separation of concerns ensures that the Pool remains lightweight and secure, while complexity is pushed to the periphery (the Suites).
 
-* [**See: Roles & Contract Specification**](https://www.google.com/url?sa=E\&q=roles-and-contract-level-specification.md)
+### Risk Isolation & Allocation
 
-### Deep Dive
+A single Pool can fund multiple Credit Suites simultaneously. The Market Curator manages the Pool's risk exposure by setting a **Debt Ceiling** for each connected Suite.
 
-#### 1. How is the total APY calculated?
+* **Allocation Limits:** The Curator defines the maximum capital available to each Suite (e.g., 80% to a Low-Risk Suite, 20% to a High-Risk Suite).
+* **Firewalling:** If a specific Strategy (Credit Suite) suffers a failure or bad debt, the loss is contained within that Suite's allocation. The Pool's exposure is limited to the capital lent to that specific branch, protecting the remaining liquidity.
 
-Gearbox uses a composite rate model. The final cost to the borrower (and yield to the lender) is the sum of the base utilization rate plus any collateral-specific premiums.
+### See Also
 
-* [**See: Interest Rate Model and Collateral-specific rates**](../economics-and-risk/interest-rate-model-the-cost-engine.md)
+* **How is the utilization-driven interest rate calculated?**
+  * [Interest Rate Model](https://www.google.com/url?sa=E\&q=..%2Feconomics-and-risk%2Finterest-rate-model.md)
+* **How are collateral-specific rates and collateral exposure limits handled?**
+  * [Quota Limits & Concentration](https://www.google.com/url?sa=E\&q=..%2Feconomics-and-risk%2Fquota-controls.md)
+* **Where is the liquidity actually used or lent to?**
+  * [Credit Suite (The Strategy Module)](https://www.google.com/url?sa=E\&q=..%2Fcore-architecture%2Fcredit-suite.md)

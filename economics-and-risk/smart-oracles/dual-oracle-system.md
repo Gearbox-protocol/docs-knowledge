@@ -1,47 +1,95 @@
-# Dual-oracle system
+# Dual-Oracle System
 
-## **Why does it matter?**
+The Dual-Oracle System is the primary defense layer against price manipulation and oracle failure. By decoupling the valuation source used for liquidations from the source used for user operations, Gearbox ensures that short-term volatility or manipulation in one feed cannot be exploited to drain protocol liquidity.
 
-Oracles are crucial for determining collateral value in lending protocols. Unlike simple exchanges (e.g., Uniswap), lending protocols rely heavily on external data. Risks include:
+### Dual-Feed Architecture
 
-* **Node compromise:** Hackers could gain control of oracle nodes, submitting incorrect data. Popular oracles often rely on 4-5 nodes, selecting median values; compromising 2 or 3 of them can significantly distort reported prices.
-* **Thin liquidity manipulation:** Oracles aggregate prices from various trading sources (DEXes, CEXes). In cases of low liquidity and infrequent trades, malicious actors can temporarily inflate asset prices. For example, manipulating a short-duration TWAP (e.g., 4 minutes) can lead to artificially high collateral valuations, as recently observed with Chainlink.
+Every asset in a Gearbox Market is configured with two independent price feeds. The protocol applies distinct logic to each feed depending on the context of the transaction.
 
-## How Gearbox improves collateral pricing
+#### 1. Main Feed (Solvency & Liquidation)
 
-Gearbox operates with 2 feeds for each collateral: _**Main**_ feed and _**Reserve**_ one.\
-Main feed is used for for Account Value calculation during Liquidation checks.
+The **Main Feed** serves as the authoritative source for the system's internal accounting.
 
-Reserve oracles provide an additional security layer to protect liquidity providers (LPs) from oracle manipulation risks, ensuring accurate collateral valuations.
+* **Role:** Determines the Health Factor ($H\_f$) for liquidation triggers.
+* **Objective:** To reflect the asset's valuation for long-term solvency.
 
-Reserve oracle is used during collateral checks in multicalls, which is a mechanism to perform complex defi interactions from credit accounts in single transaction.
+#### 2. Reserve Feed (Safety & Operations)
 
-In particular, **Reserve** price feed is involved when the multicall includes **Collateral Withdrawal** or **External Calls** through adapters. The collateral check after such operations prices each collateral using the Safe Price:
+The **Reserve Feed** acts as a sanity check for user-initiated actions.
+
+* **Role:** Validates solvency during collateral withdrawals, debt increases, or complex multicall executions.
+* **Objective:** To prevent users from exploiting temporary price divergences to withdraw more collateral than they are entitled to.
+
+### Pricing Methodologies
+
+To understand the utility of the Dual-Oracle system, one must first distinguish between the two primary methodologies for pricing DeFi assets.
+
+#### 1. Fundamental Price (Hardcoded / Backing Value)
+
+Prices the token based on the reserves that back it or its exchange rate (e.g., `1 stETH = 1 ETH` or `1 Stablecoin = $1`).
+
+| Stakeholder   | Pros                                                                                                                                                                          | Cons                                                                                                                                                                                                                                             |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Borrowers** | <p><strong>Stability:</strong> Minimal risk of liquidation due to temporary market de-pegs.<br><strong>Accuracy:</strong> Reflects true staking appreciation immediately.</p> | —                                                                                                                                                                                                                                                |
+| **Lenders**   | **Manipulation Resistance:** Immune to low-liquidity DEX manipulation.                                                                                                        | <p><strong>Insolvency Risk:</strong> May overprice assets during real backing failures.<br><strong>Liquidity Lock:</strong> Funds may become stuck if the market price drops below the fundamental price, removing incentives for repayment.</p> |
+
+#### 2. Secondary Market Price
+
+Prices the token based on buy/sell activity on DEXes or CEXes.
+
+| Stakeholder   | Pros                                                                                                                                                                                              | Cons                                                                                                                                                                                                                             |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Borrowers** | —                                                                                                                                                                                                 | <p><strong>Capital Inefficiency:</strong> Must maintain higher Health Factors to buffer against volatility.<br><strong>Liquidation Risk:</strong> Susceptible to cascading liquidations during market panic.</p>                 |
+| **Lenders**   | <p><strong>Pessimistic Pricing:</strong> Liquid tokens usually trade at a discount to backing, providing a safety buffer.<br><strong>Reactivity:</strong> Fast reaction to real market drops.</p> | <p><strong>Manipulation Risk:</strong> Illiquid markets can be pumped to drain pool reserves at inflated valuations.<br><strong>Bad Debt:</strong> Liquidation cascades can lead to overselling collateral below debt value.</p> |
+
+### Comparison Logic: The "Safe Price"
+
+When a Credit Account executes a transaction that reduces its collateralization (e.g., withdrawing funds or borrowing more), the protocol calculates the account's value using the **Safe Price**.
+
+The Safe Price is derived dynamically for every asset in the portfolio:
 
 $$
-Safe\ Price = min(Main\ Feed\ Price, Reserve\ Feed\ Price)
+P_{Safe} = \min(P_{Main}, P_{Reserve})
 $$
 
-## Dual-oracle pricing in DeFi context
+This `min()` logic creates an automatic circuit breaker. If the Main Feed and Reserve Feed diverge, the protocol enforces the lower (more pessimistic) valuation for all user operations, preventing the extraction of value during de-pegs or manipulation events.
 
-### Pricing methodologies
+### Scenario Analysis: The "Best of Both Worlds"
 
-There are two main methodologies of pricing tokens that is used in most of the lending markets:
+By configuring the **Main Feed** as a Fundamental source and the **Reserve Feed** as a Market source, Gearbox protects lenders from manipulation while preserving capital efficiency for borrowers.
 
-* **Hardcoded/ Fundamental/ Backing Value/ Exhange Rate**\
-  It has multiple names, but the basic idea is to price the token based on reserves that back it
-* **Secondary market price**\
-  Price at which token is bought and sold on DEXes, CEXes or any other liquid market.
+The table below illustrates a scenario where a collateral token (e.g., sUSDe or deUSD) is used to borrow a stablecoin (USDC).
 
-<table><thead><tr><th width="163.31640625">Feed type</th><th width="265.55859375" valign="top">Pros</th><th valign="top">Cons</th></tr></thead><tbody><tr><td>Hardcoded Fundamental<br>Backing Value Exhange Rate</td><td valign="top"><strong>Borrowers:</strong><br>- Minimal risks of liquidation<br>- Up-to-date reflection of staked collateral price appreciation<br><strong>Lenders:</strong><br>- Resistant to market manipulation, important for illiquid tokens</td><td valign="top"><strong>Lenders:</strong><br>- Possible overpricing during hacks and market turmoils<br>- Deposited funds can be freezed in pool due to lack of incentives for repayment or liquidation</td></tr><tr><td>Secondary market price</td><td valign="top"><strong>Lenders:</strong><br>- Pessimistic pricing (liquid tokens usually trade at discount to their backing value)<br>- Fast reaction to real market drops</td><td valign="top"><strong>Borrowers:</strong><br>- Less capital-efficient: have to maintain higher HF to avoid liquidations<br>- Can cause cascading liquidations<br><strong>Lenders:</strong><br>- Illiquid collateral markets can be manipulated to drain pool reserves at inflated price<br>- Liquidation cascades can lead to overselling and creation of bad debt on liquidations</td></tr></tbody></table>
+| Scenario                                                                                    | Dual-Oracle System                                                                                                                                                                                                                                       | Hardcoded Feed Only                                                                                                                                                                                                              | Market Feed Only                                                                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <p><strong>Market price drops > 2.5%</strong><br><em>(Normal Volatility)</em></p>           | <p>✅ <strong>No Liquidations</strong><br>Main feed remains stable.</p>                                                                                                                                                                                   | ✅ **No Liquidations**                                                                                                                                                                                                            | <p>⚠️ <strong>Liquidations Triggered</strong><br>Risky positions are closed due to volatility.</p>                                                                                                                                  |
+| <p><strong>Market price drops > 10%</strong><br><em>(De-peg / Panic)</em></p>               | <p>⚠️ <strong>No Liquidations</strong><br><br>✅ <strong>Withdrawals Blocked</strong><br>Safe Price uses the lower Market price ($0.90). Users cannot withdraw the "overvalued" asset, trapping liquidity in the protocol until solvency is resolved.</p> | <p>⚠️ <strong>No Liquidations</strong><br><br>🚨 <strong>Attack Vector:</strong><br>Attacker buys asset at $0.90, borrows $0.915 against it (at Face Value).<br><strong>Result:</strong> Protocol drained; Bad Debt created.</p> | <p>🚨 <strong>Mass Liquidations</strong><br>Major portion of positions liquidated, potentially crashing price further.</p>                                                                                                          |
+| <p><strong>Market price pumps > 2.5%</strong><br><em>(Normal Volatility)</em></p>           | ✅ **No Liquidations**                                                                                                                                                                                                                                    | ✅ **No Liquidations**                                                                                                                                                                                                            | ✅ **No Liquidations**                                                                                                                                                                                                               |
+| <p><strong>Market price pumps > 10%</strong><br><em>(Illiquid Market Manipulation)</em></p> | <p>✅ <strong>No Liquidations</strong><br><br>✅ <strong>Borrowing Blocked</strong><br>Safe Price uses the lower Fundamental price ($1.00). User cannot borrow against the inflated Market price ($1.10).</p>                                              | ✅ **No Liquidations**                                                                                                                                                                                                            | <p>✅ <strong>No Liquidations</strong><br><br>🚨 <strong>Attack Vector:</strong><br>Attacker mints asset at $1.00, pumps market to $1.10, borrows $1.02.<br><strong>Result:</strong> Protocol drained due to inflated valuation.</p> |
 
-### Dual-Oracle system: best of both worlds
+### Circuit Breakers & Interaction Blocking
 
-Let's compare how properly configured **Main** and **Reserve** feeds can protect lenders while preserving exceptional UX and capital efficiency for borrowers by studying multiple market cases. In the table below, the case when some collateral token is used to borrow blue-chip stablecoin such as USDC.
+The Dual-Oracle system enforces logic that effectively forbids interactions when data integrity is compromised.
 
-| Scenario                                                                      | Dual-Oracle system                                                                                                                                                                                                        | Hardcoded feed                                                                                                                                                             | Market feed                                                                                                                                                                                 |
-| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| sUSDe/USD market price drops by >2.5%                                         | ✅ No liquidations of existing positions                                                                                                                                                                                   | ✅ No liquidations of existing positions                                                                                                                                    | ⚠️ Risky positions liquidated                                                                                                                                                               |
-| <p>(paranoid)<br>USDe/USD market price drops by >10%</p>                      | <p>⚠️ No liquidations of existing positions<br><br>✅ Safe price = min(market, hardcoded) = $0.9<br><br>✅ Can borrow $0.915 per USDe, but can't withdraw it from credit account ⇒ liquidity doesn't exit the protocol.</p> | <p>⚠️ No liquidations of existing positions<br><br>🚨 Attack vector:<br>- buy at $0.9<br>- borrow $0.915 at max LTV (e.g. 91.5%)<br>TVL lent is used as exit liquidity</p> | 🚨Major part of positions liquidated                                                                                                                                                        |
-| deUSD/USD market price pumps by >2.5%                                         | ✅ No liquidations of existing positions                                                                                                                                                                                   | ✅ No liquidations of existing positions                                                                                                                                    | ✅ No liquidations of existing positions                                                                                                                                                     |
-| <p>(illiquid market manipulation)<br>deUSD/USD market price pumps by >10%</p> | <p>✅ No liquidations of existing positions<br><br>✅ Can borrow $1.02 per deUSD, but can't withdraw it from credit account ⇒ liquidity doesn't exit the protocol.</p>                                                      | ✅ No liquidations of existing positions                                                                                                                                    | <p>✅ No liquidations of existing positions</p><p>🚨 Attack vector:<br>- mint deUSD at $1<br>- borrow $1.02 at max LTV (e.g. 92.5%)</p><p><br>TVL lent drained due to inflated valuation</p> |
+#### Transaction-Level Blocking
+
+The system does not require a global pause to stop exploits. It blocks individual transactions based on real-time data divergence:
+
+* **Withdrawal Block:** If $P\_{Main} \gg P\_{Reserve}$, the user's borrowing power is constrained by $P\_{Reserve}$. Users cannot withdraw funds based on the inflated Main price.
+* **Liquidation Protection:** Liquidations rely solely on the **Main Feed**. If the Main Feed is accurate but the Reserve Feed is broken/manipulated, liquidations can still proceed to keep the pool solvent, while user withdrawals (which require Reserve validation) are temporarily blocked to prevent capital flight.
+
+#### Divergence Thresholds
+
+While the protocol uses the `min()` logic continuously, significant divergence between Main and Reserve feeds serves as an off-chain signal for Risk Curators.
+
+* **Soft Breaker:** Small deviations are absorbed by the `min()` logic, simply reducing capital efficiency slightly.
+* **Hard Breaker:** Large deviations typically indicate a de-peg or oracle failure. In these scenarios, the `min()` logic effectively freezes new borrowing and withdrawals for that specific asset until the feeds converge or the Instance Owner updates the configuration.
+
+***
+
+#### Further Reading
+
+* **Question:** How does the protocol handle bad debt if price safety fails?
+  * See Loss Policy
+* **Question:** Where do the raw price feeds (Main/Reserve) come from?
+  * See Price Oracle

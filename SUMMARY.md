@@ -1,16 +1,11 @@
-**Detected Mode: Mode C (The Architect)**
-
-Here is the corrected `SUMMARY.md`. I have strictly verified every link against the provided file tree to ensure no nonexistent references are included.
-
-<file path="SUMMARY.md">
 # Table of contents
 
 ## Introduction
 
-* [System Overview](README.md)
+* [One Pool, Many Markets](README.md)
 * [Credit Accounts (The Primitive)](system-overview/credit-account.md)
-* [One Pool, Many Markets](system-overview/one-pool-many-markets.md)
 * [Omni-EVM Architecture](system-overview/omni-evm-architecture.md)
+* [System Overview](<README (1).md>)
 
 ## Exploration Paths
 

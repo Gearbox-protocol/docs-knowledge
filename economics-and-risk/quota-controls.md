@@ -1,53 +1,53 @@
-# Quota limits & Concentration
+# Quota Limits & Concentration
 
-## Pool Quota Keeper (Collateral Exposure Controller)
+The Quota Control system is the protocol's mechanism for managing concentration risk and pricing asset-specific exposure. While the Liquidity Pool provides a shared source of capital, the Quota system enforces strict limits on how that capital can be allocated toward specific collateral assets and applies additional risk premiums where necessary.
 
-While the Pool manages the liquidity of the _underlying_ asset, the Quota Keeper restricts how much of that liquidity can be borrowed against specific _collateral_ assets across all Credit Managers.
+### Asset-Side Caps (Concentration Limits)
 
-It also serves as a "collateral-specific interest rate mechanism," allowing the protocol to charge specific rates for holding risky or illiquid assets, independent of the base borrow rate.
+To protect Liquidity Providers (LPs) from over-exposure to specific assets, the protocol enforces **Quota Limits**. These are hard caps on the total amount of debt that can be collateralized by a specific token across all Credit Managers attached to a pool.
 
-#### Core Functions
+#### Mechanism
 
-The Quota Keeper enforces three main constraints on the system:
+Unlike a global debt ceiling which limits the total size of the pool or Credit Manager limits which define maximum exposure to particular strategies, Quota Limits operate on the **collateral side**.
 
-1. Total Exposure Limits (Quota limits): It enforces a global cap on the amount of debt that can be backed by particular caollateral on all Credit Accounts combined. If a user tries to swap collateral into a token that has reached its quota limit, the transaction reverts.
-2. Collateral-Specific Interest Rates: It calculates and accrues "Quota Interest." This is an additional APR charged on the _amount of collateral held_, separate from the APR charged on the _amount borrowed_. \
-   This allows Curators to price the risk of holding specific assets (e.g., charging 5% APR for holding a volatile long-tail asset).
-3. Quota Increase Fees: It manages one-time fees charged when a user increases their position in a specific token. This functions similarly to a swap fee but is retained by the protocol/quota reserves.
+* **Exposure Calculation:** The system tracks the total value of borrowing power currently backed by a specific asset (e.g., $WBTC).
+* **Enforcement:** If the total exposure reaches the defined Quota Limit, the system blocks any transaction that would further increase exposure to that asset.
+  * New Credit Accounts cannot be opened with that collateral.
+  * Existing accounts cannot increase the amount of debt that is backed by particular token.
+  * Repayments and closures remain enabled to allow deleveraging.
 
-## One IRM - capital inefficient; Many IRMs - ops-heavy
+This architecture ensures that even if a pool has abundant idle liquidity, it cannot be drained into a single illiquid or high-risk strategy beyond the safety parameters defined by the Curator.
 
-Multicollateral lending protocols like Aave and Euler use a single interest rate curve to determine borrow rates for all collaterals, despite varying demand for each collateral type. This leads to issues, particularly when the supply cap for a specific collateral is low compared to lending-side TVL in the pool:
+### Quota Rates (Risk Premium)
 
-* **Underpricing of High-Demand Loans in multicollateral pools**\
-  Loans against collaterals with low supply caps minimally affect the pool's overall utilization rate
-* **Underpayment of Lenders and Curators**\
-  Lenders and curators receive lower returns, effectively subsidizing borrowers who secure loans against these constrained collaterals
-* **Curators are involved in high-frequency capital reallocation**\
-  As of 06/06/2025 just a single "MEVCapital USDC" Morpho vault had executed 3595 reallocation transactions operations since its deployment date of 07/24/2024 ([source](https://dune.com/queries/5244280)).
+The Quota system decouples the cost of liquidity from the cost of risk. It allows the protocol to charge an additional interest rate—the **Quota Rate**—based specifically on the collateral held by the borrower.
 
-{% hint style="info" %}
-**Reducing compliance overhead:** By eliminating the need for manual liquidity management, Curators can avoid activities that in many jurisdictions could be classified as financial intermediation (managing liquidity directly).
-{% endhint %}
+#### The Additive Rate Model
 
-## Improving capital-efficiency, streamlining operations
+The total cost of borrowing before fees is the sum of the base cost of capital and the specific risk premium of the collateral.
 
-Curator controls individual rates for collaterals to better adjust to their demand and supply dynamics. —
+$$
+\text{Total APR} = \text{Base Rate} + \text{Quota Rate}
+$$
 
-* _**Rate discovery efficiency**_ of isolated market designs (e.g., Morpho, Silo)\
-  Rates in different markets are set independently for different collaterals
-* **User experience and capital efficiency** of multicollateral designs (e.g., Aave, Euler)\
-  Curators don't need to participate in capital allocation process
-* **Rate Adjustment Frequency**: Curators can update rates for each collateral no more frequently than once every 24 hours and can self-enforce longer intervals if desired.
+* **Base Rate:** Determined by the utilization of the Liquidity Pool. This represents the opportunity cost of the underlying asset (e.g., USDC).
+* **Quota Rate:** Determined by the specific collateral asset (e.g., a volatile governance token). This represents the risk premium for holding that specific asset.
 
-This approach combines _**efficiency of rate discovery**_ of the isolated markets design (e.g. Morpho, Silo) and _**UX and capital efficiency**_ of multicollateral design (e.g. Aave, Euler).
+#### Pricing Granularity
 
-## How does it work in practice?
+This separation allows for granular risk pricing within a single pool:
 
-Each Collateral in Gearbox can have its own additional rate.
+* **Low-Risk Collateral:** Borrowers using blue-chip assets (e.g., WETH) may pay only the Base Rate (Quota Rate = 0%).
+* **High-Risk Collateral:** Borrowers using volatile or less liquid assets must pay the Base Rate plus a significant Quota Rate (e.g., +5%).
 
-**Example:**
+This ensures that borrowers using safe collateral do not subsidize the risk of those using volatile collateral, improving capital efficiency for low-risk strategies while properly pricing tail risk.
 
-* Utilization borrow rate defined by IRM \~ 5%
-* Curator sets 3% additional borrow rate for high-yield collateral like RLP ⇒ Users borrowing against it pay \~8%
-* Curator sets minimal additional rate to sUSDe ⇒ Users borrowing against it pay \~5%
+### Further Reading
+
+* **Base Interest Calculation:** For details on how the underlying pool utilization determines the base cost of capital, see Interest Rate Model.
+* **Parameter Configuration:** To understand who configures these limits and the specific parameter ranges, see the Risk Configuration Dictionary.
+*   **Protocol Fees**
+
+    A portion of the interest paid is captured as revenue for the Protocol DAO and the Market Curator.
+
+    * **See:** [Fee Sharing](https://www.google.com/url?sa=E\&q=..%2Fintroduction%2Ffee-sharing.md)

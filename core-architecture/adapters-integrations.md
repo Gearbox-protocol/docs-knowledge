@@ -1,10 +1,12 @@
 # Adapters & Integrations
 
+## Adapters & Integrations
+
 A Credit Account is a secure "Container." By default, it cannot interact with the outside world because the protocol cannot guarantee the safety of external smart contracts.
 
 **Adapters** are the solution. They are specialized "Translation Contracts" that allow Credit Accounts to interact with specific DeFi protocols (like Uniswap, Curve, or Lido) while maintaining the strict solvency checks required by Gearbox.
 
-## Modular Execution: Purpose-Optimized UX
+### Modular Execution: Purpose-Optimized UX
 
 Gearbox’s modular architecture unifies credit and execution.
 
@@ -15,7 +17,7 @@ This allows Curators to design Financial Products tailored for specific use case
 
 <figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
-## The Security Problem: Unrestricted Execution
+### The Security Problem: Unrestricted Execution
 
 A Credit Account holds leveraged funds. If users could interact directly with any smart contract, they could exploit complex DeFi mechanics to bypass solvency checks.
 
@@ -27,7 +29,7 @@ Adapters act as a **Sanitized Interface**. They restrict interactions to a speci
 
 By forcing all interactions through these "Safe Tunnels," Gearbox ensures that the Credit Account's state remains predictable at all times.
 
-## The Router: Intelligent Execution
+### The Router: Intelligent Execution
 
 While Adapters provide the _connection_, the **Router** provides the _path_.
 
@@ -36,13 +38,13 @@ DeFi strategies are rarely simple. A user might want to "Zap" from USDC directly
 1. Swap USDC -> WETH (Uniswap)
 2. Deposit WETH -> stETH (Lido)
 3. Deposit stETH + WETH -> steCRV (Curve)
-4. Stake steCRV -> Convex&#x20;
+4. Stake steCRV -> Convex
 
 The Gearbox Router calculates the optimal path across all enabled Adapters and bundles these steps into a single **Multicall**.
 
 <figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
-## Curator Responsibilities
+### Curator Responsibilities
 
 As a Curator, the choice of Adapters defines the **Utility** of the market.
 
@@ -50,16 +52,16 @@ As a Curator, the choice of Adapters defines the **Utility** of the market.
 2. **Enable Yield:** To offer a "Farming Strategy," the Curator must enable the specific Adapter for that farm (e.g., the Convex Adapter or Midas vault adapter).
 3. **Risk Management:** If a specific external protocol is hacked or becomes risky, the Curator can **Disable** that specific Adapter instantly via the Emergency Admin, protecting the pool from further exposure.
 
-## Deep Dive
+### Deep Dive
 
-#### 1. What strategies can I build?
+**1. How are these interactions checked for solvency?**
 
-Curators can browse the library of available integrations to design unique financial products. Learn which protocols are supported and how to configure them.
+Every interaction through an adapter is subject to a solvency check by the Credit Manager. The system ensures that the account remains overcollateralized after the execution of the multicall.
 
-* [**See: Strategy Configuration Guide**](https://www.google.com/url?sa=E\&q=..%2Fcuration-step-by-step%2Fallow-leverage-strategies.md)
+* [**See: Credit Suite (Solvency Checks)**](https://www.google.com/url?sa=E\&q=credit-suite.md)
 
-#### 2. What are unique usecases allowed by Credit Accounts & Adapters?
+**2. What are unique usecases allowed by Credit Accounts & Adapters?**
 
-Purpose-specific execution improves both UX and capital efficiency, and even unlocks new credit interactions that were not previously possible.
+Purpose-specific execution improves both UX and capital efficiency, and even unlocks new credit interactions that were not previously possible, such as redeeming semi-liquid assets directly.
 
-* [**See: Direct redemptions for semi-liquid assets**](../reference/usecase-direct-redemptions-for-semi-liquid-assets.md)
+* [**See: Direct redemptions for semi-liquid assets**](https://www.google.com/url?sa=E\&q=..%2Freference%2Fdirect-redemptions.md)

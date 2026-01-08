@@ -1,24 +1,88 @@
-# Interest Rate Model (The Cost Engine)
+# Interest Rate Model
 
-The Interest Rate Model (IRM) is the algorithmic engine that manages the cost of borrowing. It acts as the market's central bank, automatically adjusting interest rates based on the real-time supply and demand for liquidity.
+## Objective
 
-Core Functions
+The Interest Rate Model (IRM) functions as the protocol's algorithmic central bank. Its primary objective is to balance **capital efficiency** (maximizing yield for lenders) with **liquidity availability** (ensuring lenders can withdraw assets).
 
-* Dynamic Pricing: It continuously updates the borrow APR based on the utilization rate (Total Debt / Total Assets). As demand rises, the cost of capital increases to incentivize repayments and attract new deposits.
-* Liquidity Reservation: Uniquely, Gearbox V3 uses a Two-Point Linear Model ($$U_1$$ and $$U_2$$) to create a "buffer zone". This intermediate slope prevents massive interest rate spikes during large withdrawals, stabilizing the APY.
-* Exit Liquidity Enforcement: It can enforce a strict borrowing limit (at the $$U_2$$ threshold). If enabled, the protocol effectively reserves the remaining liquidity (e.g., the last 10%) exclusively for lender withdrawals, preventing a "bank run" scenario.
+It achieves this by dynamically adjusting the Base Borrow Rate based on the **Utilization Rate** of the Liquidity Pool.
 
-Curator Controls
+### The Utilization Curve
 
-*   Kink Points ($$U_1$$, $$U_2$$):
+The cost of borrowing is a function of demand. As the pool becomes more utilized (more funds borrowed), the interest rate rises to incentivize repayments and attract new deposits.
 
-    Defines the "optimal" utilization range. Curators typically set these to target a specific efficiency level (e.g., 80-90%). The area between $$U_1$$ and $$U_2$$ acts as a stable buffer where rates don't fluctuate wildly.
-*   Rate Slopes ($$R_{base}$$, $$R_{slope1}$$, $$R_{slope2}$$, $$R_{slope3}$$):
+Gearbox employs a **Two-Kink Piecewise Linear Model**. This design creates a specific "Optimal Zone" where rates remain stable, preventing volatility during normal market activity while aggressively penalizing over-utilization.
 
-    Sets the price of money at different utilization levels.
+#### Mathematical Structure
 
-    * Base: The minimum rate at 0% utilization.
-    * Slopes: How fast rates rise. Curators set the final slope ($$R_{slope3}$$) extremely high to penalize utilizing 100% of the pool, which forces debt repayments to keep LP withdrawals allowed.
-*   Liquidity Reservation Cap (isBorrowingMoreU2Forbidden):
+The curve is defined by two utilization thresholds (Kinks), denoted as U\_1 and U\_2, creating three distinct slope zones:
 
-    A safety toggle. If set to true, borrowing is completely disabled once utilization hits the $$U_2$$            threshold. This ensures there is always exit liquidity available for lenders, even during periods of peak demand.
+1. **Growth Zone (0% to U\_1):**
+   * **Behavior:** Rates increase slowly.
+   * **Intent:** Incentivize early borrowing and ramp up utilization to efficient levels.
+2. **Optimal Zone (U\_1 to U\_2):**
+   * **Behavior:** Rates remain relatively stable or rise moderately.
+   * **Intent:** Create a predictable cost of capital for borrowers while ensuring sufficient yield for lenders. This is the target operating range of the pool.
+3. **Liquidity Crunch Zone (> U\_2):**
+   * **Behavior:** Rates spike exponentially (High Slope).
+   * **Intent:** Force immediate deleveraging. When utilization breaches U\_2, the cost of capital exceeds market returns, compelling borrowers to close positions and restoring liquidity for lender withdrawals.
+
+#### Formula
+
+The Borrow Rate R(U) is calculated as:
+
+$$
+R(U)=
+\begin{cases}
+R_{\text{base}} + \dfrac{U}{U_1} R_{\text{slope1}},
+& U \le U_1 \\[6pt]
+
+R_{\text{base}} + R_{\text{slope1}}
++ \dfrac{U - U_1}{U_2 - U_1} R_{\text{slope2}},
+& U_1 < U \le U_2 \\[6pt]
+
+R_{\text{base}} + R_{\text{slope1}} + R_{\text{slope2}}
++ \dfrac{U - U_2}{1 - U_2} R_{\text{slope3}},
+& U > U_2
+\end{cases}
+$$
+
+
+
+Where:
+
+* U: Current Utilization Rate (Total Debt / Total Assets).
+* R\_base: The minimum starting rate (y-intercept).
+* R\_slope: The rate of change in each zone.
+
+_**Reference:**_
+
+* [Desmos IRM visualizer](https://www.desmos.com/calculator/d281eeb4a9)
+
+### Liquidity Reservation
+
+A critical feature of the Gearbox IRM is the enforcement of **Exit Liquidity**.
+
+In standard lending protocols, 100% utilization means lenders cannot withdraw their funds until a borrower repays. Gearbox mitigates this risk through **Liquidity Reservation**.
+
+#### The Reservation Cap
+
+Curators can configure the market to strictly forbid new borrowing once utilization reaches U\_2.
+
+* **Mechanism:** If `isBorrowingMoreU2Forbidden` is enabled, any transaction attempting to increase debt beyond the U\_2 threshold will revert.
+* **Result:** The remaining liquidity (from U\_2 to 100%) is effectively reserved for lender withdrawals. Even in periods of peak demand, a buffer of liquid assets remains available in the pool.
+
+### Total Cost of Capital
+
+The Interest Rate Model determines the **Base Rate** of the pool. The final cost to a borrower includes additional collateral-specific rate.
+
+#### Asset-Specific Risk Premiums
+
+Borrowers holding specific collateral assets may incur an additional **Quota Rate** on top of the base rate.
+
+* **See:** [Quota Limits & Concentration](https://www.google.com/url?sa=E\&q=quota-controls.md)
+
+#### Protocol Fees
+
+A portion of the interest paid is captured as revenue for the Protocol DAO and the Market Curator.
+
+* **See:** [Fee Sharing](https://www.google.com/url?sa=E\&q=..%2Fintroduction%2Ffee-sharing.md)

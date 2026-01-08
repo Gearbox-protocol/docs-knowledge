@@ -19,48 +19,61 @@ metaLinks:
       https://app.gitbook.com/s/yE16Xb3IemPxJWydtPOj/getting-started/publish-your-docs
 ---
 
-# Credit Accounts
+# Credit Accounts (The Primitive)
 
-> Credit Accounts are user-owned smart-contract wallets. Add collateral to unlock a credit line and use that account to trade, invest, or stake across integrated protocols while keeping ownership and portability. The protocol checks solvency on every move so risk stays controlled.
+## Credit Accounts (The Primitive)
 
-## Fragmented UX vs. Wallet-Native Credit
+The Credit Account is the fundamental primitive of the Gearbox Protocol. It functions as a user-owned, isolated smart contract wallet that holds both collateral and borrowed funds, enabling leveraged execution across DeFi protocols.
 
-**Pool-based lending**
+### Core Concept: Isolated Smart Contract Wallet
 
-Traditional lending protocols silo users' funds in protocol-global pools, limiting capabilities to actively operate with collateral.
+Unlike traditional lending protocols where user collateral is siloed in a global vault, Gearbox deploys a unique smart contract for each borrower.&#x20;
 
 <figure><img src="../.gitbook/assets/legacy-lending.png" alt=""><figcaption></figcaption></figure>
 
-**Credit Accounts**
+The Credit Account serves as a container for the user's entire position.
 
-By putting collateral, debt, and execution routes inside a single smart contract wallet, users keep ownership while moving through swaps, farming, or RWA flows without repacking positions. Solvency checks sit behind every action so convenience stays aligned with risk controls.
+* **Segregated State:** Assets within the Credit Account are legally and technically distinct from the protocol's liquidity pools.
+* **User Ownership:** The user retains control over the account's operations, subject only to the solvency checks enforced by the Credit Manager.
+* **Portability:** Because the Credit Account is a standard smart contract, it can interact with external protocols as a distinct entity, preserving the identity of the position.
+
+### Atomic Solvency Check
+
+The Credit Account operates on a "Check-on-Exit" architecture. The protocol does not restrict specific actions within a transaction bundle, provided the account remains solvent at the conclusion of the execution trace.
+
+Upon the completion of any interaction (e.g., a swap or deposit), the protocol calculates the account's **Health Factor**.
+
+* **If Health Factor > 1:** The transaction is finalized and recorded on-chain.
+* **If Health Factor < 1:** The entire transaction reverts, ensuring no bad debt can be created atomically.
+
+This mechanism allows users to perform complex, multi-step operations in a single transaction without requiring the protocol to understand the intermediate states, as long as the final state satisfies the risk parameters.
 
 <figure><img src="../.gitbook/assets/ca-lending.png" alt=""><figcaption></figcaption></figure>
 
-### What Credit Accounts enable
+### Composability via Adapters
 
-* **Wider reach to users for apps and institutions:** Complex multi-transaction operations gate non-professional users. Credit accounts abstract execution allowing to focus on effective use of capital.
-* **Fees and time saving for investors:** Direct redemptions of semi-liquid tokens preserve months of yield, and batched transactions cut gas cost.
-* **Largest set of supported collaterals:** redemption receipts or Convex-staked positions become usable in a non-custodial, programmable account instead of being limited to prime broker clients.
+The Credit Account interacts with the external DeFi ecosystem through **Adapters**. These are lightweight contract interfaces that translate generic user intents into protocol-specific function calls.
 
-### Architecture & Safety
+From the perspective of an external protocol, the Credit Account appears as a standard user wallet. This enables:
 
-While the Credit Account provides the user experience, the safety is enforced by the underlying infrastructure.
+1. **Native Execution:** Users interact directly with external contracts rather than through a protocol-specific abstraction layer.
+2. **Programmable Credit:** Developers can compose credit logic into arbitrary workflows, treating the Credit Account as a programmable leverage module.
 
-#### 1. How is solvency enforced?
+***
 
-The **Credit Manager** is the "Brain" of the system. It checks every transaction against the Oracle prices and Liquidation Thresholds defined by the Curator. If an action would make the account insolvent, it reverts.
+### Architecture Navigation
 
-* [**Learn how Credit Managers enforce risk compliance**](../core-architecture/credit-suite-the-strategy-module.md)
+#### Risk Enforcement
 
-#### 2. How do I interact with DeFi?
+The logic for calculating the Health Factor and enforcing solvency is managed by the Credit Manager and Credit Facade.\
+→ [Credit Suite (The Strategy Module)](https://www.google.com/url?sa=E\&q=..%2Fcore-architecture%2Fcredit-suite.md)
 
-Credit Accounts cannot talk to arbitraty external protocols (like Uniswap or Lido) directly due to security reasons. They use **Adapters:** specialized connectors that translate user intent into safe, protocol-compliant transactions.
+#### External Interactions
 
-* [**Learn how Adapters enable composability**](../core-architecture/adapters-purpose-specific-execution-rules.md)
+The mechanism for connecting Credit Accounts to external DeFi protocols is defined by the Adapter system.\
+→ [Adapters & Integrations](https://www.google.com/url?sa=E\&q=..%2Fcore-architecture%2Fadapters-integrations.md)
 
-#### 3. Where does the liquidity come from?
+#### Liquidity Source
 
-Credit Accounts borrow funds from **Liquidity Pools**. These pools are passive reservoirs of capital (e.g., USDC, ETH) supplied by lenders. The cost of this capital is determined by the Interest Rate Model and can be adjusted for specific collateral types.
-
-* [**Learn about Pools**](https://www.google.com/url?sa=E\&q=..%2Fgearbox-permissionless%2Fgearbox-markets%2Fpool-the-liquidity-vault.md)
+The capital borrowed by the Credit Account is sourced from the passive Liquidity Pool.\
+→ [Pool (The Liquidity Vault)](https://www.google.com/url?sa=E\&q=..%2Fcore-architecture%2Fpool.md)
