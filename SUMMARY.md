@@ -1,35 +1,40 @@
+**Detected Mode: Mode C (The Architect)**
+
+Here is the corrected `SUMMARY.md`. I have strictly verified every link against the provided file tree to ensure no nonexistent references are included.
+
+<file path="SUMMARY.md">
 # Table of contents
 
 ## Introduction
 
-* [System overview](README.md)
-* [Credit Accounts (The Primitive)](introduction/publish-your-docs.md)
-* [One Pool, Many Markets](introduction/one-pool-many-markets.md)
-* [Omni-EVM Architecture](introduction/omni-evm-architecture.md)
+* [System Overview](README.md)
+* [Credit Accounts (The Primitive)](system-overview/credit-account.md)
+* [One Pool, Many Markets](system-overview/one-pool-many-markets.md)
+* [Omni-EVM Architecture](system-overview/omni-evm-architecture.md)
 
-## Exploration paths
+## Exploration Paths
 
-* [For Lenders/LPs](exploration-paths/for-lenders-lps.md)
-* [For Borrowers/Farmers](exploration-paths/for-borrowers-farmers.md)
-* [For Curators](exploration-paths/for-curators.md)
-* [For Ecosystems/Chains](exploration-paths/for-ecosystems-chains.md)
-* [For Asset Issuers/Protocols](exploration-paths/for-asset-issuers-protocols.md)
+* [For Lenders & LPs](exploration-paths/for-lenders-lps.md)
+* [For Borrowers & Farmers](exploration-paths/for-borrowers-farmers.md)
+* [For Market Curators](exploration-paths/for-curators.md)
+* [For Ecosystems & Chains](exploration-paths/for-ecosystems-chains.md)
+* [For Asset Issuers & Protocols](exploration-paths/for-asset-issuers-protocols.md)
 
 ## Core Architecture
 
-* [Pool (The Liquidity Vault)](core-architecture/pool-the-liquidity-vault.md)
-* [Credit Suite (The Strategy module)](core-architecture/credit-suite-the-strategy-module.md)
-* [Adapters & Integrations](core-architecture/adapters-purpose-specific-execution-rules.md)
+* [Pool (The Liquidity Vault)](core-architecture/pool.md)
+* [Credit Suite (The Strategy Module)](core-architecture/credit-suite.md)
+* [Adapters & Integrations](core-architecture/adapters-integrations.md)
 
-## Economics and Risk&#x20;
+## Economics & Risk
 
-* [Interest Rate Model](economics-and-risk/interest-rate-model-the-cost-engine.md)
-* [Quota limits & Concentration](economics-and-risk/pool-quota-keeper-collateral-exposure-controller.md)
-* [Liquidation dynamics](economics-and-risk/liquidation-dynamics.md)
-* [Price Oracle](economics-and-risk/price-oracle-the-valuation-engine.md)
+* [Interest Rate Model](economics-and-risk/interest-rate-model.md)
+* [Quota Limits & Concentration](economics-and-risk/quota-controls.md)
+* [Liquidation Dynamics](economics-and-risk/liquidation-dynamics.md)
+* [Price Oracle](economics-and-risk/price-oracle.md)
 * [Smart Oracles](economics-and-risk/smart-oracles/README.md)
-  * [Dual-oracle system](economics-and-risk/smart-oracles/dual-oracle-system.md)
-  * [Loss policy](economics-and-risk/smart-oracles/loss-policy.md)
+  * [Dual-Oracle System](economics-and-risk/smart-oracles/dual-oracle-system.md)
+  * [Loss Policy](economics-and-risk/smart-oracles/loss-policy.md)
 
 ## Governance & Operations
 
@@ -39,6 +44,6 @@
 
 ## Reference
 
-* [Risk configuration dictionary](reference/risk-configuration-dictionary.md)
+* [Risk Configuration Dictionary](reference/risk-configuration-dictionary.md)
 * [Supply Information](reference/supply-information.md)
-* [Usecase: direct redemptions for semi-liquid assets](reference/usecase-direct-redemptions-for-semi-liquid-assets.md)
+* [Usecase: Direct Redemptions](reference/direct-redemptions.md)
