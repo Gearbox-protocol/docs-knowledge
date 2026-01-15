@@ -96,6 +96,24 @@ Changes to insurance parameters require a dual-signature process (Curator + DAO)
 
 ***
 
+## Treasury-insured pools
+
+{% hint style="success" %}
+By default, all fees that the DAO receives from the protocol are made in dTokens. However, DAO can manage this by unwrapping part of the funds from the pools (thus, instead of dTokens, DAO will receive the usual underlying asset of the pool aka idle assets).&#x20;
+
+This way, the DAO can limit its earnings from the Reserve Fund exposure.
+{% endhint %}
+
+Essentially, the Gearbox dTokens inside this Fee Guard are the Insurance Fund. Anything that is not in dTokens has likely been voted to be unwrapped and kept as non Insurance Fund. Any non-dTokens are not counted towards the Insurance Fund size. And this only applies to V3 contracts.
+
+> [https://debank.com/profile/0x3e965117a51186e41c2bb58b729a1e518a715e5f](https://debank.com/profile/0x3e965117a51186e41c2bb58b729a1e518a715e5f)
+>
+> This address holds all the fees accumulated. However, on the topic of the Reserve Fund, only look at the balances of dTokens. No other assets are relevant to the Reserve Fund.&#x20;
+
+{% hint style="warning" %}
+This Reserve Fund model doesn't relate to actual software hacks. It specifically covers cases of under-collateralization during liquidations.
+{% endhint %}
+
 ### Learn more
 
 [Automated Insurance mechanism](https://app.gitbook.com/s/Qwh9UHWSsUkHGXmzsViV/core/automated-insurance-mechanism "mention")
