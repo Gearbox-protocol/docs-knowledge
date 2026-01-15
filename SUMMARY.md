@@ -33,6 +33,7 @@
 * [DAO & Curators' business model](economics-and-risk/dao-and-curators-business-model.md)
 * [Insurance & Solvency Reserves](economics-and-risk/insurance-and-solvency-reserves.md)
 * [Audits & Bug Bounty](economics-and-risk/audits-and-bug-bounty.md)
+* [Risks and T\&C](economics-and-risk/risks-and-t-and-c.md)
 
 ## Governance & Operations
 
