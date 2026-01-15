@@ -12,6 +12,7 @@ The Pool is strictly passive. It holds the underlying asset and issues **Diesel 
 
 * **Standard:** Fully compliant with [ERC-4626](https://www.google.com/url?sa=E\&q=https%3A%2F%2Feips.ethereum.org%2FEIPS%2Feip-4626) (Tokenized Vault Standard).
 * **Fungibility:** Diesel Tokens are fungible and transferable, allowing them to be used as collateral in other DeFi protocols.
+* **Liquidity:** Deposits and withdrawals are instant subject to available amount of unborrowed liquidity.
 
 #### 2. Diesel Tokens (Non-Rebasing Yield)
 
