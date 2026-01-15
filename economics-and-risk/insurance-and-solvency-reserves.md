@@ -96,8 +96,6 @@ Changes to insurance parameters require a dual-signature process (Curator + DAO)
 
 ***
 
-### Related Resources
+### Learn more
 
-* [**Liquidation Dynamics**](https://www.google.com/url?sa=E\&q=%2Feconomics%2Fliquidation): How the protocol prevents bad debt before it happens.
-* [**Pool Architecture**](https://www.google.com/url?sa=E\&q=%2Fcore-architecture%2Fpool): Understanding the Liquidity Vault and Diesel Tokens.
-* [**Market Curators**](https://www.google.com/url?sa=E\&q=%2Fgovernance%2Fmarket-curators): The entities responsible for configuring insurance parameters.
+[Automated Insurance mechanism](https://app.gitbook.com/s/Qwh9UHWSsUkHGXmzsViV/core/automated-insurance-mechanism "mention")

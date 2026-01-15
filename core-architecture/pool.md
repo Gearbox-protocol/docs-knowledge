@@ -53,4 +53,4 @@ Gearbox V3 implements an automated **First-Loss Capital** buffer to protect Pass
 * **Deposits utilization:** Where is the liquidity actually used or lent to?
   * [credit-suite.md](credit-suite.md "mention")
 * **Insurance from Bad debt:** Learn how the underlying mechanism works in detail.
-  * [Automated Insurance mechanism](https://app.gitbook.com/s/Qwh9UHWSsUkHGXmzsViV/core/automated-insurance-mechanism "mention")
+  * [insurance-and-solvency-reserves.md](../economics-and-risk/insurance-and-solvency-reserves.md "mention")
