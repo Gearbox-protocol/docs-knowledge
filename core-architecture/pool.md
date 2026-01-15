@@ -40,6 +40,10 @@ A single Pool can fund multiple Credit Suites simultaneously. The Market Curator
 * **Allocation Limits:** The Curator defines the maximum capital available to each Suite (e.g., 80% to a Low-Risk Suite, 20% to a High-Risk Suite).
 * **Firewalling:** If a specific Strategy (Credit Suite) suffers a failure or bad debt, the loss is contained within that Suite's allocation. The Pool's exposure is limited to the capital lent to that specific branch, protecting the remaining liquidity.
 
+### Automated Insurance mechanism
+
+Gearbox V3 implements an automated **First-Loss Capital** buffer to protect Passive Lenders from bad debt. This mechanism prioritizes protocol solvency over profit distribution by strictly retaining revenue within the until specific safety targets are met.
+
 ### Learn More
 
 * **Yield source:** How is the utilization-driven interest rate calculated?
@@ -48,3 +52,5 @@ A single Pool can fund multiple Credit Suites simultaneously. The Market Curator
   * [quota-controls.md](../economics-and-risk/quota-controls.md "mention")
 * **Deposits utilization:** Where is the liquidity actually used or lent to?
   * [credit-suite.md](credit-suite.md "mention")
+* **Insurance from Bad debt:** Learn how the underlying mechanism works in detail.
+  * [Automated Insurance mechanism](https://app.gitbook.com/s/Qwh9UHWSsUkHGXmzsViV/core/automated-insurance-mechanism "mention")

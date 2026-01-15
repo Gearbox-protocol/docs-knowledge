@@ -31,6 +31,7 @@
   * [Dual-Oracle System](economics-and-risk/smart-oracles/dual-oracle-system.md)
   * [Loss Policy](economics-and-risk/smart-oracles/loss-policy.md)
 * [DAO & Curators' business model](economics-and-risk/dao-and-curators-business-model.md)
+* [Insurance & Solvency Reserves](economics-and-risk/insurance-and-solvency-reserves.md)
 
 ## Governance & Operations
 
