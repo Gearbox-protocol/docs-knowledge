@@ -32,12 +32,14 @@
   * [Loss Policy](economics-and-risk/smart-oracles/loss-policy.md)
 * [DAO & Curators' business model](economics-and-risk/dao-and-curators-business-model.md)
 * [Insurance & Solvency Reserves](economics-and-risk/insurance-and-solvency-reserves.md)
+* [Audits & Bug Bounty](economics-and-risk/audits-and-bug-bounty.md)
 
 ## Governance & Operations
 
 * [Market Curators](governance-and-operations/market-curators.md)
 * [Instance Owner](governance-and-operations/instance-owner.md)
 * [Protocol DAO](governance-and-operations/protocol-dao.md)
+* [Protocol audits](governance-and-operations/protocol-audits.md)
 
 ## Reference
 
