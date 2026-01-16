@@ -33,5 +33,9 @@
 ## Advanced configuration
 
 * [Add required Price Feeds](advanced-configuration/add-required-price-feeds.md)
-* [Configure a Market](advanced-configuration/configure-a-market.md)
+* [Configure Market](advanced-configuration/configure-a-market.md)
+* [Create Credit Manager](advanced-configuration/create-credit-manager.md)
+* [Configure Credit Manager](advanced-configuration/configure-credit-manager.md)
+* [Configure Adapters](advanced-configuration/configure-adapters.md)
 * [Configure fee split](advanced-configuration/configure-fee-split.md)
+* [Create Strategy Bundle](advanced-configuration/create-strategy-bundle.md)
