@@ -8,6 +8,7 @@
 * [Fee sharing](introduction/fee-sharing.md)
 * [Curation plans](introduction/curation-plans.md)
 * [Tooling for curators](introduction/tooling-for-curators.md)
+* [Deployment addresses](introduction/deployment-addresses.md)
 
 ## Curation step-by-step
 

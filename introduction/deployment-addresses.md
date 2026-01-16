@@ -1,0 +1,13 @@
+# Deployment addresses
+
+## Deployment addresses
+
+### System contracts
+
+System contracts are deployed using [deterministic deployer](https://ethglobal.com/showcase/deterministic-deployer-p3eyi), thus have the same address on all EVM chains.
+
+<table><thead><tr><th width="312.109375">Contract</th><th width="435.328125">Address</th></tr></thead><tbody><tr><td>Address Provider</td><td>0xF7f0a609BfAb9a0A98786951ef10e5FE26cC1E38</td></tr><tr><td>Bytecode Repository</td><td>0x1cE2B1BE96a082b1b1539F80d5D8f82Ec06a0f9A</td></tr><tr><td>Cross-Chain Multisig</td><td>0xcCCCCcCc42B7DA9fdEc1761698Fb55fdD41CDF55</td></tr><tr><td>Instance Manager</td><td>0xBcD875f0D62B9AA22481c81975F9AE1753Fc559A</td></tr><tr><td>Bot List</td><td>0x0Bc03983Da93021a374C964A22b73865220Ce962</td></tr><tr><td>Price Feed Store</td><td>0x74A868AC479EE145029bB80827BB77F7B7c441cB</td></tr><tr><td>Market Configurator Factory</td><td>0x7D60CfaF7c2cec210638A5e46E4000894830C034</td></tr><tr><td>GEAR Staking</td><td>0x2fcbD02d5B1D52FC78d4c02890D7f4f47a459c33</td></tr><tr><td>Pool Factory</td><td>0x2238eDf33a72860cDbaec5F83ec246Df9e85c8E2</td></tr><tr><td>Credit Factory</td><td>0x81Cda0aB38d8Bd0732123Eb0e36C0C566d35DADD</td></tr><tr><td>Price Oracle Factory</td><td>0xF7533CDCE5A2F7BF78B6fbf4B05f04F45D10140B</td></tr><tr><td>IRM Factory</td><td>0xA7dE2e941c8818E51D1Fd84111d8F71dcafa6C3B</td></tr><tr><td>Rate Keeper Factory</td><td>0xbede127c14407b9c345f5d7fae5782ab8eaa33f3</td></tr><tr><td>Loss Policy Factory</td><td>0x0E535b7D073a93646512cEa18fa7e650CC2b17C4</td></tr><tr><td>Batches Chain</td><td>0x59b2fd348e4Ade84ffEfDaf5fcdDa7276c8C5041</td></tr></tbody></table>
+
+### Helper (periphery) contracts
+
+<table><thead><tr><th width="312.34375">Contract</th><th width="428.62109375">Address</th></tr></thead><tbody><tr><td>Account Compressor</td><td>0x4115708Fc8fe6bB392De2e0C21c2C81dA2222394</td></tr><tr><td>Credit Suite Compressor</td><td>0x93Cba8445b13a05287bFf90D882cbcB514D617b7</td></tr><tr><td>Gauge Compressor</td><td>0x12c8faEdD62cF0C5d4D742E57B98737a9a3F5E0f</td></tr><tr><td>Market Compressor</td><td>0x70F1753a765C4df582FFA3B8d96AB492714E8992</td></tr><tr><td>Periphery Compressor</td><td>0xa7ED6dB5761613CaE7CaCfAAE9Dca07a77809F9d</td></tr><tr><td>Price Feeds Compressor</td><td>0x847a05C22c7508C674342A95356Adf9b3a0e0D57</td></tr><tr><td>Rewards Compressor</td><td>0x19Ca61E672d1c6105f609418bfDC784F92F4Ecf0</td></tr><tr><td>Token Compressor</td><td>0xAe3Dd11e5a7f99eD4cba2768D4095a55fbF7841B</td></tr><tr><td>Router</td><td>0x00aDE38841AB8c6e236E232041e43B41d74B8B45</td></tr><tr><td>DefiLlama Compressor</td><td>0x81cb9eA2d59414Ab13ec0567EFB09767Ddbe897a</td></tr><tr><td>Withdrawal Compressor</td><td>0x36F3d0Bb73CBC2E94fE24dF0f26a689409cF9023</td></tr></tbody></table>
