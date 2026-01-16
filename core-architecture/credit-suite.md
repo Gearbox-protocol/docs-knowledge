@@ -52,6 +52,6 @@ The Credit Configurator provides the administrative interface for Market Curator
 ### Learn More
 
 * **Solvency enforcement:** How liquidations work?
-  * [liquidation-dynamics.md](../economics-and-risk/liquidation-dynamics.md "mention")
+  * [liquidation-dynamics](../economics-and-risk/liquidation-dynamics/ "mention")
 * **Risk controls:** What is the complete list of parameters that define the strategy?
   * [risk-configuration-dictionary.md](../reference/risk-configuration-dictionary.md "mention")

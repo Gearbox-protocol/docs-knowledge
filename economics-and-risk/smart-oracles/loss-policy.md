@@ -37,4 +37,4 @@ The Loss Policy acts as a conditional circuit breaker during the liquidation pro
 #### Learn More
 
 * **Bad debt acknowledgment:** What happens when a liquidation proceeds under the Loss Policy and bad debt is realized?
-  * [liquidation-dynamics.md](../liquidation-dynamics.md "mention")
+  * [liquidation-dynamics](../liquidation-dynamics/ "mention")

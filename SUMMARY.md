@@ -25,7 +25,8 @@
 
 * [Interest Rate Model](economics-and-risk/interest-rate-model.md)
 * [Collateral Limits & Specific rates](economics-and-risk/quota-controls.md)
-* [Liquidation Dynamics](economics-and-risk/liquidation-dynamics.md)
+* [Liquidation Dynamics](economics-and-risk/liquidation-dynamics/README.md)
+  * [Deleverage bot](economics-and-risk/liquidation-dynamics/deleverage-bot.md)
 * [Price Oracle](economics-and-risk/price-oracle.md)
 * [Smart Oracles](economics-and-risk/smart-oracles/README.md)
   * [Dual-Oracle System](economics-and-risk/smart-oracles/dual-oracle-system.md)

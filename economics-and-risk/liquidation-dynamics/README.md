@@ -103,8 +103,8 @@ $$
 #### Learn More
 
 * **Data sources:** How does the protocol obtain asset prices for Total Weighted Value (TWV) calculations?
-  * [price-oracle.md](price-oracle.md "mention")
+  * [price-oracle.md](../price-oracle.md "mention")
 * **Parameter control:** Who sets liquidation thresholds (LT), premiums, and fees?
-  * [risk-configuration-dictionary.md](../reference/risk-configuration-dictionary.md "mention")
+  * [risk-configuration-dictionary.md](../../reference/risk-configuration-dictionary.md "mention")
 * **Quota mechanics:** How are quota limits defined and adjusted?
-  * [quota-controls.md](quota-controls.md "mention")
+  * [quota-controls.md](../quota-controls.md "mention")

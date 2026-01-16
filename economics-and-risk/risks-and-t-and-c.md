@@ -34,7 +34,7 @@ It can happen that stablecoin issuers introduce boundaries as to who can use the
 
 **Liquidations and black-swan events**
 
-[Liquidations](https://open-2c.gitbook.com/url/preview/site_vZz7n/~/revisions/4QcA749tkVVDsllxC5mC/overview/liquidations) do not depend on the protocol or any member involved. Liquidators are third-party workers open to anyone. It can happen that liquidators malfunction or do not perform, despite [economic incentives for liquidators](liquidation-dynamics.md#liquidator-incentive) being in place. This can under-collateralize the protocol and make [LPs](../core-architecture/pool.md) lose their capital. To prevent that, DAO can implement token-backed backstops, increase[ Reserve Fund](https://open-2c.gitbook.com/url/preview/site_vZz7n/~/revisions/4QcA749tkVVDsllxC5mC/overview/liquidations/insurance-fund), onboard more professional liquidators, and so on.
+[Liquidations](https://open-2c.gitbook.com/url/preview/site_vZz7n/~/revisions/4QcA749tkVVDsllxC5mC/overview/liquidations) do not depend on the protocol or any member involved. Liquidators are third-party workers open to anyone. It can happen that liquidators malfunction or do not perform, despite [economic incentives for liquidators](liquidation-dynamics/#liquidator-incentive) being in place. This can under-collateralize the protocol and make [LPs](../core-architecture/pool.md) lose their capital. To prevent that, DAO can implement token-backed backstops, increase[ Reserve Fund](https://open-2c.gitbook.com/url/preview/site_vZz7n/~/revisions/4QcA749tkVVDsllxC5mC/overview/liquidations/insurance-fund), onboard more professional liquidators, and so on.
 
 **Risks of allowed tokens / contracts lists**
 
