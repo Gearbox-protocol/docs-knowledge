@@ -1,3 +1,7 @@
+---
+hidden: true
+---
+
 # Create Strategy Bundle
 
 ### What's a bundle?
