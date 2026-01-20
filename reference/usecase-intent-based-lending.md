@@ -37,7 +37,7 @@ When a counterparty matches your terms, the contract executes. Until then, your 
 
 ### How It Works
 
-<table><thead><tr><th width="40"></th><th>Step</th></tr></thead><tbody><tr><td>1️⃣</td><td><strong>Post</strong> — Define exact terms: rate, collateral, duration, compliance gates. Sign immutably.</td></tr><tr><td>2️⃣</td><td><strong>Match</strong> — Engine pairs compatible orders with counterparty verification. No gatekeepers.</td></tr><tr><td>3️⃣</td><td><strong>Execute</strong> — Isolated pool + credit account deployed with your exact parameters.</td></tr><tr><td>4️⃣</td><td><strong>Exit</strong> — Sell position on secondary market anytime, or wait for maturity.</td></tr></tbody></table>
+<table><thead><tr><th width="40"></th><th>Step</th></tr></thead><tbody><tr><td>1️⃣</td><td><strong>Post</strong> — Define exact terms: rate, collateral, duration, compliance gates. Sign onchain.</td></tr><tr><td>2️⃣</td><td><strong>Match</strong> — Engine pairs compatible orders with counterparty verification. No gatekeepers.</td></tr><tr><td>3️⃣</td><td><strong>Execute</strong> — Isolated pool + credit account deployed with your exact parameters.</td></tr><tr><td>4️⃣</td><td><strong>Exit</strong> — Sell position on secondary market anytime, or wait for maturity.</td></tr></tbody></table>
 
 No idle capital. No comingled funds. No curator risk.
 
