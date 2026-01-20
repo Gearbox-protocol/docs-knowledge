@@ -3,6 +3,7 @@
 ## Getting Started
 
 * [Overview](README.md)
+* [SDK Setup](getting-started/sdk-setup.md)
 * [Contract Discovery](getting-started/contract-discovery.md)
 * [Market Data](getting-started/market-data.md)
 
