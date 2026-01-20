@@ -30,4 +30,5 @@
 
 ## Reference
 
+* [Compressors](core/compressors.md)
 * [Automated Insurance](core/automated-insurance-mechanism.md)
