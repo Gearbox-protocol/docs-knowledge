@@ -186,6 +186,43 @@ Assume that the expected exchange rate between USDC and ywWETH is 2000 USDC/ywWE
 
 For details regarding any of the mentioned functions, see the following sections. The specifications for Credit Facade multicall functions can be found [here](https://github.com/Gearbox-protocol/core-v3/blob/ca43d1b9bf79a0c2a71ce4ad6fdcc562bb525ba4/contracts/interfaces/ICreditFacadeV3Multicall.sol#L44).
 
+### SDK Multicall Building (Recommended)
+
+The SDK provides structured multicall builders that handle encoding and ABI management:
+
+```typescript
+import { GearboxSDK, createCreditAccountService } from '@gearbox-protocol/sdk';
+
+const sdk = await GearboxSDK.attach({ client, marketConfigurators: [] });
+const service = createCreditAccountService(sdk, 310);
+
+// Build multicall with SDK helpers
+const calls = [
+  // Protocol operations via service
+  service.prepareAddCollateral(usdc, 10_000n * 10n ** 6n),
+  service.prepareIncreaseDebt(40_000n * 10n ** 6n),
+  service.prepareUpdateQuota(yvWETH, 50_000n * 10n ** 6n, 50_000n * 10n ** 6n),
+];
+
+// Get market for facade access
+const market = sdk.marketRegister.findByCreditManager(cmAddress);
+
+// Execute multicall
+await market.creditFacade.write.multicall([creditAccount, calls]);
+```
+
+**Service Methods:**
+
+| Method | Operation |
+|--------|-----------|
+| `prepareAddCollateral(token, amount)` | Add collateral from wallet |
+| `prepareIncreaseDebt(amount)` | Borrow from pool |
+| `prepareDecreaseDebt(amount)` | Repay debt |
+| `prepareUpdateQuota(token, change, minQuota)` | Adjust token quota |
+| `prepareWithdrawCollateral(token, amount, to)` | Remove collateral |
+
+> The SDK uses raw `encodeFunctionData` internally. For adapter calls or custom operations, combine SDK helpers with manual encoding below.
+
 ### TypeScript/viem Example
 
 The same multicall can be constructed in TypeScript using viem's `encodeFunctionData`:

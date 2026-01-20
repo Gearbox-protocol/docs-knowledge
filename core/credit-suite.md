@@ -99,7 +99,36 @@ function openCreditAccount(
 ) external payable returns (address creditAccount);
 ```
 
-**Opening a Credit Account (TypeScript):**
+**Opening a Credit Account (TypeScript with SDK):**
+
+```typescript
+import { GearboxSDK, createCreditAccountService } from '@gearbox-protocol/sdk';
+
+// Initialize SDK (see getting-started/sdk-setup.md)
+const sdk = await GearboxSDK.attach({ client, marketConfigurators: [] });
+
+// Find market by credit manager
+const market = sdk.marketRegister.findByCreditManager(cmAddress);
+const creditFacade = market.creditFacade;
+
+// Create service for account operations
+const service = createCreditAccountService(sdk, 310);
+
+// Build multicall with SDK helpers
+const calls = [
+  service.prepareAddCollateral(usdcAddress, 10000n * 10n ** 6n),
+  service.prepareIncreaseDebt(40000n * 10n ** 6n),
+];
+
+// Open account
+const hash = await creditFacade.write.openCreditAccount([
+  ownerAddress,
+  calls,
+  0n, // referralCode
+]);
+```
+
+**Opening a Credit Account (TypeScript with raw viem):**
 
 ```typescript
 import { encodeFunctionData } from 'viem';
@@ -159,6 +188,36 @@ Risk Curators utilize the `CreditConfigurator` to define the risk profile of the
 ### Data Fetching Flow for Integrators
 
 To build a frontend or a bot for Gearbox V3, you need to fetch configuration and runtime data from the Credit Suite.
+
+#### Using the SDK (Recommended)
+
+```typescript
+import { GearboxSDK, createCreditAccountService } from '@gearbox-protocol/sdk';
+
+const sdk = await GearboxSDK.attach({ client, marketConfigurators: [] });
+const service = createCreditAccountService(sdk, 310);
+
+// Get all credit accounts for a credit manager
+const accounts = await service.getCreditAccounts(
+  { creditManager: cmAddress },
+  sdk.currentBlock
+);
+
+// Access market data
+const market = sdk.marketRegister.findByCreditManager(cmAddress);
+const pool = market.pool;
+const creditFacade = market.creditFacade;
+
+// Get account details
+for (const account of accounts) {
+  console.log(`Account: ${account.addr}`);
+  console.log(`  Owner: ${account.owner}`);
+  console.log(`  Debt: ${account.debt}`);
+  console.log(`  Health Factor: ${account.healthFactor}`);
+}
+```
+
+> For compressor-level access with custom filtering, see [Compressors](./compressors.md).
 
 #### Fetching Account State
 

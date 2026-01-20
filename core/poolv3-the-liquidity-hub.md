@@ -224,6 +224,37 @@ This separation ensures that all borrowed funds flow through Credit Accounts wit
 
 ### Reading Pool State
 
+**Using the SDK (Recommended):**
+
+```typescript
+import { GearboxSDK } from '@gearbox-protocol/sdk';
+
+const sdk = await GearboxSDK.attach({ client, marketConfigurators: [] });
+
+// Get pool data via market register
+const market = sdk.marketRegister.findByPool(poolAddress);
+
+// Pool state from market register (cached from compressor)
+const poolState = market.pool;
+console.log(poolState.availableLiquidity);
+console.log(poolState.dieselRate);
+console.log(poolState.supplyRate);
+console.log(poolState.baseInterestRate);
+
+// Or use MarketCompressor directly for real-time data
+import { marketCompressorAbi, AP_MARKET_COMPRESSOR } from '@gearbox-protocol/sdk';
+
+const [compressor] = sdk.addressProvider.mustGetLatest(AP_MARKET_COMPRESSOR, VERSION_RANGE_310);
+const freshState = await client.readContract({
+  address: compressor,
+  abi: marketCompressorAbi,
+  functionName: 'getPoolState',
+  args: [poolAddress],
+});
+```
+
+**Using raw viem:**
+
 ```typescript
 // TypeScript: Reading pool state
 const underlying = await pool.read.asset();
