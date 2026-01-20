@@ -45,7 +45,7 @@ No idle capital. No comingled funds. No curator risk.
 
 ### Why Gearbox
 
-<table><thead><tr><th width="40"></th><th width="233.4765625">Capability</th><th>Benefit</th></tr></thead><tbody><tr><td>🎯</td><td><strong>Predictable Rates</strong></td><td><p>Fixed or reference-based (LIBOR, Aave). </p><p>You define the formula: no utilization roulette.</p></td></tr><tr><td>🔗</td><td><strong>Controlled Composability</strong></td><td>Lender defines allowed strategies. Borrower executes within boundaries: transparent, on-chain enforced.</td></tr><tr><td>🏦</td><td><strong>Custom Collateral</strong></td><td><p>Tokenized equities, private credit, real estate. </p><p>Each deal: own oracle, own risk params.</p></td></tr><tr><td>🔄</td><td><strong>Secondary Market</strong></td><td><p>Sell active positions anytime. </p><p>Turn illiquid terms into liquid exits.</p></td></tr><tr><td>🔒</td><td><strong>No Curator Risk</strong></td><td><p>Once matched, the contract is final. </p><p>No vault-level loss sharing. No surprises.</p></td></tr><tr><td>📋</td><td><strong>Regulatory Alignment</strong></td><td>No comingled funds, clear audit trails, counterparty-specific compliance.</td></tr></tbody></table>
+<table><thead><tr><th width="40"></th><th width="233.4765625">Capability</th><th>Benefit</th></tr></thead><tbody><tr><td>🎯</td><td><strong>Predictable Rates</strong></td><td><p>Fixed or reference-based (LIBOR, Aave). </p><p>You define the formula: no utilization roulette.</p></td></tr><tr><td>🔗</td><td><strong>Controlled Composability</strong></td><td><p>Lender defines allowed strategies. </p><p>Borrower executes within boundaries: transparent, on-chain enforced.</p></td></tr><tr><td>🏦</td><td><strong>Custom Collateral</strong></td><td><p>Tokenized equities, private credit, real estate. </p><p>Each deal: own oracle, own risk params.</p></td></tr><tr><td>🔄</td><td><strong>Secondary Market</strong></td><td><p>Sell active positions anytime. </p><p>Turn illiquid terms into liquid exits.</p></td></tr><tr><td>🔒</td><td><strong>No Curator Risk</strong></td><td><p>Once matched, the contract is final. </p><p>No vault-level loss sharing. No surprises.</p></td></tr><tr><td>📋</td><td><strong>Regulatory Alignment</strong></td><td>No comingled funds, clear audit trails, counterparty-specific compliance.</td></tr></tbody></table>
 
 ***
 
@@ -53,7 +53,7 @@ No idle capital. No comingled funds. No curator risk.
 
 Traditional DeFi pools create compliance barriers. Intent-based lending solves them:
 
-<table><thead><tr><th width="40"></th><th width="229.00390625">Requirement</th><th>✅ Solution</th></tr></thead><tbody><tr><td>👤</td><td><strong>Know Your Counterparty</strong></td><td>Direct matching. No anonymous participants.</td></tr><tr><td>🔒</td><td><strong>No Comingling</strong></td><td>Isolated infrastructure per deal. Capital never mixes.</td></tr><tr><td>📝</td><td><strong>Audit Trail</strong></td><td>On-chain record: who, what, when, all transactions.</td></tr><tr><td>✓</td><td><strong>Compliance Gates</strong></td><td>Per-deal KYC/AML, jurisdiction, accreditation checks.</td></tr><tr><td>🛡️</td><td><strong>Risk Segregation</strong></td><td>One default doesn't cascade to other positions.</td></tr></tbody></table>
+<table><thead><tr><th width="40"></th><th width="229.00390625">Requirement</th><th>✅ Solution</th></tr></thead><tbody><tr><td>👤</td><td><strong>Know Your Counterparty</strong></td><td>Direct matching. Verifiable filtering of participants.</td></tr><tr><td>🔒</td><td><strong>No Comingling</strong></td><td>Isolated infrastructure per deal. Capital never mixes.</td></tr><tr><td>📝</td><td><strong>Audit Trail</strong></td><td>On-chain record: who, what, when, all transactions.</td></tr><tr><td>✓</td><td><strong>Compliance Gates</strong></td><td>Per-deal KYC/AML, jurisdiction, accreditation checks.</td></tr><tr><td>🛡️</td><td><strong>Risk Segregation</strong></td><td>One default doesn't cascade to other positions.</td></tr></tbody></table>
 
 This structure aligns with emerging regulatory frameworks for institutional DeFi participation.
 
@@ -80,31 +80,6 @@ Both sides define their exact terms: asset, rate (fixed or reference-based), dur
 | Lender View                                          | Borrower View                                          |
 | ---------------------------------------------------- | ------------------------------------------------------ |
 | ![](../.gitbook/assets/intent-lending-lender-ui.png) | ![](../.gitbook/assets/intent-lending-borrower-ui.png) |
-
-### Technical Architecture
-
-Gearbox's modular architecture enables per-agreement deployment without protocol changes.
-
-```mermaid
-flowchart LR
-    L[Lender Order] --> M[Matching Engine]
-    B[Borrower Order] --> M
-    M --> D[Deploy]
-
-    subgraph Infrastructure["Per-Deal Infrastructure"]
-        D --> P[Pool]
-        D --> CM[CreditManager]
-        D --> CA[CreditAccount]
-    end
-
-    subgraph Config["Custom Parameters"]
-        O[Oracles]
-        A[Allowed Strategies]
-        R[Risk Params]
-    end
-
-    Infrastructure -.-> Config
-```
 
 ***
 
