@@ -48,3 +48,4 @@
 * [Risk Configuration Dictionary](reference/risk-configuration-dictionary.md)
 * [Supply Information](reference/supply-information.md)
 * [Usecase: Direct Redemptions](reference/direct-redemptions.md)
+* [Usecase: Intent-based lending](reference/usecase-intent-based-lending.md)
