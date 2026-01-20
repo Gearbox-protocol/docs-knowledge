@@ -3,32 +3,32 @@
 ## Getting Started
 
 * [Overview](README.md)
-* [SDK Setup](getting-started/sdk-setup.md)
-* [Contract Discovery](getting-started/contract-discovery.md)
-* [Market Data](getting-started/market-data.md)
 
-## Credit Operations
+## SDK Guide (TypeScript)
 
-* [Credit Suite Overview](core/credit-suite.md)
-* [Multicalls](core/multicalls/README.md)
-  * [Adding Collateral](core/multicalls/adding-collateral.md)
-  * [Debt Management](core/multicalls/debt-management.md)
-  * [Enabling and Disabling Tokens](core/multicalls/enabling-and-disabling-tokens.md)
-  * [Making External Calls](core/multicalls/making-external-calls.md)
-  * [Setting Additional Collateral Check Params](core/multicalls/setting-additional-collateral-check-params.md)
-  * [Updating On-Demand Price Feeds](core/multicalls/updating-on-demand-price-feeds.md)
-  * [Revoke Allowances](core/multicalls/revoke-allowances.md)
-  * [Controlling Slippage](core/multicalls/controlling-slippage.md)
-  * [Updating Quotas](core/multicalls/updating-quotas.md)
-  * [Withdrawing Collateral](core/multicalls/withdrawing-collateral.md)
+* [Overview](sdk-guide/README.md)
+* [SDK Setup](sdk-guide/setup.md)
+* [Reading Data](sdk-guide/reading-data.md)
+* [Credit Accounts](sdk-guide/credit-accounts.md)
+* [Multicalls](sdk-guide/multicalls.md)
 
-## Pool Operations
+## Solidity Guide
 
-* [Pool V3](core/poolv3-the-liquidity-hub.md)
-* [Interest Rate Model](core/interest-rate-model.md)
-* [Quota Keeper](core/pool-quota-keeper.md)
+* [Overview](solidity-guide/README.md)
+* [Contract Discovery](solidity-guide/discovery.md)
+* [Credit Operations](solidity-guide/credit-operations.md)
+* [Multicalls](solidity-guide/multicalls.md)
+* [Pool Operations](solidity-guide/pool-operations.md)
+
+## Concepts
+
+* [Credit Suite](concepts/credit-suite.md)
+* [Pools](concepts/pools.md)
+* [Multicall System](concepts/multicall-system.md)
 
 ## Reference
 
-* [Compressors](core/compressors.md)
-* [Automated Insurance](core/automated-insurance-mechanism.md)
+* [Compressors](reference/compressors.md)
+* [Automated Insurance](reference/automated-insurance.md)
+* [Interest Rate Model](reference/interest-rate-model.md)
+* [Quota Keeper](reference/quota-keeper.md)
