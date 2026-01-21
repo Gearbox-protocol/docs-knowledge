@@ -44,3 +44,36 @@ For conceptual background on how Gearbox works:
 - [Credit Suite Architecture](../concepts/credit-suite.md) - How Credit Managers, Facades, and Configurators work together
 - [Pool Architecture](../concepts/pools.md) - Lending pools and ERC-4626 compliance
 - [Multicall System](../concepts/multicall-system.md) - How multicalls execute and validate
+
+---
+
+## Detailed Guides
+
+### Multicall Operations
+
+Complete reference for each multicall operation with TypeScript examples:
+
+| Operation | Description |
+|-----------|-------------|
+| [Adding Collateral](multicalls/adding-collateral.md) | Transfer tokens to credit account |
+| [Debt Management](multicalls/debt-management.md) | Borrow and repay |
+| [Updating Quotas](multicalls/updating-quotas.md) | Manage collateral quotas |
+| [Withdrawing Collateral](multicalls/withdrawing-collateral.md) | Remove tokens from account |
+| [Controlling Slippage](multicalls/controlling-slippage.md) | Protect against price movement |
+| [Making External Calls](multicalls/making-external-calls.md) | Interact with DeFi protocols |
+| [Enabling/Disabling Tokens](multicalls/enabling-disabling-tokens.md) | Manage active collateral |
+| [Updating Price Feeds](multicalls/updating-price-feeds.md) | On-demand oracle updates |
+| [Collateral Check Params](multicalls/collateral-check-params.md) | Optimize health checks |
+| [Revoke Allowances](multicalls/revoke-allowances.md) | Security cleanup |
+
+See [Multicalls Overview](multicalls.md) for building and executing multicalls.
+
+### Use Case Guides
+
+Application-specific guides for common development scenarios:
+
+| Building | Guide | Focus |
+|----------|-------|-------|
+| Web UI / Dashboard | [Frontend Applications](use-cases/frontend-applications.md) | Data display, real-time updates |
+| Analytics / Indexer | [Backend Services](use-cases/backend-services.md) | Historical data, event indexing |
+| Liquidation Bot | [Liquidation Bots](use-cases/liquidation-bots.md) | Monitoring, Router execution |
