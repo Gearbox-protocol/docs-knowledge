@@ -25,6 +25,24 @@ const service = createCreditAccountService(sdk, 310);
 | `prepareUpdateQuota(token, change, minQuota)` | Adjust token quota |
 | `prepareWithdrawCollateral(token, amount, to)` | Remove collateral |
 
+## Detailed Operation Guides
+
+For comprehensive documentation of each operation:
+
+**SDK Helper Operations:**
+- [Adding Collateral](multicalls/adding-collateral.md) - Transfer tokens with approval patterns
+- [Debt Management](multicalls/debt-management.md) - Borrowing, repayment, and constraints
+- [Updating Quotas](multicalls/updating-quotas.md) - Quota mechanics and limits
+- [Withdrawing Collateral](multicalls/withdrawing-collateral.md) - Safe pricing and health impact
+
+**Manual Encoding Operations:**
+- [Controlling Slippage](multicalls/controlling-slippage.md) - Balance delta protection
+- [Making External Calls](multicalls/making-external-calls.md) - Adapter interaction patterns
+- [Enabling/Disabling Tokens](multicalls/enabling-disabling-tokens.md) - Token mask management
+- [Updating Price Feeds](multicalls/updating-price-feeds.md) - On-demand oracle data
+- [Collateral Check Params](multicalls/collateral-check-params.md) - Health check optimization
+- [Revoke Allowances](multicalls/revoke-allowances.md) - Security cleanup
+
 ## Building a Multicall
 
 ```typescript
