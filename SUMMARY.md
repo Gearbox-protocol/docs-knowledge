@@ -11,6 +11,21 @@
 * [Reading Data](sdk-guide/reading-data.md)
 * [Credit Accounts](sdk-guide/credit-accounts.md)
 * [Multicalls](sdk-guide/multicalls.md)
+  * [Operations Reference](sdk-guide/multicalls/README.md)
+    * [Adding Collateral](sdk-guide/multicalls/adding-collateral.md)
+    * [Debt Management](sdk-guide/multicalls/debt-management.md)
+    * [Updating Quotas](sdk-guide/multicalls/updating-quotas.md)
+    * [Withdrawing Collateral](sdk-guide/multicalls/withdrawing-collateral.md)
+    * [Controlling Slippage](sdk-guide/multicalls/controlling-slippage.md)
+    * [Making External Calls](sdk-guide/multicalls/making-external-calls.md)
+    * [Enabling/Disabling Tokens](sdk-guide/multicalls/enabling-disabling-tokens.md)
+    * [Updating Price Feeds](sdk-guide/multicalls/updating-price-feeds.md)
+    * [Collateral Check Params](sdk-guide/multicalls/collateral-check-params.md)
+    * [Revoke Allowances](sdk-guide/multicalls/revoke-allowances.md)
+* [Use Cases](sdk-guide/use-cases/README.md)
+  * [Frontend Applications](sdk-guide/use-cases/frontend-applications.md)
+  * [Backend Services](sdk-guide/use-cases/backend-services.md)
+  * [Liquidation Bots](sdk-guide/use-cases/liquidation-bots.md)
 
 ## Solidity Guide
 
