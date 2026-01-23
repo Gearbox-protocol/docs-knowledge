@@ -1,65 +1,97 @@
-# Manual Deleveraging When UI Actions Are Unavailable
+# Gearbox Protocol – Monad LP Opportunity
 
-If the **Close** or **Swap** action is unavailable or fails, you can exit your position manually by following the steps below.
+### Overview
 
-{% stepper %}
-{% step %}
-## Withdraw collateral
+Gearbox is a composable leverage protocol enabling undercollateralized on-chain borrowing through Credit Accounts. Current focus:  yield strategies via Midas-issued collateral.
 
-Withdrawing collateral sends the token to your wallet, where you can swap it freely using external liquidity sources outside of Gearbox.
+**Two ways to participate:**
 
-{% hint style="warning" %}
-Withdrawing collateral reduces your position’s **Health Factor**. A large withdrawal may push the position into liquidation risk. \
-\
-Always check the projected **Health Factor** before each withdrawal.
-{% endhint %}
+|         | Lending                                      | Leverage                                    |
+| ------- | -------------------------------------------- | ------------------------------------------- |
+| APY     | 6-9%                                         | Up to 20%                                   |
+| Role    | Passive liquidity provider                   | Active carry trade                          |
+| Risk    | Indirect exposure, protected by liquidations | Direct collateral exposure                  |
+| Lock-up | None                                         | None (subject to Midas redemption schedule) |
 
-<details>
+***
 
-<summary>Withdraw collateral in the UI</summary>
+### Lending Side (Passive)
 
-<figure><img src=".gitbook/assets/Screenshot 2025-12-23 at 13.34.37.png" alt=""><figcaption></figcaption></figure>
+**How it works:** Deposit USDC into the Gearbox pool. Earn yield from borrowers who use Credit Accounts to execute carry trades, borrowing at pool rates to deploy into higher-yielding RWA collateral. Gearbox solvency guardrails protect against borrower default.
 
-</details>
+**Deposit here:** [Gearbox USDC Pool](https://app.gearbox.finance/pools/143/0x6b343f7b797f1488aa48c49d540690f2b2c89751)
 
-{% hint style="success" %}
-If your current **Health Factor** does not allow for a safe withdrawal, repay part of your debt first using the Debt Token from your wallet (see **Step 3**).
-{% endhint %}
-{% endstep %}
+***
 
-{% step %}
-## Swap collateral into the Debt Token
+### Leverage Side (Active)
 
-Swap the withdrawn collateral into the Debt Token using external liquidity sources.
+**How it works:** Open a Credit Account, borrow USDC, and deploy into Midas collaterals. Capture the full carry trade spread with leverage.
 
-Recommended options include:
+**Yield source:** Direct exposure to mEDGE yield minus borrow cost. Net APY can reach 20% at max leverage (\~7x).
 
-* DEX aggregators
-* Official liquidity venues provided by the collateral issuer
-{% endstep %}
+**Zero slippage execution:** Gearbox direct integration allows entry/exit without DEX slippage. Redemptions execute at NAV.
 
-{% step %}
-## Repay debt using Debt Token from your wallet
+→ [How Direct Redemptions Work](https://docs.gearbox.finance/about-gearbox/reference/direct-redemptions)
 
-{% hint style="info" %}
-Repay the debt using the **same token the debt is denominated in**, directly from your wallet.
-{% endhint %}
+**Open position here:** [mEDGE Leverage Strategy](https://app.gearbox.finance/strategies/open/143/0x1c8ee940b654bfced403f2a44c1603d5be0f50fa)
 
-{% hint style="success" %}
-Check whether the updated **Health Factor** allows for further withdrawal.
-{% endhint %}
+***
 
-<details>
+### Risk Framework
 
-<summary>Repay debt in the UI</summary>
+#### Collateral Exposure: mEDGE
 
-<figure><img src=".gitbook/assets/Screenshot 2025-12-23 at 13.42.19.png" alt=""><figcaption></figcaption></figure>
+Both sides have exposure to mEDGE (Midas EDGE vault). Current composition:
 
-</details>
-{% endstep %}
+→ [View mEDGE Holdings](https://midas.app/medge)
 
-{% step %}
-## Repeat Steps 1-3 until your Credit Account reaches the desired state or is fully unwound
-{% endstep %}
-{% endstepper %}
+#### What happens if mEDGE depegs?
 
+| Scenario          | Lending Side                                            | Leverage Side               |
+| ----------------- | ------------------------------------------------------- | --------------------------- |
+| Depeg <13%        | Protected: liquidations trigger, borrowers absorb loss. | Position may be liquidated. |
+| Orderly wind-down | Redemptions via direct integration at NAV               | Exit at NAV, no slippage    |
+
+#### Gearbox Solvency Guardrails
+
+* **LTV limits:** Credit Accounts enforce max leverage
+* **Liquidation threshold:** Positions liquidated before insolvency
+* **Price feeds:** Oracle-based with sanity checks
+* **Audits:** [Security repo](https://github.com/Gearbox-protocol/security/tree/main/audits)
+
+***
+
+### Summary
+
+|           | Lending                                                                                  | Leverage                                                                                               |
+| --------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Target LP | Passive yield seekers                                                                    | Active DeFi users                                                                                      |
+| APY       | 6-9%                                                                                     | Up to 20%                                                                                              |
+| Risk      | Lower (liquidation buffer)                                                               | Higher (direct exposure)                                                                               |
+| Effort    | Deposit & forget                                                                         | Manage position                                                                                        |
+| Deposit   | [Pool](https://app.gearbox.finance/pools/143/0x6b343f7b797f1488aa48c49d540690f2b2c89751) | [Strategy](https://app.gearbox.finance/strategies/open/143/0x1c8ee940b654bfced403f2a44c1603d5be0f50fa) |
+
+***
+
+## Gearbox LP Demo Day – Blurb
+
+**Project:** Gearbox Protocol
+
+**Project Description:** Composable leverage protocol with Credit Accounts enabling undercollateralized on-chain borrowing. Two LP opportunities on RWA yield strategies:
+
+* **Lending side:** Passive yield from borrower demand (6-9% APY)
+* **Leverage side:** Active carry trade via Credit Accounts (up to 20% APY)
+
+**Max TVL capacity:** 50M USDC
+
+**Yield APY:** 6-9% (lending) / up to 20% (leverage)
+
+**Source of yield:** Carry trade between Gearbox borrow rates and Midas RWA collateral (mEDGE). Lenders earn spread; leverage users capture full carry.
+
+**Duration of deal:** No lock-up
+
+**Detailed materials:** Gearbox LP Materials
+
+**Audit link:** https://github.com/Gearbox-protocol/security/tree/main/audits
+
+**Your contact:** Telegram - @OxIlya
