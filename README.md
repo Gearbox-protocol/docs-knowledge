@@ -82,15 +82,14 @@ Both sides have exposure to mEDGE (Midas EDGE vault). Current composition:
 * **Lending side:** Passive yield from borrower demand (6-9% APY)
 * **Leverage side:** Active carry trade via Credit Accounts (up to 20% APY)
 
-**Max TVL capacity:** 50M USDC
+**Max TVL capacity:** 50M USDC in mid-term (nearest month) until considerable yield dilution.\
+Further expansion driven by new collaterals addition.
 
 **Yield APY:** 6-9% (lending) / up to 20% (leverage)
 
-**Source of yield:** Carry trade between Gearbox borrow rates and Midas RWA collateral (mEDGE). Lenders earn spread; leverage users capture full carry.
+**Source of yield:** Carry trade between Gearbox borrow rates and Midas RWA collateral (mEDGE). Lenders earn borrow interest + MON incentives; leverage users capture full carry.
 
 **Duration of deal:** No lock-up
-
-**Detailed materials:** Gearbox LP Materials
 
 **Audit link:** https://github.com/Gearbox-protocol/security/tree/main/audits
 
