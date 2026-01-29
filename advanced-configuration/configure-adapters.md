@@ -701,21 +701,10 @@ Before allowing pools in adapter, please ensure that tokens from a pair are adde
 \&#xNAN;_e.g. to add WETH/USDC pool both WETH and USDC must be added before._
 {% endhint %}
 
-*   **Configure adapter to whitelist pools:**\
-    \&#xNAN;_Configuration requires specifying tokens and fee from a pair_
+* **Configure adapter to whitelist** \
+  &#xNAN;_&#x43;onfiguration requires specifying tokens and fee from a pair_
 
-    <figure><img src="https://494588385-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F9n0QLqkiJru3BYkpyr8F%2Fuploads%2FoFBJtepjwKAYKKlJouh2%2FScreenshot%202025-07-30%20at%2012.23.10.png?alt=media&#x26;token=cdca39d5-3dcb-4534-a4d8-7a1e717f269a" alt=""><figcaption></figcaption></figure>
 
-    <figure><img src="https://494588385-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F9n0QLqkiJru3BYkpyr8F%2Fuploads%2FFk1vAeE9mZYydHANXI8J%2Fimage.png?alt=media&#x26;token=8c38633f-428a-4cbf-9633-16db4d61a814" alt=""><figcaption></figcaption></figure>
-*   Uni V3
-
-    <figure><img src="https://494588385-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F9n0QLqkiJru3BYkpyr8F%2Fuploads%2FbJsE5buTT6F5PAsFLYQb%2Fimage.png?alt=media&#x26;token=21e9c43c-bb80-4b8d-8981-da2a0f4fa90f" alt=""><figcaption></figcaption></figure>
-*   Sushi V3
-
-    <figure><img src="https://494588385-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F9n0QLqkiJru3BYkpyr8F%2Fuploads%2FJD20UUZAw0vj497MivI5%2FScreenshot%202025-07-30%20at%2012.21.22.png?alt=media&#x26;token=403d92ae-9116-4032-b454-b96ed0731896" alt=""><figcaption></figcaption></figure>
-* [PancakeSwap](https://pancakeswap.finance/info/v3/pairs), [IguanaDEX](https://www.iguanadex.com/info/v3?chain=etherlink)
-
-<figure><img src="https://494588385-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F9n0QLqkiJru3BYkpyr8F%2Fuploads%2FFfDSOwZmEjzPqBAdjxg3%2FScreenshot%202025-07-30%20at%2012.28.59.png?alt=media&#x26;token=e0ad317c-cfac-422b-877a-c466b2753969" alt=""><figcaption></figcaption></figure>
 
 </details>
 
