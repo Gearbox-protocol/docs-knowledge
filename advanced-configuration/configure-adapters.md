@@ -673,3 +673,49 @@ It requires passing the following addresses:
   Basic volatile ⇒ not Stable
 
 </details>
+
+<details>
+
+<summary><strong>Uniswap V4</strong></summary>
+
+### Router configuration
+
+For the router on the chain to support swaps, Uniswap V3 worker should be configured.
+
+It requires passing the following addresses:
+
+* [Universal Router](https://github.com/Uniswap/universal-router/blob/dev/contracts/UniversalRouter.sol)
+* [Quoter](https://github.com/Uniswap/v4-periphery/blob/main/src/lens/V4Quoter.sol)
+*   **Add UniswapV4 adapter (requires providing Gateway address):**
+
+    <figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
+    * Uni V4 deployment addresses: [https://docs.uniswap.org/contracts/v4/deployments](https://docs.uniswap.org/contracts/v4/deployments)
+    * Gateway deployment addresses:
+      * Monad: 0xCC7944C237DC540585935F19Bc9aeA0003BC4224
+      * Ethereum: 0x3b74c70283b291e875da84d58176a63dac5d1824
+
+{% hint style="warning" %}
+Before allowing pools in adapter, please ensure that tokens from a pair are added as _**Assets to Market**_ and as _**Collaterals to Credit Manager**_.\
+\
+\&#xNAN;_e.g. to add WETH/USDC pool both WETH and USDC must be added before._
+{% endhint %}
+
+*   **Configure adapter to whitelist pools:**\
+    \&#xNAN;_Configuration requires specifying tokens and fee from a pair_
+
+    <figure><img src="https://494588385-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F9n0QLqkiJru3BYkpyr8F%2Fuploads%2FoFBJtepjwKAYKKlJouh2%2FScreenshot%202025-07-30%20at%2012.23.10.png?alt=media&#x26;token=cdca39d5-3dcb-4534-a4d8-7a1e717f269a" alt=""><figcaption></figcaption></figure>
+
+    <figure><img src="https://494588385-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F9n0QLqkiJru3BYkpyr8F%2Fuploads%2FFk1vAeE9mZYydHANXI8J%2Fimage.png?alt=media&#x26;token=8c38633f-428a-4cbf-9633-16db4d61a814" alt=""><figcaption></figcaption></figure>
+*   Uni V3
+
+    <figure><img src="https://494588385-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F9n0QLqkiJru3BYkpyr8F%2Fuploads%2FbJsE5buTT6F5PAsFLYQb%2Fimage.png?alt=media&#x26;token=21e9c43c-bb80-4b8d-8981-da2a0f4fa90f" alt=""><figcaption></figcaption></figure>
+*   Sushi V3
+
+    <figure><img src="https://494588385-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F9n0QLqkiJru3BYkpyr8F%2Fuploads%2FJD20UUZAw0vj497MivI5%2FScreenshot%202025-07-30%20at%2012.21.22.png?alt=media&#x26;token=403d92ae-9116-4032-b454-b96ed0731896" alt=""><figcaption></figcaption></figure>
+* [PancakeSwap](https://pancakeswap.finance/info/v3/pairs), [IguanaDEX](https://www.iguanadex.com/info/v3?chain=etherlink)
+
+<figure><img src="https://494588385-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F9n0QLqkiJru3BYkpyr8F%2Fuploads%2FFfDSOwZmEjzPqBAdjxg3%2FScreenshot%202025-07-30%20at%2012.28.59.png?alt=media&#x26;token=e0ad317c-cfac-422b-877a-c466b2753969" alt=""><figcaption></figcaption></figure>
+
+</details>
+

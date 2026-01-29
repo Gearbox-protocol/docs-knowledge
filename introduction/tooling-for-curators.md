@@ -28,10 +28,11 @@ The curation supply chain in Gearbox is supported by a set of specialized tools 
 * **Purpose**: An open-source, IPFS-hosted version of the Safe Multisig UI designed to review and sign transactions securely in a human-readable format. It eliminates backend dependencies to mitigate risks like Bybit-type attacks and performs checks of IPFS CID signature to prevent phishing.
 * **Note**: The open-source nature and IPFS hosting ensure users can verify the code's integrity.
 
-<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 **Anvil Fork-Based Simulations**
 
 * **Purpose**: A unique Gearbox service that allows curators to test market configurations and transaction changes on a fork of the blockchain before onchain execution. This ensures the correctness of state changes and supports testing of various Gearbox components, including liquidators, routers, and frontends.
 
 <figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+
