@@ -688,7 +688,7 @@ It requires passing the following addresses:
 * [Quoter](https://github.com/Uniswap/v4-periphery/blob/main/src/lens/V4Quoter.sol)
 *   **Add UniswapV4 adapter (requires providing Gateway address):**
 
-    <figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+    <figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
     * Uni V4 deployment addresses: [https://docs.uniswap.org/contracts/v4/deployments](https://docs.uniswap.org/contracts/v4/deployments)
     * Gateway deployment addresses:

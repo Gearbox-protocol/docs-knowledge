@@ -28,7 +28,9 @@
 ## Protocol roles
 
 * [Emergency admin](protocol-roles/emergency-admin.md)
-* [Pausable/Unpausable admin](protocol-roles/pausable-unpausable-admin.md)
+* [Pausable/Unpausable admin](protocol-roles/pausable-unpausable-admin/README.md)
+  * [How to pause contracts](protocol-roles/pausable-unpausable-admin/how-to-pause-contracts.md)
+  * [How to unpause contracts](protocol-roles/pausable-unpausable-admin/how-to-unpause-contracts.md)
 
 ## Advanced configuration
 

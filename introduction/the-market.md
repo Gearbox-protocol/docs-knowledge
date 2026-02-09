@@ -10,7 +10,7 @@ Gearbox uses a hierarchical, tree-structured constraint model: Pools define glob
 2. **Credit Managers (Strategy Constraint Layer):** Each Credit Manager refines the global constraints into strategy-specific ones: position-level rules, leverage parameters, liquidation settings and more. Credit Manager configuration + Pool-level boundaries are applied to all the credit accounts.
 3. **Credit Accounts (Execution Layer):** Individual accounts execute under both the global Pool constraints and the strategy-level constraints of their Credit Manager.
 
-<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 ### How Market Rules Shape Outcomes
 
