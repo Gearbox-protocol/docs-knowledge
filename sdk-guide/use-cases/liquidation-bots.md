@@ -564,12 +564,38 @@ function buildLiquidationCalls(
   account: CreditAccountData,
   market: MarketData
 ): Array<{ target: `0x${string}`; callData: `0x${string}` }> {
-  // Simplified - real implementation would:
-  // 1. Check for stale price feeds and update them
-  // 2. Compute optimal swap routes for each collateral
-  // 3. Add slippage protection
+  const calls: Array<{ target: `0x${string}`; callData: `0x${string}` }> = [];
+  const creditFacade = market.creditFacade.address;
+  const underlying = market.pool.underlying.address;
 
-  return [];
+  // 1. Swap each non-underlying collateral token to underlying via adapter
+  for (const token of account.tokens) {
+    if (token.balance <= 1n) continue; // skip dust
+    if (token.token === underlying) continue; // skip underlying itself
+
+    // Use Uniswap V3 adapter for swaps (simplified: hardcoded router)
+    const uniswapAdapter = market.adapters?.['UNISWAP_V3_ROUTER'];
+    if (!uniswapAdapter) continue;
+
+    // exactAllInputSingle swaps entire balance minus 1 wei
+    calls.push({
+      target: uniswapAdapter,
+      callData: encodeFunctionData({
+        abi: uniswapV3AdapterAbi,
+        functionName: 'exactAllInputSingle',
+        args: [{
+          tokenIn: token.token,
+          tokenOut: underlying,
+          fee: 3000, // 0.3% pool (use 500 for stablecoin pairs)
+          deadline: BigInt(Math.floor(Date.now() / 1000) + 3600),
+          rateMinRAY: 0n, // No slippage protection (simplified)
+          sqrtPriceLimitX96: 0n,
+        }],
+      }),
+    });
+  }
+
+  return calls;
 }
 ```
 

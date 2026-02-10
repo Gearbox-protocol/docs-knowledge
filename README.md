@@ -39,7 +39,7 @@ Integrate directly with Gearbox contracts from your Solidity code.
 | Need | Go to |
 |------|-------|
 | Install SDK | [SDK Setup](sdk-guide/setup.md) |
-| Find contract addresses | [Contract Discovery](solidity-guide/discovery.md) |
+| Find contract addresses | [Credit Accounts](solidity-guide/credit-accounts.md) |
 | Understand Credit Suite | [Credit Suite Concepts](concepts/credit-suite.md) |
 | Build multicalls | [SDK Multicalls](sdk-guide/multicalls.md) or [Solidity Multicalls](solidity-guide/multicalls.md) |
 | Query credit accounts | [SDK Credit Accounts](sdk-guide/credit-accounts.md) |

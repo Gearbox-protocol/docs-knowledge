@@ -2,7 +2,7 @@
 
 Install and initialize the Gearbox SDK for TypeScript development.
 
-> For Solidity contract discovery, see [Contract Discovery](../solidity-guide/discovery.md).
+> For Solidity contract discovery, see [Credit Accounts](../solidity-guide/credit-accounts.md).
 
 ## Installation
 

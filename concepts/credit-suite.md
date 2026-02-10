@@ -125,4 +125,4 @@ When Health Factor drops below 1.0, the account becomes liquidatable.
 For implementation details, see:
 
 - **TypeScript/SDK:** [SDK Credit Accounts](../sdk-guide/credit-accounts.md)
-- **Solidity:** [Credit Operations](../solidity-guide/credit-operations.md)
+- **Solidity:** [Credit Accounts](../solidity-guide/credit-accounts.md)

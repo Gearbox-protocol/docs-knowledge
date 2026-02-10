@@ -2,7 +2,7 @@
 
 Query and manage credit accounts using SDK services.
 
-> For Solidity credit operations, see [Credit Operations](../solidity-guide/credit-operations.md).
+> For Solidity credit operations, see [Credit Accounts](../solidity-guide/credit-accounts.md).
 
 ## Creating a Service
 

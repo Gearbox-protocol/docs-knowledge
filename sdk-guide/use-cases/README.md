@@ -9,6 +9,7 @@ The SDK guide shows you how to use individual methods. This section shows you ho
 | Web dashboard, portfolio UI | [Frontend Applications](./frontend-applications.md) | Data fetching patterns, display mapping, real-time updates |
 | Indexer, analytics, data pipeline | [Backend Services](./backend-services.md) | Historical snapshots, event indexing, state tracking |
 | Liquidation bot | [Liquidation Bots](./liquidation-bots.md) | Account monitoring, health factor filtering, execution patterns |
+| Health monitoring | [Health Factor Monitoring](./health-factor-monitoring.md) | Track HF over time, alerts, risk analysis |
 
 ## Quick Decision Guide
 
@@ -20,6 +21,9 @@ Start with [Backend Services](./backend-services.md). You'll index events and sn
 
 **Need to monitor accounts and execute on-chain actions?**
 Start with [Liquidation Bots](./liquidation-bots.md). You'll filter accounts by health factor and use the Router for execution.
+
+**Need to track account health and alert on risk?**
+Start with [Health Factor Monitoring](./health-factor-monitoring.md). You'll poll compressors, classify risk levels, and build alerting.
 
 ## Prerequisites
 
@@ -53,7 +57,8 @@ SDK Guide
 └── use-cases/            # <-- You are here
     ├── frontend-applications.md
     ├── backend-services.md
-    └── liquidation-bots.md
+    ├── liquidation-bots.md
+    └── health-factor-monitoring.md
 ```
 
 The **multicalls/** directory documents individual operations (add collateral, manage debt, etc.). The **use-cases/** directory shows how to combine those operations with data fetching to build complete applications.

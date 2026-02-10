@@ -4,6 +4,21 @@ Build and execute multicalls in Solidity.
 
 > For SDK multicall helpers, see [Multicalls](../sdk-guide/multicalls.md).
 
+## Detailed Operation Guides
+
+For comprehensive documentation of each operation:
+
+- [Adding Collateral](multicalls/adding-collateral.md) - Transfer tokens with approval patterns
+- [Debt Management](multicalls/debt-management.md) - Borrowing, repayment, and constraints
+- [Updating Quotas](multicalls/updating-quotas.md) - Quota mechanics and limits
+- [Withdrawing Collateral](multicalls/withdrawing-collateral.md) - Safe pricing and health impact
+- [Controlling Slippage](multicalls/controlling-slippage.md) - Balance delta protection
+- [Making External Calls](multicalls/making-external-calls.md) - Adapter interaction patterns
+- [Enabling/Disabling Tokens](multicalls/enabling-disabling-tokens.md) - Token mask management
+- [Updating Price Feeds](multicalls/updating-price-feeds.md) - On-demand oracle data
+- [Collateral Check Params](multicalls/collateral-check-params.md) - Health check optimization
+- [Revoke Allowances](multicalls/revoke-allowances.md) - Security cleanup
+
 ## The MultiCall Structure
 
 ```solidity
@@ -242,6 +257,8 @@ calls[5] = MultiCall({
 
 ## Next Steps
 
+- [Multicall Operations](multicalls/README.md) - Individual operation guides
+- [Use Cases](use-cases/README.md) - Adapter development and protocol integration
 - [Pool Operations](pool-operations.md) - Direct pool interaction
 
 For architectural background, see [Multicall System](../concepts/multicall-system.md).
