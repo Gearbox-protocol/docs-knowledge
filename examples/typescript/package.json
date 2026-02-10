@@ -1,0 +1,16 @@
+{
+  "name": "gearbox-typescript-examples",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TypeScript examples for Gearbox Protocol V3 developer documentation",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@gearbox-protocol/sdk": "12.6.7",
+    "viem": "2.23.15"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}
