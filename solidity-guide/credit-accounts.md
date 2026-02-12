@@ -14,7 +14,7 @@ import {IContractsRegister} from "@gearbox-protocol/core-v3/contracts/interfaces
 import {ICreditManagerV3} from "@gearbox-protocol/core-v3/contracts/interfaces/ICreditManagerV3.sol";
 
 IAddressProviderV3 ap = IAddressProviderV3(ADDRESS_PROVIDER);
-address cr = ap.getAddressOrRevert("CONTRACTS_REGISTER", 3_00);
+address cr = ap.getAddressOrRevert("CONTRACTS_REGISTER", 3_10);
 
 // Get all credit managers
 address[] memory allCMs = IContractsRegister(cr).getCreditManagers();
@@ -27,7 +27,7 @@ function findUSDCCreditManagers(address addressProvider, address usdc)
     external view returns (address[] memory facades)
 {
     IAddressProviderV3 ap = IAddressProviderV3(addressProvider);
-    address cr = ap.getAddressOrRevert("CONTRACTS_REGISTER", 3_00);
+    address cr = ap.getAddressOrRevert("CONTRACTS_REGISTER", 3_10);
     address[] memory allCMs = IContractsRegister(cr).getCreditManagers();
 
     uint256 count;
