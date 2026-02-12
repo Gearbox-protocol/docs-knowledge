@@ -1,4 +1,4 @@
-# Developer Documentation
+# Table of contents
 
 ## Getting Started
 
@@ -57,21 +57,23 @@
 * [Pools](concepts/pools.md)
 * [Multicall System](concepts/multicall-system.md)
 
-## Reference
+## Core Contracts
 
-### Core Contracts
 * [Credit Manager](reference/credit-manager.md)
 * [Credit Facade](reference/credit-facade.md)
 * [Credit Configurator](reference/credit-configurator.md)
 
-### Operations
+## Operations
+
 * [Liquidations](reference/liquidations.md)
 * [Bot System](reference/bots.md)
 
-### Pool & Economics
+## Pool & Economics
+
 * [Interest Rate Model](reference/interest-rate-model.md)
 * [Quota Keeper](reference/quota-keeper.md)
 
-### Utilities
+## Utilities
+
 * [Compressors](reference/compressors.md)
 * [Automated Insurance](reference/automated-insurance.md)

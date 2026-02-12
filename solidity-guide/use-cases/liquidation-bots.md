@@ -1,4 +1,4 @@
-# Liquidation Bots (Solidity)
+# Liquidation Bots
 
 Build on-chain liquidation contracts that can be triggered by keepers or automation services.
 
@@ -7,14 +7,15 @@ Build on-chain liquidation contracts that can be triggered by keepers or automat
 ## Overview
 
 On-chain liquidation contracts are useful when you need:
-- Atomicity with flash loans or other on-chain operations
-- Integration with existing keeper infrastructure (Gelato, Chainlink Automation)
-- Custom liquidation logic that must execute trustlessly
-- Protocol-owned liquidation capability
+
+* Atomicity with flash loans or other on-chain operations
+* Integration with existing keeper infrastructure (Gelato, Chainlink Automation)
+* Custom liquidation logic that must execute trustlessly
+* Protocol-owned liquidation capability
 
 Most liquidation bots use the SDK for monitoring and multicall building, then submit transactions off-chain. This guide covers the less common but important pattern of on-chain liquidation contracts.
 
----
+***
 
 ## Understanding On-Chain Liquidation
 
@@ -22,10 +23,10 @@ Most liquidation bots use the SDK for monitoring and multicall building, then su
 
 ### When to Use On-Chain Contracts
 
-| Approach | Best For |
-|----------|----------|
-| **SDK bot** | Most liquidators - flexible routing, off-chain simulation, rapid iteration |
-| **On-chain contract** | Flash loan liquidations, keeper automation, protocol-owned backstop |
+| Approach              | Best For                                                                   |
+| --------------------- | -------------------------------------------------------------------------- |
+| **SDK bot**           | Most liquidators - flexible routing, off-chain simulation, rapid iteration |
+| **On-chain contract** | Flash loan liquidations, keeper automation, protocol-owned backstop        |
 
 ### The Liquidation Entry Point
 
@@ -39,12 +40,13 @@ function liquidateCreditAccount(
 ```
 
 The liquidator provides:
-- `creditAccount` - the account to liquidate
-- `to` - where remaining funds go after debt repayment
-- `calls` - multicall array that converts collateral to underlying
-- `lossPolicyData` - custom data for loss handling
 
----
+* `creditAccount` - the account to liquidate
+* `to` - where remaining funds go after debt repayment
+* `calls` - multicall array that converts collateral to underlying
+* `lossPolicyData` - custom data for loss handling
+
+***
 
 ## Checking Liquidatability
 
@@ -82,7 +84,7 @@ function isExpired(address creditFacade) public view returns (bool) {
 }
 ```
 
----
+***
 
 ## Building Liquidation Multicalls
 
@@ -175,7 +177,7 @@ function buildLiquidationCalls(
 }
 ```
 
----
+***
 
 ## Simple Liquidation Contract
 
@@ -281,7 +283,7 @@ contract SimpleLiquidator {
 }
 ```
 
----
+***
 
 ## Flash Loan Liquidation
 
@@ -350,52 +352,7 @@ contract FlashLiquidator is IFlashLoanReceiver {
 }
 ```
 
----
-
-## Keeper Integration
-
-**WHY:** Automate liquidation execution with off-chain monitoring services.
-
-### Gelato Pattern
-
-```solidity
-contract GelatoLiquidator {
-    address public immutable creditFacade;
-    address public immutable creditManager;
-
-    /// @notice Gelato checker - returns true when liquidation is possible
-    function checker()
-        external view
-        returns (bool canExec, bytes memory execPayload)
-    {
-        // Check known accounts (maintained off-chain or via events)
-        address[] memory watchedAccounts = getWatchedAccounts();
-
-        for (uint256 i = 0; i < watchedAccounts.length; i++) {
-            (bool liquidatable, ) = isLiquidatable(
-                creditManager, watchedAccounts[i]
-            );
-
-            if (liquidatable) {
-                execPayload = abi.encodeCall(
-                    this.executeLiquidation,
-                    (watchedAccounts[i])
-                );
-                return (true, execPayload);
-            }
-        }
-
-        return (false, "");
-    }
-
-    function executeLiquidation(address creditAccount) external {
-        // Build and execute liquidation calls
-        // (implementation depends on account composition)
-    }
-}
-```
-
----
+***
 
 ## Gotchas
 
@@ -414,18 +371,20 @@ IERC20(underlying).approve(creditManager, amount);
 ### Gas Costs Scale with Token Count
 
 Liquidation gas depends on:
-- Number of collateral tokens to swap
-- Complexity of DEX routes
-- Price feed updates needed
+
+* Number of collateral tokens to swap
+* Complexity of DEX routes
+* Price feed updates needed
 
 Estimate gas before submitting to ensure profitability.
 
 ### Race Conditions
 
 Multiple liquidators compete for the same accounts. On-chain contracts are at a disadvantage vs. off-chain bots that can use Flashbots/MEV protection. Consider:
-- Using higher priority fees for competitive scenarios
-- Targeting accounts that off-chain bots may skip (complex collateral compositions)
-- Bundling with Flashbots Protect for MEV protection
+
+* Using higher priority fees for competitive scenarios
+* Targeting accounts that off-chain bots may skip (complex collateral compositions)
+* Bundling with Flashbots Protect for MEV protection
 
 ### exactAllInputSingle vs exactInputSingle
 
@@ -439,12 +398,12 @@ abi.encodeCall(ISwapAdapter.exactInputSingle, (...))
 abi.encodeCall(ISwapAdapter.exactAllInputSingle, (...))
 ```
 
----
+***
 
 ## Next Steps
 
-- [Liquidation Bots (SDK)](../../sdk-guide/use-cases/liquidation-bots.md) - SDK-based approach (recommended for most cases)
-- [Liquidations Reference](../../reference/liquidations.md) - Full liquidation mechanics
-- [Bot System Reference](../../reference/bots.md) - Permission system for authorized bots
-- [Making External Calls](../multicalls/making-external-calls.md) - Adapter patterns for swaps
-- [Protocol Integration](./protocol-integration.md) - General patterns for building on Gearbox
+* [Liquidation Bots (SDK)](../../sdk-guide/use-cases/liquidation-bots.md) - SDK-based approach (recommended for most cases)
+* [Liquidations Reference](../../reference/liquidations.md) - Full liquidation mechanics
+* [Bot System Reference](../../reference/bots.md) - Permission system for authorized bots
+* [Making External Calls](../multicalls/making-external-calls.md) - Adapter patterns for swaps
+* [Protocol Integration](protocol-integration.md) - General patterns for building on Gearbox

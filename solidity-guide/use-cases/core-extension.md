@@ -1,18 +1,18 @@
-# Extending Core Contracts
+# Core Extension
 
 Advanced patterns for extending Gearbox protocol contracts beyond standard adapter integration.
 
-> This is advanced material. For standard integrations, see [Adapter Development](./adapter-development.md) or [Protocol Integration](./protocol-integration.md).
+> This is advanced material. For standard integrations, see [Adapter Development](adapter-development.md) or [Protocol Integration](protocol-integration.md).
 
 ## When to Extend vs Integrate
 
 Different levels of integration require different approaches:
 
-| Approach | Complexity | When to Use |
-|----------|------------|-------------|
-| **Adapter** | Low | Wrap existing DeFi protocols for Credit Account access |
-| **Protocol Integration** | Medium | Build contracts that compose with Credit Accounts externally |
-| **Core Extension** | High | Modify Credit Manager/Pool behavior, create protocol-specific spokes |
+| Approach                 | Complexity | When to Use                                                          |
+| ------------------------ | ---------- | -------------------------------------------------------------------- |
+| **Adapter**              | Low        | Wrap existing DeFi protocols for Credit Account access               |
+| **Protocol Integration** | Medium     | Build contracts that compose with Credit Accounts externally         |
+| **Core Extension**       | High       | Modify Credit Manager/Pool behavior, create protocol-specific spokes |
 
 Examples by approach:
 
@@ -23,11 +23,12 @@ Examples by approach:
 **Core Extension:** Custom Credit Manager for protocol-specific accounting, custom interest rate models, pool hooks for fee distribution
 
 Build a core extension when you need to:
-- Modify how debt/collateral calculations work
-- Change liquidity flow patterns between pools and Credit Managers
-- Implement protocol-specific Credit Manager variants ("spokes")
-- Create custom interest rate logic beyond linear models
-- Add lifecycle hooks to pool operations
+
+* Modify how debt/collateral calculations work
+* Change liquidity flow patterns between pools and Credit Managers
+* Implement protocol-specific Credit Manager variants ("spokes")
+* Create custom interest rate logic beyond linear models
+* Add lifecycle hooks to pool operations
 
 ## Understanding Money Flows
 
@@ -200,6 +201,7 @@ uint256 assets = pool.withdraw(amount, receiver, owner);
 ```
 
 For custom fee distribution logic, you would typically:
+
 1. Deploy a fee collector contract
 2. Configure the pool's treasury address to your collector
 3. Implement distribution logic in your collector
@@ -212,10 +214,10 @@ A "spoke" is a specialized Credit Manager variant designed for protocol-specific
 
 **When to build a spoke:**
 
-- Your protocol needs custom collateral valuation logic
-- You're integrating Credit Accounts as a core protocol primitive
-- You need specialized debt/liquidation mechanics
-- You want to modify how positions are opened/closed
+* Your protocol needs custom collateral valuation logic
+* You're integrating Credit Accounts as a core protocol primitive
+* You need specialized debt/liquidation mechanics
+* You want to modify how positions are opened/closed
 
 **Example use case:** A derivatives protocol where Credit Accounts are used as margin accounts with custom position tracking.
 
@@ -435,91 +437,6 @@ governance.propose(
 );
 ```
 
-## Complete Example: Perpetuals Spoke
-
-Here's a simplified perpetuals protocol spoke showing the core extension patterns:
-
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
-import {CreditManagerV3} from "@gearbox-protocol/core-v3/contracts/credit/CreditManagerV3.sol";
-import {CollateralDebtData} from "@gearbox-protocol/core-v3/contracts/interfaces/ICreditManagerV3.sol";
-
-contract PerpetualsCreditManager is CreditManagerV3 {
-    struct Position {
-        int256 size;           // Positive = long, negative = short
-        uint256 entryPrice;    // Entry price in USD (8 decimals)
-        uint256 timestamp;     // Position open time
-    }
-
-    mapping(address => mapping(address => Position)) public positions; // account => market => position
-    mapping(address => bool) public isMarket;
-
-    event PositionOpened(address indexed account, address indexed market, int256 size, uint256 price);
-    event PositionClosed(address indexed account, address indexed market, int256 pnl);
-
-    constructor(
-        address _pool,
-        address _addressProvider
-    ) CreditManagerV3(_pool, _addressProvider) {}
-
-    // Override collateral calculation to include mark-to-market PnL
-    function calcDebtAndCollateral(
-        address creditAccount,
-        CollateralCalcTask task
-    ) public view override returns (CollateralDebtData memory cdd) {
-        cdd = super.calcDebtAndCollateral(creditAccount, task);
-
-        // Add unrealized PnL from all positions
-        int256 totalPnL = _calculateUnrealizedPnL(creditAccount);
-
-        if (totalPnL > 0) {
-            cdd.twvUSD += uint256(totalPnL);
-        } else if (totalPnL < 0) {
-            // Reduce collateral by losses
-            uint256 loss = uint256(-totalPnL);
-            if (loss < cdd.twvUSD) {
-                cdd.twvUSD -= loss;
-            } else {
-                cdd.twvUSD = 0;
-            }
-        }
-    }
-
-    function _calculateUnrealizedPnL(address account) internal view returns (int256 totalPnL) {
-        // Iterate through known markets and sum PnL
-        // In production, you'd use an enumerable set or similar
-        for (uint256 i = 0; i < marketCount; i++) {
-            address market = marketsList[i];
-            Position memory pos = positions[account][market];
-
-            if (pos.size != 0) {
-                uint256 currentPrice = _getMarketPrice(market);
-                int256 priceDelta = int256(currentPrice) - int256(pos.entryPrice);
-                totalPnL += (pos.size * priceDelta) / 1e8;
-            }
-        }
-    }
-
-    function _getMarketPrice(address market) internal view returns (uint256) {
-        // Query custom oracle for perpetual price
-        return ICustomOracle(priceOracle()).getMarketPrice(market);
-    }
-
-    // Market management
-    uint256 public marketCount;
-    address[] public marketsList;
-
-    function addMarket(address market) external configuratorOnly {
-        require(!isMarket[market], "Market exists");
-        isMarket[market] = true;
-        marketsList.push(market);
-        marketCount++;
-    }
-}
-```
-
 **Key patterns demonstrated:**
 
 1. **State extension**: Added `Position` tracking on top of base Credit Manager
@@ -542,18 +459,18 @@ When extending core contracts:
 
 ## Deployment Checklist
 
-- [ ] Core contracts audited by reputable firm
-- [ ] Fork tests against production Gearbox contracts
-- [ ] Governance proposal prepared with detailed specification
-- [ ] Documentation for users and integrators
-- [ ] Emergency pause mechanisms tested
-- [ ] Oracle manipulation scenarios analyzed
-- [ ] Gas profiling completed for all overridden functions
-- [ ] Upgradeability plan documented
+* [ ] Core contracts audited by reputable firm
+* [ ] Fork tests against production Gearbox contracts
+* [ ] Governance proposal prepared with detailed specification
+* [ ] Documentation for users and integrators
+* [ ] Emergency pause mechanisms tested
+* [ ] Oracle manipulation scenarios analyzed
+* [ ] Gas profiling completed for all overridden functions
+* [ ] Upgradeability plan documented
 
 ## Related
 
-- [Adapter Development](./adapter-development.md) - Standard integration path
-- [Protocol Integration](./protocol-integration.md) - Building on top of Credit Accounts
-- [Credit Suite Architecture](../../concepts/credit-suite.md) - Core architecture reference
-- [Pool Architecture](../../concepts/pools.md) - Pool mechanics reference
+* [Adapter Development](adapter-development.md) - Standard integration path
+* [Protocol Integration](protocol-integration.md) - Building on top of Credit Accounts
+* [Credit Suite Architecture](../../concepts/credit-suite.md) - Core architecture reference
+* [Pool Architecture](../../concepts/pools.md) - Pool mechanics reference
