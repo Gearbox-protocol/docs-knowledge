@@ -42,6 +42,7 @@
 * [Instance Owner](governance-and-operations/instance-owner.md)
 * [Protocol DAO](governance-and-operations/protocol-dao.md)
 * [Protocol audits](governance-and-operations/protocol-audits.md)
+* [V3.0 operational multisigs](governance-and-operations/v3.0-operational-multisigs.md)
 
 ## Reference
 
