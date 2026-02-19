@@ -446,5 +446,6 @@ Feeds of underlying tokens used for deployment shouldn't be of updatable type (R
 Factory address:
 
 * Plasma: 0x86e67E115f96DF37239E0479441303De0de7bc2b
+* Mainnet: 0x83bf399fa3dc49af8fb5c34031a50c7c93f56129
 
 </details>
