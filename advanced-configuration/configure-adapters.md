@@ -702,7 +702,7 @@ Before allowing pools in adapter, please ensure that tokens from a pair are adde
 {% endhint %}
 
 {% hint style="success" %}
-To fetch fee, tick spacing and hook list, go to **Position Manager** contract and pass first 52 symbols of pool identifier from Uniswap UI as PoolID.\
+To fetch fee, tick spacing and hook list, go to **Position Manager** contract and call _**poolKeys**_ method passing first 52 symbols of pool identifier from Uniswap UI as PoolID.\
 \
 E.g. if uniswap link has 0x9b25899648292dce5f8805823aebd0d025bf2625be3162a2f1199e13d8d300c8, then 0x9b25899648292dce5f8805823aebd0d025bf2625be3162a2f1 should be passed as poolID to Position Manager. \
 \
