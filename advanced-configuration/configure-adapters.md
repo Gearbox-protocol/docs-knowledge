@@ -698,8 +698,18 @@ It requires passing the following addresses:
 {% hint style="warning" %}
 Before allowing pools in adapter, please ensure that tokens from a pair are added as _**Assets to Market**_ and as _**Collaterals to Credit Manager**_.\
 \
-\&#xNAN;_e.g. to add WETH/USDC pool both WETH and USDC must be added before._
+&#xNAN;_&#x65;.g. to add WETH/USDC pool both WETH and USDC must be added before._
 {% endhint %}
+
+{% hint style="success" %}
+To fetch fee, tick spacing and hook list, go to **Position Manager** contract and pass first 52 symbols of pool identifier from Uniswap UI as PoolID.\
+\
+E.g. if uniswap link has 0x9b25899648292dce5f8805823aebd0d025bf2625be3162a2f1199e13d8d300c8, then 0x9b25899648292dce5f8805823aebd0d025bf2625be3162a2f1 should be passed as poolID to Position Manager. \
+\
+Position Manager addresses on different chains can be found [here](https://docs.uniswap.org/contracts/v4/deployments).
+{% endhint %}
+
+<figure><img src="../.gitbook/assets/Screenshot 2026-02-24 at 18.27.33.png" alt=""><figcaption></figcaption></figure>
 
 * **Configure adapter to whitelist** \
   &#xNAN;_&#x43;onfiguration requires specifying tokens and fee from a pair_
