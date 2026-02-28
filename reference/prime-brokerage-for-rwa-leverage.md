@@ -1,7 +1,5 @@
 # Prime Brokerage for RWA Leverage
 
-## Prime Brokerage for RWA Leverage
-
 How Gearbox enables credit products to offer leveraged positions on assets with non-atomic settlement — using ACRED as an example.
 
 ***
