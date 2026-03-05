@@ -1,99 +1,98 @@
 # Prime Brokerage for RWA Leverage
 
-How Gearbox enables credit products to offer leveraged positions on assets with non-atomic settlement — using ACRED as an example.
+How Gearbox enables faster entry/exit for RWA-backed debt positions with non-atomic settlement — using ACRED leverage as an illustrative go-to-market use case.
 
 ***
 
-#### The Problem
+### The Problem: Slow Settlement Breaks RWA-Backed Debt Positions
 
-RWAs like tokenized securities don't settle instantly. When you deposit USDC to mint ACRED, there's a delay before you receive the token. When you redeem ACRED, there's a delay before you get your USDC back.
+RWA tokens (tokenized securities, private credit, treasuries) typically do not settle atomically. Deposits (e.g., USDC → ACRED mint) can require hours or days, while redemptions can be materially longer (ACRED can be \~120 days).
 
-This breaks traditional leverage flows:
+This settlement profile constrains RWA-backed debt strategies (leverage is the clearest example):
 
-**Traditional approach (flash loan style):**
+* **Limited ability to react to market opportunities** — by the time a deposit matures, market conditions may have changed
+* **Limited ability to exit during volatility** — positions can remain in redemption queues while prices move
+* **Lower liquidator participation** — institutional liquidators are reluctant to warehouse long-dated redemption receipts (ACRED: \~120 days)
 
-1. User has $100, borrows $400 more in a flash loan
-2. Swap $500 into asset
-3. Deposit as collateral, receive leveraged position
-4. All in one atomic transaction
-
-**Why it fails for RWAs:**
-
-* Step 2 doesn't work: you can't "swap" into an RWA — you must deposit and wait
-* During the wait, you have no ERC20 collateral, just a pending-deposit claim
-* It's technically hard to collateralize pending-deposit tokens, since those positions contain more data than a simple ERC20
-
-**Result:** No leverage on RWAs with non-atomic settlement.
+Traditional flash-loan style flows are insufficient because standard ERC20 collateral is unavailable during the waiting period.
 
 ***
 
-#### The Solution: Prime Brokerage Model
+### The Solution: Up to 10x Faster Entry/Exit for RWA-Backed Debt Positions
+
+Gearbox acts as a **prime brokerage layer** that holds positions during transition phases — when assets are pending deposits or redemption receipts, not yet standard ERC20s.
+
+**Result:** Platforms like Morpho, Euler, and Aave can support RWA-backed debt positions with materially faster entry/exit handling.
+
+* **Time to open an RWA-backed debt position:** can be near-immediate (Hour 0), instead of waiting for mint completion.
+* **Time to unwind credit position backed by RWA:** 1 redemption period, instead of iterative deleverage slowed by multi-day redemptions.
+
+***
+
+### Who Benefits
+
+| User              | Current Problem                                                               | With Gearbox                                                            |
+| ----------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| **Traders**       | Miss entry points during multi-day settlement                                 | Get an RWA-backed debt position immediately, then exit when appropriate |
+| **Liquidators**   | Reluctant to take on long-dated redemption risk (ACRED can be \~120 days)     | Fast de-risking path (sell/finance receipt), reducing duration exposure |
+| **Risk Curators** | Limited ability to offer fast credit products on RWAs with delayed settlement | Integration-ready infrastructure with no core protocol changes required |
+
+***
+
+### Exit Speed Comparison (ACRED Redemption)
+
+* **Time to de-risk position exposure:** near-immediate with Gearbox vs \~120 days without&#x20;
+* **Time to unwind leveraged position into stablecoins:** \~120 days with Gearbox vs  >240 days without
+
+{% hint style="info" %}
+Gearbox improves liquidity and risk transfer during the waiting period; it does not shorten issuer redemption cycles
+{% endhint %}
+
+***
+
+### How It Works: Prime Brokerage Model
 
 Gearbox acts as a **prime brokerage layer** that holds positions during transition phases — when assets are not yet standard ERC20s but pending deposits or redemption receipts.
 
 ```mermaid
 flowchart TB
-    subgraph User["User Layer"]
-        U["User"]
-    end
-    
-    subgraph PartnerUI["Partner Product"]
-        UI["Partner UI<br/>━━━━━━━━━━━━━━━━<br/>User-facing interface"]
-        M["Partner Market<br/>━━━━━━━━━━━━━━━━<br/>Holds mature ERC20 positions"]
-    end
-    
-    subgraph Gearbox["Gearbox"]
-        G["Backend infrastructure<br/>━━━━━━━━━━━━━━━━<br/>• Holds transition-stage positions<br/>• Credit Accounts with custom collateral logic"]
-    end
-    
-    subgraph Issuer["RWA Issuer (e.g., Securitize)"]
-        S["Tokenizes real-world assets<br/>━━━━━━━━━━━━━━━━<br/>Non-atomic deposit/redemption"]
-    end
-    
-    U -->|"Interacts with"| UI
-    UI <-->|"Submits txs"| M
-    M <-->|"Liquidity flows<br/>(curator-managed)"| G
-    G <-->|"Mint / Redeem"| Issuer
+    U["User"] --> UI["Partner UI<br/>(same UX as today)"]
+    UI --> Q{"Is collateral mature ERC20?"}
+
+    Q -->|Yes| PM["Partner Market<br/>(default venue)"]
+    Q -->|No, in transition| GB["Gearbox Credit Account<br/>(transition venue)"]
+
+    GB <--> ISS["RWA Issuer<br/>(mint/redeem settlement)"]
+    GB -->|After maturity| PM
+
+    C["Curator / automation"] -. reallocates liquidity .-> PM
+    C -. reallocates liquidity .-> GB
+
+    classDef unchanged fill:#e8f0fe,stroke:#4a67b3,color:#111;
+    classDef transition fill:#eaf7ea,stroke:#3d8b40,color:#111;
+    classDef external fill:#fff4e5,stroke:#c97a00,color:#111;
+
+    class U,UI,Q,PM unchanged;
+    class GB,C transition;
+    class ISS external;
 ```
 
 **What happens:**
 
-* User interacts only with **Partner UI** — familiar interface
+* User interacts with familiar **Partner UI**
 * **Partner Market** holds positions when collateral is mature ERC20
 * **Gearbox** holds positions during transition (pending deposits, redemption receipts)
 * **Curator** moves liquidity between Partner Market and Gearbox as positions mature
 
-**Result:** Platforms like Morpho, Euler, and Aave can offer leveraged RWA products without modifying their core architecture.
-
-**Position Lifecycle**
-
-```mermaid
-flowchart TB
-    subgraph ENTRY["ENTRY"]
-        E1["Partner UI<br/>(user signals intent)"]
-        E2["Gearbox<br/>(pending deposit)"]
-        E3["Partner Market<br/>(mature ERC20)"]
-        E1 --> E2 --> E3
-    end
-    
-    subgraph EXIT["EXIT"]
-        X1["Partner UI<br/>(user signals intent)"]
-        X2["Gearbox<br/>(redemption receipt)"]
-        X3["Position closed"]
-        X1 --> X2 --> X3
-    end
-    
-    E3 --> X1
-    X3 -.->|"ready for new position"| E1
-```
+**Result:** Platforms like Morpho, Euler, and Aave can offer faster RWA-backed debt products without modifying their core architecture.
 
 ***
 
-#### Actors & Contracts
+### Actors & Contracts
 
 | Actor                      | Role                                                                                                                              | Contracts                                           |
 | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| **User**                   | Borrower taking leveraged position                                                                                                | User wallet                                         |
+| **User**                   | Borrower opening an RWA-backed debt position                                                                                      | User wallet                                         |
 | **Partner Market Curator** | Capital allocator. Manages liquidity allocation between Partner vaults and Gearbox pool. Takes lending-side risk.                 | Aave hub, Euler vault, Partner vault                |
 | **Gearbox Curator**        | Configures collateral types including transition-stage assets. Sets risk parameters for pending deposits and redemption receipts. | Credit Configurator                                 |
 | **Partner Market**         | Lending infrastructure for mature ERC20 positions                                                                                 | Aave pool, Euler market, Partner market             |
@@ -101,7 +100,7 @@ flowchart TB
 | **Gearbox**                | Transitional venue. Holds positions during deposit/redemption windows.                                                            | Pool, Credit Manager, Credit Facade, Credit Account |
 | **Securitize**             | ACRED issuer. Handles mint and redeem operations.                                                                                 | ACRED token, mint contract, redeem contract         |
 
-**Curator Relationship**
+#### Curator Relationship
 
 Partner Market curators and Gearbox curators are **formally different roles** but can be the same entity. A single party may:
 
@@ -112,27 +111,27 @@ This alignment simplifies risk management and capital efficiency.
 
 ***
 
-#### One-Time Setup
+### One-Time Setup
 
-Before users can take leveraged ACRED positions, curators configure both sides:
+Before users can take RWA-backed debt positions using ACRED, curators configure both sides:
 
-**Partner Market Curator**
+#### **Partner protocol**&#x20;
 
-1. **Create vault/market** for ACRED leverage product
+1. **Create vault/market** for ACRED credit product&#x20;
 2. **Allocate capital** to ACRED market (exposed to ERC20 RWA itself)
 
-**Gearbox Curator**
+#### Gearbox protocol
 
 1. **Create Gearbox market** supporting ACRED in transition state as collateral
 2. **Allocate capital to Gearbox market** when there is a user intent to enter/exit position
 
 ***
 
-#### Entry Flow: Taking 5x Leverage on ACRED
+### Entry Flow (Illustrative Use Case): Taking 5x Leverage on ACRED
 
 User wants $500 ACRED exposure with $100 own capital.
 
-**Phase 1: User Intent**
+#### Phase 1: User Intent
 
 ```mermaid
 sequenceDiagram
@@ -150,12 +149,12 @@ sequenceDiagram
     UI->>GP: Enter leveraged position<br/>(pending-deposit token)
 ```
 
-* User interacts with Partner UI (familiar interface)
+* User interacts through the existing Partner UI
 * Submits intent: "5x leverage on ACRED"
-* IF deposit is delayed, curator allocates capital from their vault to Gearbox pool
+* If deposit settlement is delayed, curator allocates capital from the partner vault to the Gearbox pool
 * User enters leveraged position in pending-deposit token
 
-**Phase 2: Transition Setup (Gearbox + Securitize contracts)**
+#### Phase 2: Transition Setup (Gearbox + Securitize contracts)
 
 ```mermaid
 sequenceDiagram
@@ -175,13 +174,14 @@ sequenceDiagram
     Note over CA: Collateral: Pending-deposit token<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓
 ```
 
-* **Credit Account deployed** for user (transparent, user doesn't interact directly)
-* **Borrow $400 USDC** from Gearbox pool (capital provided by Partner Vault)
-* **Deposit $500 USDC** to Securitize → receive pending-deposit token
-* **Position:** Pending-deposit token (collateral) + $400 USDC debt
-* **Overcollateralized** because Gearbox curator configured pending-deposit as valid collateral
+**Key Points:**
 
-**Phase 3: Waiting**
+* **Credit Account is deployed&#x20;**_**for**_**&#x20;the user** — user interaction remains at the Partner UI level
+* User's $100 + borrowed $400 = $500 total position
+* **Pending-deposit token is valid collateral** (curator-configured)
+* Position remains overcollateralized during wait
+
+#### Phase 3: Waiting
 
 ```mermaid
 flowchart LR
@@ -200,7 +200,7 @@ flowchart LR
 * Pending-deposit token becomes ACRED
 * Position still on Gearbox Credit Account
 
-**Phase 4: Migration to Partner Market (Partner + Gearbox contracts)**
+#### Phase 4: Migration to Partner Market (Partner + Gearbox contracts)
 
 User triggers migration (manual or auto-opt-in):
 
@@ -240,11 +240,17 @@ sequenceDiagram
 
 ***
 
-#### Exit Flow: Redeeming ACRED Position
+### Exit Flow: Redeeming ACRED Position
 
-User wants to exit $500 ACRED leveraged position ($100 equity, $400 debt) and receive USDC.
+User wants to exit a $500 ACRED RWA-backed debt position ($100 equity, $400 debt) and receive USDC.
 
-**Phase 1: User Intent**
+#### Why Exit Speed Matters
+
+* **Liquidators avoid long-dated redemption risk** — ACRED redemption can be \~120 days
+* **Near-immediate de-risking path enables more active liquidation participation**
+* **Gearbox provides transition liquidity service** for liquidated positions
+
+#### Phase 1: User Intent
 
 ```mermaid
 sequenceDiagram
@@ -264,11 +270,11 @@ sequenceDiagram
     V->>GP: Funds flow to Gearbox
 ```
 
-* User interacts with Partner UI (familiar interface)
+* User interacts through the existing Partner UI
 * Submits intent: "Exit ACRED position"
-* IF redemption is delayed, curator reallocates capital from Partner Vault to Gearbox pool
+* If redemption is delayed, curator reallocates capital from Partner Vault to Gearbox pool
 
-**Phase 2: Transition Setup (Gearbox + Securitize contracts)**
+#### Phase 2: Transition Setup (Gearbox + Securitize contracts)
 
 ```mermaid
 sequenceDiagram
@@ -293,7 +299,7 @@ sequenceDiagram
     Note over CA: Collateral: Redemption receipt<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓
 ```
 
-* **Credit Account deployed** for user (transparent, user doesn't interact directly)
+* **Credit Account deployed** for user (transparent to the user; interaction remains at the Partner UI layer)
 * **Borrow $400 USDC** from Gearbox pool (capital provided by Partner Vault)
 * **Repay Partner Market debt** with borrowed USDC
 * **Move ACRED** to Credit Account
@@ -303,7 +309,7 @@ sequenceDiagram
 
 **Result:** User has zero position on Partner Market, overcollateralized position on Gearbox (redemption receipt collateral, USDC debt)
 
-**Phase 3: Waiting**
+#### Phase 3: Waiting
 
 ```mermaid
 flowchart LR
@@ -318,11 +324,11 @@ flowchart LR
     Before -->|"... time passes ..."| After
 ```
 
-* Redemption window passes (hours to days depending on ACRED terms)
+* Redemption window passes (ACRED can be long-dated, e.g., \~120 days; issuer-dependent)
 * Redemption receipt matures → USDC received
-* Position still on Gearbox Credit Account
+* Position remains on Gearbox Credit Account until final settlement
 
-**Phase 4: Finalization & Close (Gearbox contracts)**
+#### Phase 4: Finalization & Close (Gearbox contracts)
 
 User triggers finalization (manual or auto-opt-in):
 
@@ -338,21 +344,105 @@ sequenceDiagram
     CA->>GP: Repay $400 debt
     GP-->>CA: Debt cleared
     CA->>CF: Close Credit Account
-    CF->>U: Withdraw ~$100 USDC<br/>(equity/profit)
-    Note over U: Receives USDC<br/>(profit/equity)
+    CF->>U: Withdraw net USDC balance<br/>(equity ± PnL - fees/interest)
+    Note over U: Receives net USDC after debt repayment
 ```
 
 * **Repay $400 debt** to Gearbox pool
 * **Close Credit Account**
-* **User receives** \~$100 excess USDC (profit or remaining equity)
+* **User receives** net USDC: redemption proceeds minus debt, interest, and fees (plus/minus PnL)
+
+`Net user payout = redemption proceeds - repaid debt - accrued borrow interest - protocol fees ± position PnL`
 
 **Result:** Position fully closed. User has USDC in wallet.
 
 ***
 
-#### Capital Flow Summary
+### Exit Value for Liquidators
 
-**Where Capital Lives at Each Stage**
+Gearbox's speed advantage is most valuable during liquidations.
+
+#### The Liquidator's Problem
+
+When an RWA-backed debt position becomes undercollateralized:
+
+1. Traditional approach: Liquidator takes position, initiates redemption, and often holds the receipt to settlement (ACRED: \~120 days)
+2. Problem: Institutional liquidators are reluctant to hold long-dated redemption receipts through volatile periods
+3. Result: **Lower liquidation participation can increase bad-debt risk**
+
+#### The Gearbox Solution
+
+1. Liquidator takes position in Credit Account
+2. Redemption receipt is already there (or can be initiated immediately)
+3. Liquidator can hold until redemption matures
+4. **Or:** Gearbox curator can provide near-immediate liquidity by buying/financing the receipt at a discount
+
+#### Value Proposition
+
+| Metric                               | Traditional                                                 | With Gearbox                                        |
+| ------------------------------------ | ----------------------------------------------------------- | --------------------------------------------------- |
+| Time to de-risk position exposure    | Often tied to full redemption window (\~120 days for ACRED) | Near-immediate if receipt is sold/financed          |
+| Time to final issuer cash settlement | \~120 days (ACRED illustrative)                             | \~120 days (issuer-dependent; unchanged by Gearbox) |
+| Liquidator risk                      | High (duration + market exposure)                           | Lower (faster de-risking path)                      |
+| Protocol health                      | Lower liquidation participation, higher bad-debt risk       | More active liquidation participation               |
+
+**Key insight:** The same mechanism that helps traders enter fast also helps liquidators de-risk faster, while final settlement remains issuer-timed. This makes the system healthier under stress.
+
+***
+
+### Position Transfer Mechanism
+
+When a position matures (pending-deposit → ACRED), it can be migrated from Gearbox to the Partner Market. Two approaches:
+
+#### Option A: Adapter-Based Atomic Migration
+
+If the destination partner market supports the required batched operations:
+
+1. Credit Account calls an integration adapter
+2. Adapter supplies ACRED as collateral in partner market
+3. Adapter borrows USDC from partner market
+4. Adapter repays Gearbox debt
+5. Position is finalized under the user account in the destination market
+
+**Prerequisites for Option A:**
+
+* Supply + borrow + repay path can execute atomically (single tx via batch/multicall)
+* Adapter has permissioned access to move collateral from Credit Account
+* Destination market supports opening/transferring the resulting position to the correct user
+
+If any prerequisite fails, use Option B.
+
+#### Option B: Automated Bot / Orchestrator
+
+If atomic transfer is unavailable:
+
+1. User triggers migration (single action in UI)
+2. Bot (restricted permissions) executes:
+   * Borrow USDC from Partner Market
+   * Repay debt to Gearbox Pool
+   * Move ACRED from Credit Account to Partner Market as collateral
+   * Close Credit Account
+   * Transfer resulting position only to the original owner
+
+**Safety constraints:**
+
+* Bot can interact only with explicitly allowlisted markets/contracts
+* Bot can transfer only to the Credit Account owner
+* Bot actions are deterministic and auditable (no discretionary routing)
+
+#### Partner Capability Checklist (Fill Per Integration)
+
+| Partner Integration | Atomic supply+borrow+repay in one tx          | Native position handoff                 | Recommended Path                                                 |
+| ------------------- | --------------------------------------------- | --------------------------------------- | ---------------------------------------------------------------- |
+| Morpho deployment   | Verify per market + adapter                   | Verify per deployment                   | Option A if all checks pass, else Option B                       |
+| Aave deployment     | Verify per pool version + integration wrapper | Typically requires wrapper/orchestrator | Option B by default, Option A if wrapper supports atomic handoff |
+| Euler deployment    | Verify per vault design + adapter             | Verify per deployment                   | Option A if supported, else Option B                             |
+
+***
+
+### Capital Flow Summary
+
+#### Where Capital Lives at Each Stage
 
 | Stage           | Capital Location | Reason                                      |
 | --------------- | ---------------- | ------------------------------------------- |
@@ -363,7 +453,7 @@ sequenceDiagram
 | Exit Phase 4    | N/A              | Position closed                             |
 | After Exit      | Partner Market   | Available for new positions                 |
 
-**Curator's Role in Capital Flow**
+#### Curator's Role in Capital Flow
 
 The curator actively manages liquidity allocation:
 
@@ -386,9 +476,9 @@ This can be done atomically within a single transaction (using flash loans if ne
 
 ***
 
-#### Why This Works
+### Why This Works
 
-**What Gearbox Enables**
+#### What Gearbox Enables
 
 | Capability                      | How It Helps                                                                                |
 | ------------------------------- | ------------------------------------------------------------------------------------------- |
@@ -397,12 +487,69 @@ This can be done atomically within a single transaction (using flash loans if ne
 | **Position metadata tracking**  | Credit Account knows deposit initiator, redemption timing, etc.                             |
 | **Atomic solvency checks**      | Complex multi-step operations are valid if final state is overcollateralized                |
 
-**Why Pool-Based Lenders Can't Do This Alone**
+#### Why Pool-Based Lenders Alone Are Insufficient
 
 Pool-based lending protocols (Aave, Euler, Morpho) are optimized for standard ERC20 collateral:
 
-* **No concept of transition states** — collateral is either an ERC20 or it isn't
-* **Pooled positions** — can't track per-position metadata like deposit initiator
-* **No custom collateral logic** — can't value pending deposits differently from mature tokens
+* **No native transition-state support** — collateral is treated as valid ERC20 collateral or invalid
+* **Pooled position design** — these systems cannot track per-position metadata (e.g., deposit initiator)
+* **No custom transition-stage valuation logic** — pending deposits and mature tokens cannot be risk-modeled differently by position
 
-Gearbox's Credit Account architecture provides the **per-position isolation and metadata** needed to safely collateralize transition-stage assets.
+Gearbox Credit Account architecture provides the **per-position isolation and metadata** required to collateralize transition-stage assets safely.
+
+***
+
+### Pricing Considerations
+
+> **Note:** Pricing should be validated with target users. This section poses questions, not answers.
+
+#### Questions to Answer
+
+1. What are the alternatives for fast RWA-backed debt positioning? (TradFi, other DeFi protocols)
+2. What is the time value of faster entry/exit for hedge funds?
+3. What would users pay for instant liquidity during market stress?
+
+#### Market Comparison
+
+| Platform               | Fee     | Notes                            |
+| ---------------------- | ------- | -------------------------------- |
+| Uniswap (v2)           | 0.3%    | Set when no alternatives existed |
+| Uniswap (v3)           | 0.01-1% | Variable, depends on pair        |
+| Aave flash loan        | 0.09%   | For atomic operations            |
+| **Gearbox (proposed)** | **?**   | Depends on value delivered       |
+
+#### Transcript Note
+
+> "0.05% seems too low. Uniswap was 0.3% when they had no competition."
+
+**Recommendation:** Research target users (hedge funds, professional traders) on willingness to pay. Consider 0.3-1% range based on Uniswap precedent.
+
+***
+
+### Frequently Asked Questions
+
+#### Can Morpho build this natively?
+
+Yes, but position transfer mechanics are complex. Gearbox provides tested infrastructure with phantom token support. Building in-house requires:
+
+* Phantom token contract
+* Position transfer logic
+* Safety checks for automated migration
+
+Gearbox offers this as a service, enabling shorter time-to-market and reduced audit scope.
+
+#### Is this limited to Morpho?
+
+No. It applies to Aave, Euler, and other lending markets. Gearbox is infrastructure that any risk curator can integrate.
+
+#### What happens if price drops during deposit window?
+
+Overcollateralization depends on configured haircuts and thresholds. Pending-deposit collateral is typically valued conservatively; liquidation can still occur if health factor falls below the configured limit.
+
+#### How much capital does the curator need?
+
+Depends on expected user demand. Curator allocates capital from their vault to Gearbox pool when users signal intent. Capital efficiency improves as positions mature and migrate to partner markets.
+
+#### Who are the liquidators?
+
+Professional market makers and funds. They value fast de-risking capability and generally avoid holding long-dated redemption receipts (ACRED can be \~120 days) during market stress.
