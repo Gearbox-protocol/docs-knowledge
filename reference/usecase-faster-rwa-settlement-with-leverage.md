@@ -22,7 +22,7 @@ Traditional flash-loan style flows are insufficient because standard ERC20 colla
 
 Gearbox acts as a **prime brokerage layer** that holds positions during transition phases — when assets are pending deposits or redemption receipts, not yet standard ERC20s.
 
-**Result:** Platforms like Morpho, Euler, and Aave can support RWA-backed debt positions with materially faster entry/exit handling.
+**Result:** Partner lending platforms can support RWA-backed debt positions with materially faster entry/exit handling.
 
 * **Time to open an RWA-backed debt position:** can be near-immediate (Hour 0), instead of waiting for mint completion.
 * **Time to unwind credit position backed by RWA:** 1 redemption period, instead of iterative deleverage slowed by multi-day redemptions.
@@ -84,7 +84,7 @@ flowchart TB
 * **Gearbox** holds positions during transition (pending deposits, redemption receipts)
 * **Curator** moves liquidity between Partner Market and Gearbox as positions mature
 
-**Result:** Platforms like Morpho, Euler, and Aave can offer faster RWA-backed debt products without modifying their core architecture.
+**Result:** Partner lending platforms can offer faster RWA-backed debt products without modifying their core architecture.
 
 ***
 
@@ -93,10 +93,10 @@ flowchart TB
 | Actor                      | Role                                                                                                                              | Contracts                                           |
 | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
 | **User**                   | Borrower opening an RWA-backed debt position                                                                                      | User wallet                                         |
-| **Partner Market Curator** | Capital allocator. Manages liquidity allocation between Partner vaults and Gearbox pool. Takes lending-side risk.                 | Aave hub, Morpho/Euler allocators                   |
+| **Partner Market Curator** | Capital allocator. Manages liquidity allocation between Partner vaults and Gearbox pool. Takes lending-side risk.                 | Partner allocator contracts                         |
 | **Gearbox Curator**        | Configures collateral types including transition-stage assets. Sets risk parameters for pending deposits and redemption receipts. | Credit Configurator                                 |
-| **Partner Market**         | Lending infrastructure for mature ERC20 positions                                                                                 | Aave pool, Morpho/Euler market                      |
-| **Partner Vault**          | Liquidity source. Holds capital allocated by curators.                                                                            | Aave hub, Morpho/Euler vault                        |
+| **Partner Market**         | Lending infrastructure for mature ERC20 positions                                                                                 | Partner market contracts                            |
+| **Partner Vault**          | Liquidity source. Holds capital allocated by curators.                                                                            | Partner vault contracts                             |
 | **Gearbox**                | Transitional venue. Holds positions during deposit/redemption windows.                                                            | Pool, Credit Manager, Credit Facade, Credit Account |
 | **Securitize**             | ACRED issuer. Handles mint and redeem operations.                                                                                 | ACRED token, mint contract, redeem contract         |
 
