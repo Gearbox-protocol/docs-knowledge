@@ -54,9 +54,10 @@ Gearbox improves liquidity and risk transfer during the waiting period; it does 
 
 Gearbox acts as a **prime brokerage layer** that holds positions during transition phases — when assets are not yet standard ERC20s but pending deposits or redemption receipts.
 
-{% @mermaid/diagram content="flowchart TB
-U\["User"] --> UI\["Partner UI<br/>(same UX as today)"]
-UI --> Q{"Is collateral in delayed deposit/redemption phase?"}
+```mermaid
+flowchart TB
+    U["User"] --> UI["Partner UI<br/>(same UX as today)"]
+    UI --> Q{"Is collateral in delayed deposit/redemption phase?"}
 
     Q -->|No| PM["Partner Market<br/>(default venue)"]
     Q -->|Yes| GB["Gearbox Credit Account<br/>(transition venue)"]
@@ -73,7 +74,8 @@ UI --> Q{"Is collateral in delayed deposit/redemption phase?"}
 
     class U,UI,Q,PM unchanged;
     class GB,C transition;
-    class ISS external;" %}
+    class ISS external;
+```
 
 **What happens:**
 
@@ -130,16 +132,18 @@ User wants $500 ACRED exposure with $100 own capital.
 
 #### Phase 1: User Intent
 
-{% @mermaid/diagram content="sequenceDiagram
-participant W as User Wallet
-participant A as Allocator
-participant PV as Partner Vault
-participant GP as Gearbox Pool
+```mermaid
+sequenceDiagram
+    participant W as User Wallet
+    participant A as Allocator
+    participant PV as Partner Vault
+    participant GP as Gearbox Pool
 
     W->>A: Open position (via adapter)
     A->>PV: Withdraw USDC
     PV-->>GP: $400 USDC allocated
-    Note over GP: Capital ready for borrowing" %}
+    Note over GP: Capital ready for borrowing
+```
 
 * User opens leveraged position through Partner UI
 * Transaction triggers Allocator (via adapter) to rebalance capital
@@ -148,10 +152,11 @@ participant GP as Gearbox Pool
 
 #### Phase 2: Transition Setup (Gearbox + Securitize contracts)
 
-{% @mermaid/diagram content="sequenceDiagram
-participant GP as Gearbox Pool
-participant CA as Credit Account
-participant S as Securitize
+```mermaid
+sequenceDiagram
+    participant GP as Gearbox Pool
+    participant CA as Credit Account
+    participant S as Securitize
 
     Note over CA: Opened via adapter
     CA->>GP: Borrow $400 USDC
@@ -159,7 +164,8 @@ participant S as Securitize
     Note over CA: User's $100 + $400 borrowed = $500 total
     CA->>S: Deposit $500 USDC (mint ACRED)
     S-->>CA: Pending-deposit token
-    Note over CA: Collateral: Pending-deposit token<br/>Debt: $400 USDC ✓" %}
+    Note over CA: Collateral: Pending-deposit token<br/>Debt: $400 USDC ✓
+```
 
 **Key Points:**
 
@@ -170,16 +176,18 @@ participant S as Securitize
 
 #### Phase 3: Waiting
 
-{% @mermaid/diagram content="flowchart LR
-subgraph Before\["Before Maturation"]
-CA1\["Credit Account<br/>━━━━━━━━━━━━━━━<br/>Holds: Pending-deposit token<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓"]
-end
+```mermaid
+flowchart LR
+    subgraph Before["Before Maturation"]
+        CA1["Credit Account<br/>━━━━━━━━━━━━━━━<br/>Holds: Pending-deposit token<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓"]
+    end
 
     subgraph After["After Maturation"]
         CA2["Credit Account<br/>━━━━━━━━━━━━━━━<br/>Holds: ACRED (ERC20)<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓"]
     end
 
-    Before -->|"... time passes ..."| After" %}
+    Before -->|"... time passes ..."| After
+```
 
 * Deposit window passes (hours to days depending on ACRED terms)
 * Pending-deposit token becomes ACRED
@@ -189,12 +197,13 @@ end
 
 User triggers migration (manual or auto-opt-in):
 
-{% @mermaid/diagram content="sequenceDiagram
-participant W as User Wallet
-participant A as Allocator
-participant CA as Credit Account
-participant GP as Gearbox Pool
-participant PM as Partner Market
+```mermaid
+sequenceDiagram
+    participant W as User Wallet
+    participant A as Allocator
+    participant CA as Credit Account
+    participant GP as Gearbox Pool
+    participant PM as Partner Market
 
     A->>GP: Withdraw liquidity
     A->>PM: Supply liquidity
@@ -205,7 +214,8 @@ participant PM as Partner Market
     CA->>GP: Repay $400 debt
     CA->>PM: Supply ACRED as collateral
     Note over CA: Close Credit Account
-    Note over PM: Position:<br/>$500 ACRED / $400 USDC debt" %}
+    Note over PM: Position:<br/>$500 ACRED / $400 USDC debt
+```
 
 * **Allocator withdraws** liquidity from Gearbox Pool and **supplies** to Partner Market
 * **Borrow $400 USDC** from Partner Market
@@ -229,16 +239,18 @@ User wants to exit a $500 ACRED RWA-backed debt position ($100 equity, $400 debt
 
 #### Phase 1: User Intent
 
-{% @mermaid/diagram content="sequenceDiagram
-participant W as User Wallet
-participant A as Allocator
-participant PV as Partner Vault
-participant GP as Gearbox Pool
+```mermaid
+sequenceDiagram
+    participant W as User Wallet
+    participant A as Allocator
+    participant PV as Partner Vault
+    participant GP as Gearbox Pool
 
     W->>A: Exit position (via adapter)
     A->>PV: Withdraw USDC
     PV-->>GP: $400 USDC allocated
-    Note over GP: Capital ready for position migration" %}
+    Note over GP: Capital ready for position migration
+```
 
 * User exits position through Partner UI
 * Transaction triggers Allocator (via adapter) to rebalance capital
@@ -246,11 +258,12 @@ participant GP as Gearbox Pool
 
 #### Phase 2: Transition Setup (Gearbox + Securitize contracts)
 
-{% @mermaid/diagram content="sequenceDiagram
-participant M as Partner Market
-participant GP as Gearbox Pool
-participant CA as Credit Account
-participant S as Securitize
+```mermaid
+sequenceDiagram
+    participant M as Partner Market
+    participant GP as Gearbox Pool
+    participant CA as Credit Account
+    participant S as Securitize
 
     Note over CA: Opened via adapter
     CA->>GP: Borrow $400 USDC
@@ -259,7 +272,8 @@ participant S as Securitize
     M-->>CA: Release $500 ACRED
     CA->>S: Initiate redemption ($500 ACRED)
     S-->>CA: Redemption receipt
-    Note over CA: Collateral: Redemption receipt<br/>Debt: $400 USDC ✓" %}
+    Note over CA: Collateral: Redemption receipt<br/>Debt: $400 USDC ✓
+```
 
 * **Credit Account opened** via adapter (same transaction as Phase 1)
 * **Borrow $400 USDC** from Gearbox pool
@@ -273,16 +287,18 @@ participant S as Securitize
 
 #### Phase 3: Waiting
 
-{% @mermaid/diagram content="flowchart LR
-subgraph Before\["Before Maturation"]
-CA1\["Credit Account<br/>━━━━━━━━━━━━━━━<br/>Holds: Redemption receipt<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓"]
-end
+```mermaid
+flowchart LR
+    subgraph Before["Before Maturation"]
+        CA1["Credit Account<br/>━━━━━━━━━━━━━━━<br/>Holds: Redemption receipt<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓"]
+    end
 
     subgraph After["After Maturation"]
         CA2["Credit Account<br/>━━━━━━━━━━━━━━━<br/>Holds: USDC<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓"]
     end
 
-    Before -->|"... time passes ..."| After" %}
+    Before -->|"... time passes ..."| After
+```
 
 * Redemption window passes (ACRED can be long-dated, e.g., \~90 days; issuer-dependent)
 * Redemption receipt matures → USDC received
@@ -292,12 +308,13 @@ end
 
 User triggers finalization (manual or auto-opt-in):
 
-{% @mermaid/diagram content="sequenceDiagram
-participant W as User Wallet
-participant A as Allocator
-participant CA as Credit Account
-participant GP as Gearbox Pool
-participant PM as Partner Market
+```mermaid
+sequenceDiagram
+    participant W as User Wallet
+    participant A as Allocator
+    participant CA as Credit Account
+    participant GP as Gearbox Pool
+    participant PM as Partner Market
 
     W->>CA: Trigger finalization (via adapter)
     Note over CA: Holds: $500 USDC / Debt: $400
@@ -305,7 +322,8 @@ participant PM as Partner Market
     Note over CA: Close Credit Account
     CA->>W: Withdraw net USDC<br/>(equity ± PnL - fees)
     A->>GP: Withdraw liquidity
-    A->>PM: Supply liquidity" %}
+    A->>PM: Supply liquidity
+```
 
 * **Repay $400 debt** to Gearbox pool
 * **Close Credit Account**
