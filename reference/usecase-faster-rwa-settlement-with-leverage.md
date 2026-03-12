@@ -41,8 +41,8 @@ Gearbox acts as a **prime brokerage layer** that holds positions during transiti
 
 ### Exit Speed Comparison (ACRED Redemption)
 
-* **Time to de-risk position exposure:** near-immediate with Gearbox vs \~90 days without&#x20;
-* **Time to unwind leveraged position into stablecoins:** \~90 days with Gearbox vs  >240 days without
+* **Time to de-risk position exposure:** near-immediate with Gearbox vs \~90 days without
+* **Time to unwind leveraged position into stablecoins:** \~90 days with Gearbox vs >240 days without
 
 {% hint style="info" %}
 Gearbox improves liquidity and risk transfer during the waiting period; it does not shorten issuer redemption cycles
@@ -50,7 +50,7 @@ Gearbox improves liquidity and risk transfer during the waiting period; it does 
 
 ***
 
-### How It Works: Prime Brokerage Model
+### How It Works
 
 Gearbox acts as a **prime brokerage layer** that holds positions during transition phases — when assets are not yet standard ERC20s but pending deposits or redemption receipts.
 
@@ -111,27 +111,9 @@ This alignment simplifies risk management and capital efficiency.
 
 ***
 
-### One-Time Setup
-
-Before users can take RWA-backed debt positions using ACRED, curators configure both sides:
-
-#### **Partner protocol**&#x20;
-
-1. **Create vault/market** for ACRED credit product&#x20;
-2. **Allocate capital** to ACRED market (exposed to ERC20 RWA itself)
-
-#### Gearbox protocol
-
-1. **Create Gearbox market** supporting ACRED in transition state as collateral
-2. **Allocate capital to Gearbox market** when there is a user intent to enter/exit position
-
-***
-
 ### Position Transfer Mechanism
 
 When a position matures (pending-deposit → ACRED), it can be migrated from Gearbox to the Partner Market. Two approaches:
-
-#### Why Migration Is Capital-Neutral
 
 Migration between Gearbox and Partner Market does not require additional capital because both sides of the position move simultaneously:
 
@@ -141,15 +123,6 @@ Migration between Gearbox and Partner Market does not require additional capital
 When curator and user are coordinated (e.g., via smart contract integration or allocator contracts), supply and debt move together. The financial position stays exactly the same — same collateral, same debt, same health factor. Only the infrastructure changes.
 
 This coordination can be implemented at the contract level, but the specifics are integration-dependent.
-
-
-#### Partner Capability Checklist (Fill Per Integration)
-
-| Partner Integration | Atomic supply+borrow+repay in one tx          | Native position handoff                 | Recommended Path                                                 |
-| ------------------- | --------------------------------------------- | --------------------------------------- | ---------------------------------------------------------------- |
-| Morpho deployment   | Verify per market + adapter                   | Verify per deployment                   | Option A if all checks pass, else Option B                       |
-| Aave deployment     | Verify per pool version + integration wrapper | Typically requires wrapper/orchestrator | Option B by default, Option A if wrapper supports atomic handoff |
-| Euler deployment    | Verify per vault design + adapter             | Verify per deployment                   | Option A if supported, else Option B                             |
 
 ***
 
@@ -250,7 +223,7 @@ sequenceDiagram
 * **Supply ACRED** to Partner Market as collateral
 * **Close Credit Account**
 
-**Result:** User has overcollateralized ACRED position on Partner Market. $500 ACRED collateral, $400 USDC debt. No additional capital is required — curator's supply-side reallocation and the user's debt migration happen together, so the financial position is unchanged (see [Position Transfer Mechanism](#position-transfer-mechanism)).
+**Result:** User has overcollateralized ACRED position on Partner Market. $500 ACRED collateral, $400 USDC debt. No additional capital is required — curator's supply-side reallocation and the user's debt migration happen together, so the financial position is unchanged (see [Position Transfer Mechanism](usecase-faster-rwa-settlement-with-leverage.md#position-transfer-mechanism)).
 
 ***
 
@@ -394,109 +367,3 @@ When an RWA-backed debt position becomes undercollateralized:
 **Key insight:** The same mechanism that helps traders enter fast also helps liquidators de-risk faster, while final settlement remains issuer-timed. This makes the system healthier under stress.
 
 ***
-
-### Capital Flow Summary
-
-#### Where Capital Lives at Each Stage
-
-| Stage           | Capital Location | Reason                                      |
-| --------------- | ---------------- | ------------------------------------------- |
-| Entry Phase 2-3 | Gearbox Pool     | Position is in transition (pending deposit) |
-| Entry Phase 4+  | Partner Market   | Position is mature ERC20                    |
-| Exit Phase 1-2  | Gearbox Pool     | Position migrating for redemption           |
-| Exit Phase 3    | Gearbox Pool     | Position in transition (redemption receipt) |
-| Exit Phase 4    | N/A              | Position closed                             |
-| After Exit      | Partner Market   | Available for new positions                 |
-
-#### Curator's Role in Capital Flow
-
-The curator actively manages liquidity allocation:
-
-```mermaid
-flowchart TB
-    C["Curator"] -->|"Entry / Exit intent"| G["Gearbox Pool<br/>━━━━━━━━━━━━━━━━<br/>Transition positions"]
-    C -->|"After maturity / After redemption"| M["Partner Market<br/>━━━━━━━━━━━━━━━━<br/>Mature ERC20 positions"]
-    G <-->|"Capital flow"| M
-```
-
-This can be done atomically within a single transaction (using flash loans if needed) or as separate operations depending on the curator's implementation.
-
-***
-
-### Why This Works
-
-#### What Gearbox Enables
-
-| Capability                      | How It Helps                                                                                |
-| ------------------------------- | ------------------------------------------------------------------------------------------- |
-| **Transition-stage collateral** | Credit Accounts can hold pending-deposit tokens and redemption receipts as valid collateral |
-| **Custom collateral valuation** | Curator sets different LTVs for pending vs mature states                                    |
-| **Position metadata tracking**  | Credit Account knows deposit initiator, redemption timing, etc.                             |
-| **Atomic solvency checks**      | Complex multi-step operations are valid if final state is overcollateralized                |
-
-#### Why Pool-Based Lenders Alone Are Insufficient
-
-Pool-based lending protocols (Aave, Euler, Morpho) are optimized for standard ERC20 collateral:
-
-* **No native transition-state support** — collateral is treated as valid ERC20 collateral or invalid
-* **Pooled position design** — these systems cannot track per-position metadata (e.g., deposit initiator)
-* **No custom transition-stage valuation logic** — pending deposits and mature tokens cannot be risk-modeled differently by position
-
-Gearbox Credit Account architecture provides the **per-position isolation and metadata** required to collateralize transition-stage assets safely.
-
-***
-
-### Pricing Considerations
-
-> **Note:** Pricing should be validated with target users. This section poses questions, not answers.
-
-#### Questions to Answer
-
-1. What are the alternatives for fast RWA-backed debt positioning? (TradFi, other DeFi protocols)
-2. What is the time value of faster entry/exit for hedge funds?
-3. What would users pay for instant liquidity during market stress?
-
-#### Market Comparison
-
-| Platform               | Fee     | Notes                            |
-| ---------------------- | ------- | -------------------------------- |
-| Uniswap (v2)           | 0.3%    | Set when no alternatives existed |
-| Uniswap (v3)           | 0.01-1% | Variable, depends on pair        |
-| Aave flash loan        | 0.09%   | For atomic operations            |
-| **Gearbox (proposed)** | **?**   | Depends on value delivered       |
-
-#### Transcript Note
-
-> "0.05% seems too low. Uniswap was 0.3% when they had no competition."
-
-**Recommendation:** Research target users (hedge funds, professional traders) on willingness to pay. Consider 0.3-1% range based on Uniswap precedent.
-
-***
-
-### Frequently Asked Questions
-
-#### Can Morpho build this natively?
-
-Yes, but position transfer mechanics are complex. Gearbox provides tested infrastructure with phantom token support. Building in-house requires:
-
-* Phantom token contract
-* Position transfer logic
-* Safety checks for automated migration
-
-Gearbox offers this as a service, enabling shorter time-to-market and reduced audit scope.
-
-#### Is this limited to Morpho?
-
-No. It applies to Aave, Euler, and other lending markets. Gearbox is infrastructure that any risk curator can integrate.
-
-#### What happens if price drops during deposit window?
-
-Overcollateralization depends on configured haircuts and thresholds. Pending-deposit collateral is typically valued conservatively; liquidation can still occur if health factor falls below the configured limit.
-
-#### How much capital does the curator need?
-
-Depends on expected user demand. Curator allocates capital from their vault to Gearbox pool when users signal intent. Capital efficiency improves as positions mature and migrate to partner markets.
-
-#### Who are the liquidators?
-
-Professional market makers and funds. They value fast de-risking capability and generally avoid holding long-dated redemption receipts (ACRED can be \~120 days) during market stress.
