@@ -57,10 +57,10 @@ Gearbox acts as a **prime brokerage layer** that holds positions during transiti
 ```mermaid
 flowchart TB
     U["User"] --> UI["Partner UI<br/>(same UX as today)"]
-    UI --> Q{"Is collateral mature ERC20?"}
+    UI --> Q{"Is collateral in delayed deposit/redemption phase?"}
 
-    Q -->|Yes| PM["Partner Market<br/>(default venue)"]
-    Q -->|No, in transition| GB["Gearbox Credit Account<br/>(transition venue)"]
+    Q -->|No| PM["Partner Market<br/>(default venue)"]
+    Q -->|Yes| GB["Gearbox Credit Account<br/>(transition venue)"]
 
     GB <--> ISS["RWA Issuer<br/>(mint/redeem settlement)"]
     GB -->|After maturity| PM
@@ -93,10 +93,10 @@ flowchart TB
 | Actor                      | Role                                                                                                                              | Contracts                                           |
 | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
 | **User**                   | Borrower opening an RWA-backed debt position                                                                                      | User wallet                                         |
-| **Partner Market Curator** | Capital allocator. Manages liquidity allocation between Partner vaults and Gearbox pool. Takes lending-side risk.                 | Aave hub, Euler vault, Partner vault                |
+| **Partner Market Curator** | Capital allocator. Manages liquidity allocation between Partner vaults and Gearbox pool. Takes lending-side risk.                 | Aave hub, Morpho/Euler allocators                   |
 | **Gearbox Curator**        | Configures collateral types including transition-stage assets. Sets risk parameters for pending deposits and redemption receipts. | Credit Configurator                                 |
-| **Partner Market**         | Lending infrastructure for mature ERC20 positions                                                                                 | Aave pool, Euler market, Partner market             |
-| **Partner Vault**          | Liquidity source. Holds capital allocated by curators.                                                                            | Aave pool, Euler vault, Partner vault               |
+| **Partner Market**         | Lending infrastructure for mature ERC20 positions                                                                                 | Aave pool, Morpho/Euler market                      |
+| **Partner Vault**          | Liquidity source. Holds capital allocated by curators.                                                                            | Aave hub, Morpho/Euler vault                        |
 | **Gearbox**                | Transitional venue. Holds positions during deposit/redemption windows.                                                            | Pool, Credit Manager, Credit Facade, Credit Account |
 | **Securitize**             | ACRED issuer. Handles mint and redeem operations.                                                                                 | ACRED token, mint contract, redeem contract         |
 
