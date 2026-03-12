@@ -161,19 +161,20 @@ User wants $500 ACRED exposure with $100 own capital.
 
 ```mermaid
 sequenceDiagram
+    participant W as User Wallet
     participant A as Allocator
     participant PV as Partner Vault
     participant GP as Gearbox Pool
 
-    Note over A: User intent detected (off-chain)
+    W->>A: Open position (via adapter)
     A->>PV: Withdraw USDC
     PV-->>GP: $400 USDC allocated
     Note over GP: Capital ready for borrowing
 ```
 
-* User submits intent through Partner UI (off-chain)
-* Allocator detects delayed deposit settlement
-* Allocator moves capital from Partner Vault to Gearbox Pool
+* User opens leveraged position through Partner UI
+* Transaction triggers Allocator (via adapter) to rebalance capital
+* Allocator moves USDC from Partner Vault to Gearbox Pool
 * Capital is now available for the Credit Account to borrow (next phase)
 
 #### Phase 2: Transition Setup (Gearbox + Securitize contracts)
@@ -265,19 +266,20 @@ User wants to exit a $500 ACRED RWA-backed debt position ($100 equity, $400 debt
 
 ```mermaid
 sequenceDiagram
+    participant W as User Wallet
     participant A as Allocator
     participant PV as Partner Vault
     participant GP as Gearbox Pool
 
-    Note over A: User exit intent detected (off-chain)
+    W->>A: Exit position (via adapter)
     A->>PV: Withdraw USDC
     PV-->>GP: $400 USDC allocated
     Note over GP: Capital ready for position migration
 ```
 
-* User submits exit intent through Partner UI (off-chain)
-* Allocator detects delayed redemption settlement
-* Allocator moves capital from Partner Vault to Gearbox Pool
+* User exits position through Partner UI
+* Transaction triggers Allocator (via adapter) to rebalance capital
+* Allocator moves USDC from Partner Vault to Gearbox Pool
 
 #### Phase 2: Transition Setup (Gearbox + Securitize contracts)
 
