@@ -127,272 +127,20 @@ Before users can take RWA-backed debt positions using ACRED, curators configure 
 
 ***
 
-### Entry Flow (Illustrative Use Case): Taking 5x Leverage on ACRED
-
-User wants $500 ACRED exposure with $100 own capital.
-
-#### Phase 1: User Intent
-
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant UI as Partner UI
-    participant C as Curator
-    participant V as Partner Vault
-    participant GP as Gearbox Pool
-    
-    U->>UI: "5x leverage ACRED"
-    UI->>UI: Check: is deposit delayed?
-    UI->>C: Intent to enter delayed position
-    C->>V: Allocate capital
-    V->>GP: Funds flow to Gearbox
-    UI->>GP: Enter leveraged position<br/>(pending-deposit token)
-```
-
-* User interacts through the existing Partner UI
-* Submits intent: "5x leverage on ACRED"
-* If deposit settlement is delayed, curator allocates capital from the partner vault to the Gearbox pool
-* User enters leveraged position in pending-deposit token
-
-#### Phase 2: Transition Setup (Gearbox + Securitize contracts)
-
-```mermaid
-sequenceDiagram
-    participant GP as Gearbox Pool
-    participant CF as Credit Facade
-    participant CA as Credit Account
-    participant S as Securitize
-    
-    Note over GP: User submits tx via Partner UI
-    GP->>CF: Open Credit Account
-    CF->>CA: Deploy CA for user
-    CA->>GP: Borrow $400 USDC
-    GP-->>CA: $400 USDC
-    Note over CA: User's $100 + $400 borrowed<br/>= $500 total
-    CA->>S: Deposit $500 USDC (mint ACRED)
-    S-->>CA: Pending-deposit token
-    Note over CA: Collateral: Pending-deposit token<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓
-```
-
-**Key Points:**
-
-* **Credit Account is deployed&#x20;**_**for**_**&#x20;the user** — user interaction remains at the Partner UI level
-* User's $100 + borrowed $400 = $500 total position
-* **Pending-deposit token is valid collateral** (curator-configured)
-* Position remains overcollateralized during wait
-
-#### Phase 3: Waiting
-
-```mermaid
-flowchart LR
-    subgraph Before["Before Maturation"]
-        CA1["Credit Account<br/>━━━━━━━━━━━━━━━<br/>Holds: Pending-deposit token<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓"]
-    end
-    
-    subgraph After["After Maturation"]
-        CA2["Credit Account<br/>━━━━━━━━━━━━━━━<br/>Holds: ACRED (ERC20)<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓"]
-    end
-    
-    Before -->|"... time passes ..."| After
-```
-
-* Deposit window passes (hours to days depending on ACRED terms)
-* Pending-deposit token becomes ACRED
-* Position still on Gearbox Credit Account
-
-#### Phase 4: Migration to Partner Market (Partner + Gearbox contracts)
-
-User triggers migration (manual or auto-opt-in):
-
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant CF as Credit Facade
-    participant CA as Credit Account
-    participant GP as Gearbox Pool
-    participant V as Partner Vault
-    participant M as Partner Market
-    participant C as Curator
-    
-    U->>CF: Trigger migration
-    Note over CA: Holds: ACRED<br/>Debt: $400
-    C->>GP: Withdraw liquidity
-    GP->>V: Funds return to Partner Vault
-    V->>M: Supply to market
-    CA->>M: Borrow $400 USDC
-    M-->>CA: $400 USDC
-    CA->>GP: Repay $400 debt
-    GP-->>CA: Debt cleared
-    CA->>M: Move ACRED to Partner Market
-    Note over M: ACRED as collateral
-    CA->>CF: Close Credit Account
-    Note over M: User position:<br/>$500 ACRED collateral<br/>$400 USDC debt
-```
-
-* **Curator withdraws** liquidity from Gearbox → Partner Vault
-* **Partner Vault supplies** to market
-* **Borrow $400 USDC** from Partner Market
-* **Repay Gearbox debt** with borrowed USDC
-* **Move ACRED** to Partner Market as collateral
-* **Close Credit Account**
-
-**Result:** User has overcollateralized ACRED position on Partner Market. $500 ACRED collateral, $400 USDC debt.
-
-***
-
-### Exit Flow: Redeeming ACRED Position
-
-User wants to exit a $500 ACRED RWA-backed debt position ($100 equity, $400 debt) and receive USDC.
-
-#### Why Exit Speed Matters
-
-* **Liquidators avoid long-dated redemption risk** — ACRED redemption can be \~90 days
-* **Near-immediate de-risking path enables more active liquidation participation**
-* **Gearbox provides transition liquidity service** for liquidated positions
-
-#### Phase 1: User Intent
-
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant UI as Partner UI
-    participant M as Partner Market
-    participant C as Curator
-    participant V as Partner Vault
-    participant GP as Gearbox Pool
-    
-    U->>UI: "Exit ACRED position"
-    UI->>UI: Check: is redemption delayed?
-    UI->>M: Signal redemption intent
-    M->>C: Notify: migration needed
-    Note over C: Manages both Partner Vault<br/>and Gearbox allocation
-    C->>V: Reallocate liquidity
-    V->>GP: Funds flow to Gearbox
-```
-
-* User interacts through the existing Partner UI
-* Submits intent: "Exit ACRED position"
-* If redemption is delayed, curator reallocates capital from Partner Vault to Gearbox pool
-
-#### Phase 2: Transition Setup (Gearbox + Securitize contracts)
-
-```mermaid
-sequenceDiagram
-    participant M as Partner Market
-    participant GP as Gearbox Pool
-    participant CF as Credit Facade
-    participant CA as Credit Account
-    participant S as Securitize
-    
-    Note over GP: User submits tx via Partner UI
-    GP->>CF: Open Credit Account
-    CF->>CA: Deploy CA for user
-    CA->>GP: Borrow $400 USDC
-    GP-->>CA: $400 USDC
-    Note over CA: Borrowed: $400 USDC
-    CA->>M: Repay $400 debt
-    M-->>CA: Debt cleared
-    M->>CA: Move $500 ACRED
-    Note over CA: User's ACRED moved to CA
-    CA->>S: Initiate redemption ($500 ACRED)
-    S-->>CA: Redemption receipt
-    Note over CA: Collateral: Redemption receipt<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓
-```
-
-* **Credit Account deployed** for user (transparent to the user; interaction remains at the Partner UI layer)
-* **Borrow $400 USDC** from Gearbox pool (capital provided by Partner Vault)
-* **Repay Partner Market debt** with borrowed USDC
-* **Move ACRED** to Credit Account
-* **Initiate redemption** → Credit Account sends $500 ACRED to Securitize, receives redemption receipt
-* **Position:** Redemption receipt (collateral) + $400 USDC debt
-* **Overcollateralized** because Gearbox curator configured redemption receipt as valid collateral
-
-**Result:** User has zero position on Partner Market, overcollateralized position on Gearbox (redemption receipt collateral, USDC debt)
-
-#### Phase 3: Waiting
-
-```mermaid
-flowchart LR
-    subgraph Before["Before Maturation"]
-        CA1["Credit Account<br/>━━━━━━━━━━━━━━━<br/>Holds: Redemption receipt<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓"]
-    end
-    
-    subgraph After["After Maturation"]
-        CA2["Credit Account<br/>━━━━━━━━━━━━━━━<br/>Holds: USDC<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓"]
-    end
-    
-    Before -->|"... time passes ..."| After
-```
-
-* Redemption window passes (ACRED can be long-dated, e.g., \~90 days; issuer-dependent)
-* Redemption receipt matures → USDC received
-* Position remains on Gearbox Credit Account until final settlement
-
-#### Phase 4: Finalization & Close (Gearbox contracts)
-
-User triggers finalization (manual or auto-opt-in):
-
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant CA as Credit Account
-    participant CF as Credit Facade
-    participant GP as Gearbox Pool
-    
-    U->>CF: Trigger finalization
-    Note over CA: Holds: $500 USDC<br/>Debt: $400
-    CA->>GP: Repay $400 debt
-    GP-->>CA: Debt cleared
-    CA->>CF: Close Credit Account
-    CF->>U: Withdraw net USDC balance<br/>(equity ± PnL - fees/interest)
-    Note over U: Receives net USDC after debt repayment
-```
-
-* **Repay $400 debt** to Gearbox pool
-* **Close Credit Account**
-* **User receives** net USDC: redemption proceeds minus debt, interest, and fees (plus/minus PnL)
-
-`Net user payout = redemption proceeds - repaid debt - accrued borrow interest - protocol fees ± position PnL`
-
-**Result:** Position fully closed. User has USDC in wallet.
-
-***
-
-### Exit Value for Liquidators
-
-Gearbox's speed advantage is most valuable during liquidations.
-
-#### The Liquidator's Problem
-
-When an RWA-backed debt position becomes undercollateralized:
-
-1. Traditional approach: Liquidator takes position, initiates redemption, and often holds the receipt to settlement (ACRED: \~90 days)
-2. Problem: Institutional liquidators are reluctant to hold long-dated redemption receipts through volatile periods
-3. Result: **Lower liquidation participation can increase bad-debt risk**
-
-#### The Gearbox Solution
-
-1. Liquidator takes position in Credit Account
-2. Redemption receipt is already there (or can be initiated immediately)
-3. Liquidator can hold until redemption matures
-4. **Or:** Gearbox curator can provide near-immediate liquidity by buying/financing the receipt at a discount
-
-#### Value Proposition
-
-| Metric                               | Traditional                                                | With Gearbox                                       |
-| ------------------------------------ | ---------------------------------------------------------- | -------------------------------------------------- |
-| Time to de-risk position exposure    | Often tied to full redemption window (\~90 days for ACRED) | Near-immediate if receipt is sold/financed         |
-| Time to final issuer cash settlement | \~90 days (ACRED illustrative)                             | \~90 days (issuer-dependent; unchanged by Gearbox) |
-| Liquidator risk                      | High (duration + market exposure)                          | Lower (faster de-risking path)                     |
-| Protocol health                      | Lower liquidation participation, higher bad-debt risk      | More active liquidation participation              |
-
-**Key insight:** The same mechanism that helps traders enter fast also helps liquidators de-risk faster, while final settlement remains issuer-timed. This makes the system healthier under stress.
-
-***
-
 ### Position Transfer Mechanism
 
 When a position matures (pending-deposit → ACRED), it can be migrated from Gearbox to the Partner Market. Two approaches:
+
+#### Why Migration Is Capital-Neutral
+
+Migration between Gearbox and Partner Market does not require additional capital because both sides of the position move simultaneously:
+
+* **Curator** controls supply-side allocation — moves liquidity between Gearbox Pool and Partner Market
+* **User** (via Credit Account) controls debt + collateral — repays one venue, borrows from the other
+
+When curator and user are coordinated (e.g., via smart contract integration or allocator contracts), supply and debt move together. The financial position stays exactly the same — same collateral, same debt, same health factor. Only the infrastructure changes.
+
+This coordination can be implemented at the contract level (e.g., Morpho allocator contracts), but the specifics are integration-dependent.
 
 #### Option A: Adapter-Based Atomic Migration
 
@@ -440,6 +188,243 @@ If atomic transfer is unavailable:
 
 ***
 
+### Entry Flow (Illustrative Use Case): Taking 5x Leverage on ACRED
+
+User wants $500 ACRED exposure with $100 own capital.
+
+#### Phase 1: User Intent
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant UI as Partner UI
+    participant C as Curator
+    participant GP as Gearbox Pool
+
+    U->>UI: "5x leverage ACRED"
+    UI->>UI: Detects delayed deposit
+    UI->>C: Intent to enter delayed position
+    C->>GP: Allocate capital
+    Note over GP: User enters position (next phase)
+```
+
+* User interacts through the existing Partner UI
+* Submits intent: "5x leverage on ACRED"
+* If deposit settlement is delayed, curator allocates capital to the Gearbox pool
+* User enters leveraged position (next phase)
+
+#### Phase 2: Transition Setup (Gearbox + Securitize contracts)
+
+```mermaid
+sequenceDiagram
+    participant GP as Gearbox Pool
+    participant CA as Credit Account
+    participant S as Securitize
+
+    Note over CA: Opened for user via Partner UI
+    CA->>GP: Borrow $400 USDC
+    GP-->>CA: $400 USDC
+    Note over CA: User's $100 + $400 borrowed = $500 total
+    CA->>S: Deposit $500 USDC (mint ACRED)
+    S-->>CA: Pending-deposit token
+    Note over CA: Collateral: Pending-deposit token<br/>Debt: $400 USDC ✓
+```
+
+**Key Points:**
+
+* **Credit Account is opened for the user** — user interaction remains at the Partner UI level
+* User's $100 + borrowed $400 = $500 total position
+* **Pending-deposit token is valid collateral** (curator-configured)
+* Position remains overcollateralized during wait
+
+#### Phase 3: Waiting
+
+```mermaid
+flowchart LR
+    subgraph Before["Before Maturation"]
+        CA1["Credit Account<br/>━━━━━━━━━━━━━━━<br/>Holds: Pending-deposit token<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓"]
+    end
+    
+    subgraph After["After Maturation"]
+        CA2["Credit Account<br/>━━━━━━━━━━━━━━━<br/>Holds: ACRED (ERC20)<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓"]
+    end
+    
+    Before -->|"... time passes ..."| After
+```
+
+* Deposit window passes (hours to days depending on ACRED terms)
+* Pending-deposit token becomes ACRED
+* Position still on Gearbox Credit Account
+
+#### Phase 4: Migration to Partner Market (Partner + Gearbox contracts)
+
+User triggers migration (manual or auto-opt-in):
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant CA as Credit Account
+    participant GP as Gearbox Pool
+    participant M as Partner Market
+
+    Note over GP,M: Curator reallocates liquidity:<br/>Gearbox Pool → Partner Market
+    U->>CA: Trigger migration
+    Note over CA: Holds: ACRED / Debt: $400
+    CA->>M: Borrow $400 USDC
+    M-->>CA: $400 USDC
+    CA->>GP: Repay $400 debt
+    CA->>M: Supply ACRED as collateral
+    Note over CA: Close Credit Account
+    Note over M: User position:<br/>$500 ACRED / $400 USDC debt
+```
+
+* **Curator reallocates** liquidity from Gearbox Pool to Partner Market
+* **Borrow $400 USDC** from Partner Market
+* **Repay Gearbox debt** with borrowed USDC
+* **Supply ACRED** to Partner Market as collateral
+* **Close Credit Account**
+
+**Result:** User has overcollateralized ACRED position on Partner Market. $500 ACRED collateral, $400 USDC debt. No additional capital is required — curator's supply-side reallocation and the user's debt migration happen together, so the financial position is unchanged (see [Position Transfer Mechanism](#position-transfer-mechanism)).
+
+***
+
+### Exit Flow: Redeeming ACRED Position
+
+User wants to exit a $500 ACRED RWA-backed debt position ($100 equity, $400 debt) and receive USDC.
+
+#### Why Exit Speed Matters
+
+* **Liquidators avoid long-dated redemption risk** — ACRED redemption can be \~90 days
+* **Near-immediate de-risking path enables more active liquidation participation**
+* **Gearbox provides transition liquidity service** for liquidated positions
+
+#### Phase 1: User Intent
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant UI as Partner UI
+    participant C as Curator
+    participant GP as Gearbox Pool
+
+    U->>UI: "Exit ACRED position"
+    UI->>UI: Detects delayed redemption
+    UI->>C: Intent to exit delayed position
+    C->>GP: Reallocate capital
+    Note over GP: Position migration begins (next phase)
+```
+
+* User interacts through the existing Partner UI
+* Submits intent: "Exit ACRED position"
+* If redemption is delayed, curator reallocates capital to the Gearbox pool
+
+#### Phase 2: Transition Setup (Gearbox + Securitize contracts)
+
+```mermaid
+sequenceDiagram
+    participant M as Partner Market
+    participant GP as Gearbox Pool
+    participant CA as Credit Account
+    participant S as Securitize
+
+    Note over CA: Opened for user via Partner UI
+    CA->>GP: Borrow $400 USDC
+    GP-->>CA: $400 USDC
+    CA->>M: Repay $400 debt
+    M-->>CA: Release $500 ACRED
+    CA->>S: Initiate redemption ($500 ACRED)
+    S-->>CA: Redemption receipt
+    Note over CA: Collateral: Redemption receipt<br/>Debt: $400 USDC ✓
+```
+
+* **Credit Account opened** for user (transparent; interaction remains at Partner UI layer)
+* **Borrow $400 USDC** from Gearbox pool
+* **Repay Partner Market debt** with borrowed USDC
+* **Release ACRED** from Partner Market to Credit Account
+* **Initiate redemption** → Credit Account sends $500 ACRED to Securitize, receives redemption receipt
+* **Position:** Redemption receipt (collateral) + $400 USDC debt
+* **Overcollateralized** because Gearbox curator configured redemption receipt as valid collateral
+
+**Result:** User has zero position on Partner Market, overcollateralized position on Gearbox (redemption receipt collateral, USDC debt). As with entry migration, this is capital-neutral — supply and debt move together between venues.
+
+#### Phase 3: Waiting
+
+```mermaid
+flowchart LR
+    subgraph Before["Before Maturation"]
+        CA1["Credit Account<br/>━━━━━━━━━━━━━━━<br/>Holds: Redemption receipt<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓"]
+    end
+    
+    subgraph After["After Maturation"]
+        CA2["Credit Account<br/>━━━━━━━━━━━━━━━<br/>Holds: USDC<br/>Debt: $400 USDC<br/>Status: Overcollateralized ✓"]
+    end
+    
+    Before -->|"... time passes ..."| After
+```
+
+* Redemption window passes (ACRED can be long-dated, e.g., \~90 days; issuer-dependent)
+* Redemption receipt matures → USDC received
+* Position remains on Gearbox Credit Account until final settlement
+
+#### Phase 4: Finalization & Close (Gearbox contracts)
+
+User triggers finalization (manual or auto-opt-in):
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant CA as Credit Account
+    participant GP as Gearbox Pool
+
+    U->>CA: Trigger finalization
+    Note over CA: Holds: $500 USDC / Debt: $400
+    CA->>GP: Repay $400 debt
+    Note over CA: Close Credit Account
+    CA->>U: Withdraw net USDC<br/>(equity ± PnL - fees)
+```
+
+* **Repay $400 debt** to Gearbox pool
+* **Close Credit Account**
+* **User receives** net USDC: redemption proceeds minus debt, interest, and fees (plus/minus PnL)
+
+`Net user payout = redemption proceeds - repaid debt - accrued borrow interest - protocol fees ± position PnL`
+
+**Result:** Position fully closed. User has USDC in wallet.
+
+***
+
+### Exit Value for Liquidators
+
+Gearbox's speed advantage is most valuable during liquidations.
+
+#### The Liquidator's Problem
+
+When an RWA-backed debt position becomes undercollateralized:
+
+1. Traditional approach: Liquidator takes position, initiates redemption, and often holds the receipt to settlement (ACRED: \~90 days)
+2. Problem: Institutional liquidators are reluctant to hold long-dated redemption receipts through volatile periods
+3. Result: **Lower liquidation participation can increase bad-debt risk**
+
+#### The Gearbox Solution
+
+1. Liquidator takes position in Credit Account
+2. Redemption receipt is already there (or can be initiated immediately)
+3. Liquidator can hold until redemption matures
+4. **Or:** Gearbox curator can provide near-immediate liquidity by buying/financing the receipt at a discount
+
+#### Value Proposition
+
+| Metric                               | Traditional                                                | With Gearbox                                       |
+| ------------------------------------ | ---------------------------------------------------------- | -------------------------------------------------- |
+| Time to de-risk position exposure    | Often tied to full redemption window (\~90 days for ACRED) | Near-immediate if receipt is sold/financed         |
+| Time to final issuer cash settlement | \~90 days (ACRED illustrative)                             | \~90 days (issuer-dependent; unchanged by Gearbox) |
+| Liquidator risk                      | High (duration + market exposure)                          | Lower (faster de-risking path)                     |
+| Protocol health                      | Lower liquidation participation, higher bad-debt risk      | More active liquidation participation              |
+
+**Key insight:** The same mechanism that helps traders enter fast also helps liquidators de-risk faster, while final settlement remains issuer-timed. This makes the system healthier under stress.
+
+***
+
 ### Capital Flow Summary
 
 #### Where Capital Lives at Each Stage
@@ -459,17 +444,9 @@ The curator actively manages liquidity allocation:
 
 ```mermaid
 flowchart TB
-    subgraph Curator["Curator"]
-        C["Monitors position states and<br/>reallocates capital:<br/><br/>• Entry → Partner Vault to Gearbox<br/>• After maturity → Gearbox to Partner Market<br/>• Exit → Partner Vault to Gearbox<br/>• After redemption → Gearbox to Partner Market"]
-    end
-    
-    subgraph Venues["Liquidity Venues"]
-        M["Partner Market<br/>━━━━━━━━━━━━━━━━<br/>Mature ERC20 positions"]
-        G["Gearbox Pool<br/>━━━━━━━━━━━━━━━━<br/>Transition positions"]
-    end
-    
-    Curator <--> Venues
-    M <-->|"Curator-managed flow"| G
+    C["Curator"] -->|"Entry / Exit intent"| G["Gearbox Pool<br/>━━━━━━━━━━━━━━━━<br/>Transition positions"]
+    C -->|"After maturity / After redemption"| M["Partner Market<br/>━━━━━━━━━━━━━━━━<br/>Mature ERC20 positions"]
+    G <-->|"Capital flow"| M
 ```
 
 This can be done atomically within a single transaction (using flash loans if needed) or as separate operations depending on the curator's implementation.
