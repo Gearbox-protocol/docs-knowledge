@@ -116,4 +116,4 @@ This Reserve Fund model doesn't relate to actual software hacks. It specifically
 
 ### Learn more
 
-[Automated Insurance mechanism](https://app.gitbook.com/s/Qwh9UHWSsUkHGXmzsViV/core/automated-insurance-mechanism "mention")
+[Broken link](/broken/spaces/Qwh9UHWSsUkHGXmzsViV/pages/4QAGHan1lxth1bqr693J "mention")

@@ -50,4 +50,4 @@
 * [Supply Information](reference/supply-information.md)
 * [Usecase: Direct Redemptions](reference/direct-redemptions.md)
 * [Usecase: Intent-based lending](reference/usecase-intent-based-lending.md)
-* [Prime Brokerage for RWA Leverage](reference/prime-brokerage-for-rwa-leverage.md)
+* [Usecase: Faster RWA settlement with leverage](reference/usecase-faster-rwa-settlement-with-leverage.md)

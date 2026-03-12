@@ -1,18 +1,18 @@
-# Prime Brokerage for RWA Leverage
+# Usecase: Faster RWA settlement with leverage
 
-How Gearbox enables faster entry/exit for RWA-backed debt positions with non-atomic settlement — using ACRED leverage as an illustrative go-to-market use case.
+How Gearbox enables faster entry/exit for RWA-backed debt positions with non-atomic settlement, using ACRED leverage as an illustrative go-to-market use case.
 
 ***
 
 ### The Problem: Slow Settlement Breaks RWA-Backed Debt Positions
 
-RWA tokens (tokenized securities, private credit, treasuries) typically do not settle atomically. Deposits (e.g., USDC → ACRED mint) can require hours or days, while redemptions can be materially longer (ACRED can be \~120 days).
+RWA tokens (tokenized securities, private credit, treasuries) typically do not settle atomically. Deposits (e.g., USDC → ACRED mint) can require hours or days, while redemptions can be materially longer (ACRED can be \~90 days).
 
 This settlement profile constrains RWA-backed debt strategies (leverage is the clearest example):
 
 * **Limited ability to react to market opportunities** — by the time a deposit matures, market conditions may have changed
 * **Limited ability to exit during volatility** — positions can remain in redemption queues while prices move
-* **Lower liquidator participation** — institutional liquidators are reluctant to warehouse long-dated redemption receipts (ACRED: \~120 days)
+* **Lower liquidator participation** — institutional liquidators are reluctant to warehouse long-dated redemption receipts (ACRED: \~90 days)
 
 Traditional flash-loan style flows are insufficient because standard ERC20 collateral is unavailable during the waiting period.
 
@@ -34,15 +34,15 @@ Gearbox acts as a **prime brokerage layer** that holds positions during transiti
 | User              | Current Problem                                                               | With Gearbox                                                            |
 | ----------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | **Traders**       | Miss entry points during multi-day settlement                                 | Get an RWA-backed debt position immediately, then exit when appropriate |
-| **Liquidators**   | Reluctant to take on long-dated redemption risk (ACRED can be \~120 days)     | Fast de-risking path (sell/finance receipt), reducing duration exposure |
+| **Liquidators**   | Reluctant to take on long-dated redemption risk (ACRED can be \~90 days)      | Fast de-risking path (sell/finance receipt), reducing duration exposure |
 | **Risk Curators** | Limited ability to offer fast credit products on RWAs with delayed settlement | Integration-ready infrastructure with no core protocol changes required |
 
 ***
 
 ### Exit Speed Comparison (ACRED Redemption)
 
-* **Time to de-risk position exposure:** near-immediate with Gearbox vs \~120 days without&#x20;
-* **Time to unwind leveraged position into stablecoins:** \~120 days with Gearbox vs  >240 days without
+* **Time to de-risk position exposure:** near-immediate with Gearbox vs \~90 days without&#x20;
+* **Time to unwind leveraged position into stablecoins:** \~90 days with Gearbox vs  >240 days without
 
 {% hint style="info" %}
 Gearbox improves liquidity and risk transfer during the waiting period; it does not shorten issuer redemption cycles
@@ -246,7 +246,7 @@ User wants to exit a $500 ACRED RWA-backed debt position ($100 equity, $400 debt
 
 #### Why Exit Speed Matters
 
-* **Liquidators avoid long-dated redemption risk** — ACRED redemption can be \~120 days
+* **Liquidators avoid long-dated redemption risk** — ACRED redemption can be \~90 days
 * **Near-immediate de-risking path enables more active liquidation participation**
 * **Gearbox provides transition liquidity service** for liquidated positions
 
@@ -324,7 +324,7 @@ flowchart LR
     Before -->|"... time passes ..."| After
 ```
 
-* Redemption window passes (ACRED can be long-dated, e.g., \~120 days; issuer-dependent)
+* Redemption window passes (ACRED can be long-dated, e.g., \~90 days; issuer-dependent)
 * Redemption receipt matures → USDC received
 * Position remains on Gearbox Credit Account until final settlement
 
@@ -366,7 +366,7 @@ Gearbox's speed advantage is most valuable during liquidations.
 
 When an RWA-backed debt position becomes undercollateralized:
 
-1. Traditional approach: Liquidator takes position, initiates redemption, and often holds the receipt to settlement (ACRED: \~120 days)
+1. Traditional approach: Liquidator takes position, initiates redemption, and often holds the receipt to settlement (ACRED: \~90 days)
 2. Problem: Institutional liquidators are reluctant to hold long-dated redemption receipts through volatile periods
 3. Result: **Lower liquidation participation can increase bad-debt risk**
 
@@ -379,12 +379,12 @@ When an RWA-backed debt position becomes undercollateralized:
 
 #### Value Proposition
 
-| Metric                               | Traditional                                                 | With Gearbox                                        |
-| ------------------------------------ | ----------------------------------------------------------- | --------------------------------------------------- |
-| Time to de-risk position exposure    | Often tied to full redemption window (\~120 days for ACRED) | Near-immediate if receipt is sold/financed          |
-| Time to final issuer cash settlement | \~120 days (ACRED illustrative)                             | \~120 days (issuer-dependent; unchanged by Gearbox) |
-| Liquidator risk                      | High (duration + market exposure)                           | Lower (faster de-risking path)                      |
-| Protocol health                      | Lower liquidation participation, higher bad-debt risk       | More active liquidation participation               |
+| Metric                               | Traditional                                                | With Gearbox                                       |
+| ------------------------------------ | ---------------------------------------------------------- | -------------------------------------------------- |
+| Time to de-risk position exposure    | Often tied to full redemption window (\~90 days for ACRED) | Near-immediate if receipt is sold/financed         |
+| Time to final issuer cash settlement | \~90 days (ACRED illustrative)                             | \~90 days (issuer-dependent; unchanged by Gearbox) |
+| Liquidator risk                      | High (duration + market exposure)                          | Lower (faster de-risking path)                     |
+| Protocol health                      | Lower liquidation participation, higher bad-debt risk      | More active liquidation participation              |
 
 **Key insight:** The same mechanism that helps traders enter fast also helps liquidators de-risk faster, while final settlement remains issuer-timed. This makes the system healthier under stress.
 
