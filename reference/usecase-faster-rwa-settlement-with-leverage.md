@@ -185,7 +185,7 @@ sequenceDiagram
     participant CA as Credit Account
     participant S as Securitize
 
-    Note over CA: Opened for user via Partner UI
+    Note over CA: Opened via adapter
     CA->>GP: Borrow $400 USDC
     GP-->>CA: $400 USDC
     Note over CA: User's $100 + $400 borrowed = $500 total
@@ -196,7 +196,7 @@ sequenceDiagram
 
 **Key Points:**
 
-* **Credit Account is opened for the user** — user interaction remains at the Partner UI level
+* **Credit Account opened** via adapter (same transaction as Phase 1)
 * User's $100 + borrowed $400 = $500 total position
 * **Pending-deposit token is valid collateral** (curator-configured)
 * Position remains overcollateralized during wait
@@ -227,12 +227,14 @@ User triggers migration (manual or auto-opt-in):
 ```mermaid
 sequenceDiagram
     participant W as User Wallet
+    participant A as Allocator
     participant CA as Credit Account
     participant GP as Gearbox Pool
     participant PM as Partner Market
 
-    Note over GP,PM: Allocator reallocates liquidity:<br/>Gearbox Pool → Partner Market
-    W->>CA: Trigger migration
+    A->>GP: Withdraw liquidity
+    A->>PM: Supply liquidity
+    W->>CA: Trigger migration (via adapter)
     Note over CA: Holds: ACRED / Debt: $400
     CA->>PM: Borrow $400 USDC
     PM-->>CA: $400 USDC
@@ -242,7 +244,7 @@ sequenceDiagram
     Note over PM: Position:<br/>$500 ACRED / $400 USDC debt
 ```
 
-* **Allocator reallocates** liquidity from Gearbox Pool to Partner Market
+* **Allocator withdraws** liquidity from Gearbox Pool and **supplies** to Partner Market
 * **Borrow $400 USDC** from Partner Market
 * **Repay Gearbox debt** with borrowed USDC
 * **Supply ACRED** to Partner Market as collateral
@@ -290,7 +292,7 @@ sequenceDiagram
     participant CA as Credit Account
     participant S as Securitize
 
-    Note over CA: Opened for user via Partner UI
+    Note over CA: Opened via adapter
     CA->>GP: Borrow $400 USDC
     GP-->>CA: $400 USDC
     CA->>M: Repay $400 debt
@@ -300,7 +302,7 @@ sequenceDiagram
     Note over CA: Collateral: Redemption receipt<br/>Debt: $400 USDC ✓
 ```
 
-* **Credit Account opened** for user (transparent; interaction remains at Partner UI layer)
+* **Credit Account opened** via adapter (same transaction as Phase 1)
 * **Borrow $400 USDC** from Gearbox pool
 * **Repay Partner Market debt** with borrowed USDC
 * **Release ACRED** from Partner Market to Credit Account
@@ -329,26 +331,31 @@ flowchart LR
 * Redemption receipt matures → USDC received
 * Position remains on Gearbox Credit Account until final settlement
 
-#### Phase 4: Finalization & Close (Gearbox contracts)
+#### Phase 4: Finalization & Close (Gearbox + Partner contracts)
 
 User triggers finalization (manual or auto-opt-in):
 
 ```mermaid
 sequenceDiagram
     participant W as User Wallet
+    participant A as Allocator
     participant CA as Credit Account
     participant GP as Gearbox Pool
+    participant PM as Partner Market
 
-    W->>CA: Trigger finalization
+    W->>CA: Trigger finalization (via adapter)
     Note over CA: Holds: $500 USDC / Debt: $400
     CA->>GP: Repay $400 debt
     Note over CA: Close Credit Account
     CA->>W: Withdraw net USDC<br/>(equity ± PnL - fees)
+    A->>GP: Withdraw liquidity
+    A->>PM: Supply liquidity
 ```
 
 * **Repay $400 debt** to Gearbox pool
 * **Close Credit Account**
 * **User receives** net USDC: redemption proceeds minus debt, interest, and fees (plus/minus PnL)
+* **Allocator rebalances** liquidity from Gearbox Pool back to Partner Market
 
 `Net user payout = redemption proceeds - repaid debt - accrued borrow interest - protocol fees ± position PnL`
 
