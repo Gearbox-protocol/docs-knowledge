@@ -140,43 +140,8 @@ Migration between Gearbox and Partner Market does not require additional capital
 
 When curator and user are coordinated (e.g., via smart contract integration or allocator contracts), supply and debt move together. The financial position stays exactly the same — same collateral, same debt, same health factor. Only the infrastructure changes.
 
-This coordination can be implemented at the contract level (e.g., Morpho allocator contracts), but the specifics are integration-dependent.
+This coordination can be implemented at the contract level, but the specifics are integration-dependent.
 
-#### Option A: Adapter-Based Atomic Migration
-
-If the destination partner market supports the required batched operations:
-
-1. Credit Account calls an integration adapter
-2. Adapter supplies ACRED as collateral in partner market
-3. Adapter borrows USDC from partner market
-4. Adapter repays Gearbox debt
-5. Position is finalized under the user account in the destination market
-
-**Prerequisites for Option A:**
-
-* Supply + borrow + repay path can execute atomically (single tx via batch/multicall)
-* Adapter has permissioned access to move collateral from Credit Account
-* Destination market supports opening/transferring the resulting position to the correct user
-
-If any prerequisite fails, use Option B.
-
-#### Option B: Automated Bot / Orchestrator
-
-If atomic transfer is unavailable:
-
-1. User triggers migration (single action in UI)
-2. Bot (restricted permissions) executes:
-   * Borrow USDC from Partner Market
-   * Repay debt to Gearbox Pool
-   * Move ACRED from Credit Account to Partner Market as collateral
-   * Close Credit Account
-   * Transfer resulting position only to the original owner
-
-**Safety constraints:**
-
-* Bot can interact only with explicitly allowlisted markets/contracts
-* Bot can transfer only to the Credit Account owner
-* Bot actions are deterministic and auditable (no discretionary routing)
 
 #### Partner Capability Checklist (Fill Per Integration)
 
@@ -196,22 +161,20 @@ User wants $500 ACRED exposure with $100 own capital.
 
 ```mermaid
 sequenceDiagram
-    participant U as User
-    participant UI as Partner UI
-    participant C as Curator
+    participant A as Allocator
+    participant PV as Partner Vault
     participant GP as Gearbox Pool
 
-    U->>UI: "5x leverage ACRED"
-    UI->>UI: Detects delayed deposit
-    UI->>C: Intent to enter delayed position
-    C->>GP: Allocate capital
-    Note over GP: User enters position (next phase)
+    Note over A: User intent detected (off-chain)
+    A->>PV: Withdraw USDC
+    PV-->>GP: $400 USDC allocated
+    Note over GP: Capital ready for borrowing
 ```
 
-* User interacts through the existing Partner UI
-* Submits intent: "5x leverage on ACRED"
-* If deposit settlement is delayed, curator allocates capital to the Gearbox pool
-* User enters leveraged position (next phase)
+* User submits intent through Partner UI (off-chain)
+* Allocator detects delayed deposit settlement
+* Allocator moves capital from Partner Vault to Gearbox Pool
+* Capital is now available for the Credit Account to borrow (next phase)
 
 #### Phase 2: Transition Setup (Gearbox + Securitize contracts)
 
@@ -262,23 +225,23 @@ User triggers migration (manual or auto-opt-in):
 
 ```mermaid
 sequenceDiagram
-    participant U as User
+    participant W as User Wallet
     participant CA as Credit Account
     participant GP as Gearbox Pool
-    participant M as Partner Market
+    participant PM as Partner Market
 
-    Note over GP,M: Curator reallocates liquidity:<br/>Gearbox Pool → Partner Market
-    U->>CA: Trigger migration
+    Note over GP,PM: Allocator reallocates liquidity:<br/>Gearbox Pool → Partner Market
+    W->>CA: Trigger migration
     Note over CA: Holds: ACRED / Debt: $400
-    CA->>M: Borrow $400 USDC
-    M-->>CA: $400 USDC
+    CA->>PM: Borrow $400 USDC
+    PM-->>CA: $400 USDC
     CA->>GP: Repay $400 debt
-    CA->>M: Supply ACRED as collateral
+    CA->>PM: Supply ACRED as collateral
     Note over CA: Close Credit Account
-    Note over M: User position:<br/>$500 ACRED / $400 USDC debt
+    Note over PM: Position:<br/>$500 ACRED / $400 USDC debt
 ```
 
-* **Curator reallocates** liquidity from Gearbox Pool to Partner Market
+* **Allocator reallocates** liquidity from Gearbox Pool to Partner Market
 * **Borrow $400 USDC** from Partner Market
 * **Repay Gearbox debt** with borrowed USDC
 * **Supply ACRED** to Partner Market as collateral
@@ -302,21 +265,19 @@ User wants to exit a $500 ACRED RWA-backed debt position ($100 equity, $400 debt
 
 ```mermaid
 sequenceDiagram
-    participant U as User
-    participant UI as Partner UI
-    participant C as Curator
+    participant A as Allocator
+    participant PV as Partner Vault
     participant GP as Gearbox Pool
 
-    U->>UI: "Exit ACRED position"
-    UI->>UI: Detects delayed redemption
-    UI->>C: Intent to exit delayed position
-    C->>GP: Reallocate capital
-    Note over GP: Position migration begins (next phase)
+    Note over A: User exit intent detected (off-chain)
+    A->>PV: Withdraw USDC
+    PV-->>GP: $400 USDC allocated
+    Note over GP: Capital ready for position migration
 ```
 
-* User interacts through the existing Partner UI
-* Submits intent: "Exit ACRED position"
-* If redemption is delayed, curator reallocates capital to the Gearbox pool
+* User submits exit intent through Partner UI (off-chain)
+* Allocator detects delayed redemption settlement
+* Allocator moves capital from Partner Vault to Gearbox Pool
 
 #### Phase 2: Transition Setup (Gearbox + Securitize contracts)
 
@@ -372,15 +333,15 @@ User triggers finalization (manual or auto-opt-in):
 
 ```mermaid
 sequenceDiagram
-    participant U as User
+    participant W as User Wallet
     participant CA as Credit Account
     participant GP as Gearbox Pool
 
-    U->>CA: Trigger finalization
+    W->>CA: Trigger finalization
     Note over CA: Holds: $500 USDC / Debt: $400
     CA->>GP: Repay $400 debt
     Note over CA: Close Credit Account
-    CA->>U: Withdraw net USDC<br/>(equity ± PnL - fees)
+    CA->>W: Withdraw net USDC<br/>(equity ± PnL - fees)
 ```
 
 * **Repay $400 debt** to Gearbox pool
