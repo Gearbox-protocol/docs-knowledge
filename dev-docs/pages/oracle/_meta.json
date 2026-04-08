@@ -1,6 +1,5 @@
 {
   "overview": "Overview",
   "yearn-pricefeed": "Yearn LP pricefeed",
-  "curve-pricefeed": "Curve pricefeed",
-  "balancer-v3-lp-pricefeed": "Balancer V3 LP pricefeed"
+  "curve-pricefeed": "Curve pricefeed"
 }
