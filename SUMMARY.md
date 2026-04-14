@@ -6,7 +6,7 @@
 
 ## User guides
 
-* [Manual Deleveraging When UI Actions Are Unavailable](<README (1).md>)
+* [Manual Deleveraging When UI Actions Are Unavailable](user-guides/readme.md)
 * [Seamless LP migration](user-guides/seamless-lp-migration.md)
 * [Credit Account migration](user-guides/credit-account-migration.md)
 
