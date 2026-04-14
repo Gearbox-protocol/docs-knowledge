@@ -530,6 +530,8 @@ BalancerV3MultiActionQueries deployments:
   * 0x0BA8417d19D87b7b5C9dA8762ba505d61D1bF1E7
 * Optimism
   * 0x1b8a4BA520C7789D7bE7476960B8Cdd42e57d928
+* Monad
+  * 0x79840073664F6c7bD384C3452B2C034cDEEFEAe5
 
 ### Adapter configuration
 
@@ -540,12 +542,14 @@ BalancerV3MultiActionQueries deployments:
 * Gateway deployment addresses:
   * Ethereum:
     * v3.10 (outdated) 0x21f55223de449224e8bdf4f59452e072bdf7af57
-    * v3.11 (up to date) 0x8A57c21234ddc225499843F6A073dd374c952560
+    * **v3.11** — 0x8A57c21234ddc225499843F6A073dd374c952560
   * Plasma:
     * v3.10 (outdated) 0xd5c89297ad23e12d7f0ff24112418dbe9ebeae56
-    * v3.11 (up to date) 0x55109bA88c396008cfBe9F27Ad97A7e1e4394f6F
+    * **v3.11** — 0x55109bA88c396008cfBe9F27Ad97A7e1e4394f6F
   * Optimism:
-    * v3.11 (up to date) 0x77b2dfc344072fa242f2d03893ccbdbb0ef47b7c
+    * **v3.11** — 0x77b2dfc344072fa242f2d03893ccbdbb0ef47b7c
+  * Monad
+    * **v3.11** — 0x9dA18982a33FD0c7051B19F0d7C76F2d5E7e017c
 
 {% hint style="warning" %}
 Before adding adapter, please ensure that tokens from a pool are added as _**Assets to Market**_ and as _**Collaterals to Credit Manager**_.\

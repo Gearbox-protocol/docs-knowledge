@@ -26,7 +26,7 @@ The official interface is maintained by Gearbox Contributors. To accelerate the 
 
 <summary>Asset display example</summary>
 
-<figure><img src="../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
 
 </details>
 

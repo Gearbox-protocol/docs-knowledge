@@ -2,7 +2,7 @@
 
 The feeds configurations are reviewed at [https://safe.gearbox.finance/](https://safe.gearbox.finance/). It requires CID of txs file uploaded to IPFS.
 
-<figure><img src="../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
 
 #### TL;DR (Actionable checklist)
 
