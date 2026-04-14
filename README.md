@@ -2,7 +2,7 @@
 
 Gearbox Protocol separates the source of liquidity from the utilization of liquidity. This architecture allows a single passive liquidity source to fund diverse, isolated lending strategies simultaneously.
 
-<figure><img src=".gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (13).png" alt=""><figcaption></figcaption></figure>
 
 ### The Wholesale Bank Model
 
@@ -22,7 +22,7 @@ Credit Suites (technically "Credit Managers") act as **Retail Branches**. Each b
 * **Role:** They borrow liquidity from the Wholesale Bank (Pool) to fund Credit Accounts for users.
 * **Mandate:** Each suite defines a specific strategy, such as "Low-Risk Stablecoin Farming" or "High-Leverage ETH Staking."
 
-<figure><img src=".gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (11).png" alt=""><figcaption></figcaption></figure>
 
 This separation allows the protocol to offer low-risk and high-risk products side-by-side without fragmenting liquidity.
 

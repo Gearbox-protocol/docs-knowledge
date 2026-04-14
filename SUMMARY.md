@@ -3,9 +3,9 @@
 ## Introduction
 
 * [One Pool, Many Markets](README.md)
-* [Credit Accounts (The Primitive)](system-overview/credit-account.md)
-* [Omni-EVM Architecture](system-overview/omni-evm-architecture.md)
-* [System Overview](<README (1).md>)
+* [Credit Accounts (The Primitive)](introduction/credit-account.md)
+* [Omni-EVM Architecture](introduction/omni-evm-architecture.md)
+* [System Overview](introduction/readme-1.md)
 
 ## Exploration Paths
 

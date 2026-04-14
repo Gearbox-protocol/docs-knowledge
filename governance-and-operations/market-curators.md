@@ -8,7 +8,7 @@ This role is permissionless: any entity can deploy a Market Configurator and lau
 
 The Curator does not have custody of user funds. Instead, the Curator manages a set of smart contracts that enforce rules on how funds can be utilized.
 
-<figure><img src="../.gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
 
 * **No Custody:** Curators cannot withdraw Liquidity Provider (LP) funds or seize Borrower collateral (except via standard liquidation mechanics).
 * **No Active Allocation:** Curators do not manually move funds between strategies. They set the _eligibility_ rules (e.g., "Strategy A is allowed up to $10M debt"), and the protocol automatically manages the flow based on user demand.

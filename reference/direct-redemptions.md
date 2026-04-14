@@ -1,4 +1,4 @@
-# Usecase: direct redemptions for semi-liquid assets
+# Usecase: Direct Redemptions
 
 ## The problem: constrained instant liquidity ⇒ leverage stops working properly
 
@@ -8,7 +8,7 @@ Other lending protocols must treat assets with timelocked liquidity like standar
 **This leads to fragmented UX and capital-inefficiency**, forcing users to wait for weeks or pay months worth of yield for instant liquidity
 {% endhint %}
 
-<figure><img src="../../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
 
 ## Gearbox's Solution
 
@@ -26,7 +26,7 @@ Other lending protocols must treat assets with timelocked liquidity like standar
 
 For simplicity, we refer to the example semi-liquid asset as xVAULT, since vaults are a common example of assets with these properties. The same logic also applies to RWAs, LRTs, and other tokens with time-locked liquidity.
 
-<figure><img src="../../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
 
 ### Take leverage
 
