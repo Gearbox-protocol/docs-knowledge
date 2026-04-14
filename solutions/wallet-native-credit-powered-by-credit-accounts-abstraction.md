@@ -6,7 +6,7 @@
 
 Imagine a bank account where you can only store money, not borrow or use credit. That’s what most crypto wallets look like today.
 
-Gearbox changes the landscape of decentralized finance by embedding a credit layer directly into wallets, turning them into “Crypto Neobanks”. Users gain access to credit lines against their existing collateral.&#x20;
+Gearbox changes the landscape of decentralized finance by embedding a credit layer directly into wallets, turning them into “Crypto Neobanks”. Users gain access to credit lines against their existing collateral.
 
 Gearbox serves as the invisible “credit rails,” while the Wallet Provider acts as the user-facing financial app.
 
@@ -36,4 +36,4 @@ _**If you’re building wallet-native credit, reach out to Gearbox to power it w
 
 ## Learn in details
 
-<table data-view="cards"><thead><tr><th></th><th data-hidden data-card-cover data-type="image">Cover image</th></tr></thead><tbody><tr><td><h2>How it works</h2></td><td><a href="../.gitbook/assets/gearboxdocsmain.png">gearboxdocsmain.png</a></td></tr><tr><td></td><td></td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th></th><th data-hidden data-card-cover data-type="image">Cover image</th></tr></thead><tbody><tr><td><h3>How it works</h3></td><td><a href="../.gitbook/assets/gearboxdocsmain.png">gearboxdocsmain.png</a></td></tr><tr><td></td><td></td></tr></tbody></table>
