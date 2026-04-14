@@ -1,8 +1,8 @@
-# Credit Account Workflows
+# Credit Accounts
 
 Manage leveraged positions on Gearbox from Solidity. This guide covers discovering markets, opening accounts, managing positions, and monitoring health.
 
-> For SDK credit account operations, see [Credit Accounts](../sdk-guide/credit-accounts.md).
+> For SDK credit account operations, see [Credit Accounts](../sdk-guide-typescript/credit-accounts.md).
 
 ## Discovering Markets
 

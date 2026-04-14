@@ -2,7 +2,7 @@
 
 Build on-chain liquidation contracts that can be triggered by keepers or automation services.
 
-> For SDK-based liquidation bots (recommended for most use cases), see [Liquidation Bots (SDK)](../../sdk-guide/use-cases/liquidation-bots.md).
+> For SDK-based liquidation bots (recommended for most use cases), see [Liquidation Bots (SDK)](../../sdk-guide-typescript/use-cases/liquidation-bots.md).
 
 ## Overview
 
@@ -402,8 +402,8 @@ abi.encodeCall(ISwapAdapter.exactAllInputSingle, (...))
 
 ## Next Steps
 
-* [Liquidation Bots (SDK)](../../sdk-guide/use-cases/liquidation-bots.md) - SDK-based approach (recommended for most cases)
-* [Liquidations Reference](../../reference/liquidations.md) - Full liquidation mechanics
-* [Bot System Reference](../../reference/bots.md) - Permission system for authorized bots
-* [Making External Calls](../multicalls/making-external-calls.md) - Adapter patterns for swaps
+* [Liquidation Bots (SDK)](../../sdk-guide-typescript/use-cases/liquidation-bots.md) - SDK-based approach (recommended for most cases)
+* [Liquidations Reference](../../operations/liquidations.md) - Full liquidation mechanics
+* [Bot System Reference](../../operations/bots.md) - Permission system for authorized bots
+* [Making External Calls](../multicalls/multicalls/making-external-calls.md) - Adapter patterns for swaps
 * [Protocol Integration](protocol-integration.md) - General patterns for building on Gearbox

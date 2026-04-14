@@ -6,10 +6,10 @@ The multicall system allows complex DeFi operations to execute in a single trans
 
 A multicall is an array of operations, each specifying a target contract and encoded function call:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `target` | `address` | CreditFacade or allowed Adapter address |
-| `callData` | `bytes` | Encoded function call |
+| Field      | Type      | Description                             |
+| ---------- | --------- | --------------------------------------- |
+| `target`   | `address` | CreditFacade or allowed Adapter address |
+| `callData` | `bytes`   | Encoded function call                   |
 
 ## Execution Flow
 
@@ -42,13 +42,13 @@ flowchart TD
 
 1. **Start MultiCall:** Facade emits StartMultiCall event
 2. **Execution Loop:** Facade iterates through calls array
-   - If target is Facade: executes internal protocol logic
-   - If target is Adapter: routes call to whitelisted adapter
+   * If target is Facade: executes internal protocol logic
+   * If target is Adapter: routes call to whitelisted adapter
 3. **End MultiCall:** Facade unsets active account status
 4. **Security Checks:**
-   - Slippage verification against stored expected balances
-   - Forbidden token balance checks
-   - Full collateral check (Health Factor > 1)
+   * Slippage verification against stored expected balances
+   * Forbidden token balance checks
+   * Full collateral check (Health Factor > 1)
 
 ## Available Operations
 
@@ -56,22 +56,22 @@ Operations available within a multicall fall into categories:
 
 ### Protocol Logic
 
-| Operation | Purpose |
-|-----------|---------|
-| `addCollateral` | Move tokens from wallet to Credit Account |
-| `increaseDebt` | Borrow underlying from Pool |
-| `decreaseDebt` | Repay debt to Pool |
-| `updateQuota` | Purchase quota for collateral token |
-| `withdrawCollateral` | Remove assets from account |
+| Operation            | Purpose                                   |
+| -------------------- | ----------------------------------------- |
+| `addCollateral`      | Move tokens from wallet to Credit Account |
+| `increaseDebt`       | Borrow underlying from Pool               |
+| `decreaseDebt`       | Repay debt to Pool                        |
+| `updateQuota`        | Purchase quota for collateral token       |
+| `withdrawCollateral` | Remove assets from account                |
 
 ### Safety Controls
 
-| Operation | Purpose |
-|-----------|---------|
-| `onDemandPriceUpdates` | Push fresh price data (must be first call) |
-| `storeExpectedBalances` | Record balances for slippage check |
-| `compareBalances` | Trigger slippage verification |
-| `setFullCheckParams` | Optimize collateral check with hints |
+| Operation               | Purpose                                    |
+| ----------------------- | ------------------------------------------ |
+| `onDemandPriceUpdates`  | Push fresh price data (must be first call) |
+| `storeExpectedBalances` | Record balances for slippage check         |
+| `compareBalances`       | Trigger slippage verification              |
+| `setFullCheckParams`    | Optimize collateral check with hints       |
 
 ### External Calls
 
@@ -81,13 +81,13 @@ External calls go through Adapters - whitelisted contracts that translate Gearbo
 
 All CreditFacade functions that modify state accept a multicall array:
 
-| Function | Purpose |
-|----------|---------|
-| `openCreditAccount` | Create account with initial operations |
-| `closeCreditAccount` | Close account, return remaining funds |
-| `multicall` | Execute operations on existing account |
-| `botMulticall` | Bot-initiated operations (with permissions) |
-| `liquidateCreditAccount` | Liquidate unhealthy account |
+| Function                 | Purpose                                     |
+| ------------------------ | ------------------------------------------- |
+| `openCreditAccount`      | Create account with initial operations      |
+| `closeCreditAccount`     | Close account, return remaining funds       |
+| `multicall`              | Execute operations on existing account      |
+| `botMulticall`           | Bot-initiated operations (with permissions) |
+| `liquidateCreditAccount` | Liquidate unhealthy account                 |
 
 This allows all account management to happen in one transaction, minimizing gas overhead by batching under a single collateral check.
 
@@ -105,16 +105,16 @@ Some tokens may be marked "forbidden" - their balances cannot increase during a 
 
 Every multicall (except close/liquidate) ends with a collateral check:
 
-- Total Weighted Value must exceed Total Debt
-- Health Factor = TWV / Debt must be > 1.0
-- Failed check reverts the entire transaction
+* Total Weighted Value must exceed Total Debt
+* Health Factor = TWV / Debt must be > 1.0
+* Failed check reverts the entire transaction
 
 ## The "Diff" Pattern
 
 Adapters implement `*_diff` functions (e.g., `swapDiff`, `depositDiff`) for handling unknown amounts. Instead of specifying exact input amounts:
 
-- Standard: needs exact `amountIn`
-- Diff: calculates `amountIn = currentBalance - leftoverAmount`
+* Standard: needs exact `amountIn`
+* Diff: calculates `amountIn = currentBalance - leftoverAmount`
 
 This is essential when the exact result of a previous operation is unknown.
 
@@ -122,12 +122,12 @@ This is essential when the exact result of a previous operation is unknown.
 
 Multicalls enforce granular permissions via bitmask:
 
-| Permission | Purpose |
-|------------|---------|
-| `ADD_COLLATERAL` | Move funds into account |
-| `INCREASE_DEBT` | Borrow more from pool |
-| `UPDATE_QUOTA` | Modify quota settings |
-| `EXTERNAL_CALLS` | Call external adapters |
+| Permission            | Purpose                   |
+| --------------------- | ------------------------- |
+| `ADD_COLLATERAL`      | Move funds into account   |
+| `INCREASE_DEBT`       | Borrow more from pool     |
+| `UPDATE_QUOTA`        | Modify quota settings     |
+| `EXTERNAL_CALLS`      | Call external adapters    |
 | `WITHDRAW_COLLATERAL` | Remove funds from account |
 
 A user can delegate specific permissions to bots while protecting against unauthorized withdrawals.
@@ -143,5 +143,5 @@ A user can delegate specific permissions to bots while protecting against unauth
 
 For implementation details, see:
 
-- **TypeScript/SDK:** [SDK Multicalls](../sdk-guide/multicalls.md)
-- **Solidity:** [Solidity Multicalls](../solidity-guide/multicalls.md)
+* **TypeScript/SDK:** [SDK Multicalls](../sdk-guide-typescript/multicalls/)
+* **Solidity:** [Solidity Multicalls](../solidity-guide/multicalls/)

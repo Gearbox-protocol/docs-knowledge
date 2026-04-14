@@ -2,7 +2,7 @@
 
 Interact with Gearbox pools directly from Solidity. Pools are ERC-4626 compliant vaults.
 
-> For SDK data reading, see [Reading Data](../sdk-guide/reading-data.md).
+> For SDK data reading, see [Reading Data](../sdk-guide-typescript/reading-data.md).
 
 ## IPoolV3
 

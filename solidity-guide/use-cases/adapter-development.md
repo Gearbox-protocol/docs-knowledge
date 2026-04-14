@@ -6,22 +6,24 @@ Build adapters to integrate new DeFi protocols with Gearbox Credit Accounts.
 
 Build an adapter when you want to enable Credit Accounts to interact with a new DeFi protocol. Consider these options:
 
-| Approach | When to Use |
-|----------|-------------|
-| **Build an Adapter** | The protocol is mature, has significant TVL, and you want it available across all Gearbox Credit Managers |
+| Approach                 | When to Use                                                                                                       |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| **Build an Adapter**     | The protocol is mature, has significant TVL, and you want it available across all Gearbox Credit Managers         |
 | **Protocol Integration** | You're building a protocol that wants to accept Credit Accounts as users (e.g., a DEX accepting leveraged trades) |
-| **Direct Contract** | Your use case doesn't need leverage or margin trading features |
+| **Direct Contract**      | Your use case doesn't need leverage or margin trading features                                                    |
 
 Adapters make sense for:
-- DEX protocols (Uniswap, Curve, Balancer)
-- Yield vaults (Yearn, ERC-4626 vaults)
-- Liquid staking protocols (Lido, Rocket Pool)
-- Lending protocols (Aave, Compound)
+
+* DEX protocols (Uniswap, Curve, Balancer)
+* Yield vaults (Yearn, ERC-4626 vaults)
+* Liquid staking protocols (Lido, Rocket Pool)
+* Lending protocols (Aave, Compound)
 
 Do not build adapters for:
-- Protocols with admin keys that can rug users
-- Protocols without audits or battle-testing
-- Highly experimental or unproven contracts
+
+* Protocols with admin keys that can rug users
+* Protocols without audits or battle-testing
+* Highly experimental or unproven contracts
 
 ## Architecture Overview
 
@@ -38,6 +40,7 @@ User -> CreditFacade -> CreditAccount -> Adapter -> Target Protocol
 ```
 
 The adapter's job is to:
+
 1. Accept calls from the CreditFacade (not users directly)
 2. Translate the call to the target protocol's interface
 3. Override recipient addresses to always be the Credit Account
@@ -149,9 +152,10 @@ function depositDiff(uint256 leftoverAmount) external creditFacadeOnly returns (
 **Why diff functions exist:**
 
 When chaining operations, you often don't know exact amounts:
-- After a swap, you don't know exact output until execution
-- After partial withdrawals, remaining balance is variable
-- Diff functions say "use everything except X" instead of "use exactly Y"
+
+* After a swap, you don't know exact output until execution
+* After partial withdrawals, remaining balance is variable
+* Diff functions say "use everything except X" instead of "use exactly Y"
 
 ### Step 4: Add Security Modifiers
 
@@ -253,12 +257,14 @@ contract ERC4626Adapter is AbstractAdapter {
 Without this modifier, an attacker could call adapter functions directly:
 
 **Attack scenario without creditFacadeOnly:**
+
 1. Attacker calls `adapter.deposit(1000)` directly
 2. Adapter tries to pull tokens from "current" Credit Account
 3. Without CreditFacade context, `_creditAccount()` returns address(0) or wrong account
 4. Tokens could be pulled from wrong account or transaction reverts unpredictably
 
 **With creditFacadeOnly:**
+
 1. Only CreditFacade can call the adapter
 2. CreditFacade sets the active Credit Account before calling
 3. Adapter correctly identifies which account to operate on
@@ -304,9 +310,10 @@ function withdraw(uint256 shares) external creditFacadeOnly {
 ### Safe Approval Pattern
 
 Approvals are reset to 1 (not 0) after each operation. This prevents:
-- Approval racing attacks
-- Gas waste from 0 -> N transitions
-- Front-running of approval transactions
+
+* Approval racing attacks
+* Gas waste from 0 -> N transitions
+* Front-running of approval transactions
 
 ```solidity
 // _executeSwapSafeApprove does this internally:
@@ -325,9 +332,10 @@ _executeSwapSafeApprove(
 ```
 
 **Why reset to 1 instead of 0:**
-- ERC-20 standard: 0 -> N costs more gas than 1 -> N
-- Prevents approval race conditions
-- Future operations don't need expensive zero-to-nonzero transition
+
+* ERC-20 standard: 0 -> N costs more gas than 1 -> N
+* Prevents approval race conditions
+* Future operations don't need expensive zero-to-nonzero transition
 
 ### Token State Management
 
@@ -399,6 +407,7 @@ contract ERC4626AdapterTest is Test {
 ```
 
 **Key test patterns:**
+
 1. **Fork testing** - Test against real protocols on mainnet/testnet
 2. **Access control** - Verify creditFacadeOnly works
 3. **Balance checks** - Assert correct token transfers
@@ -415,11 +424,12 @@ After writing and testing your adapter:
 4. **Adapter registration** - If approved, adapter is added to allowedAdapters mapping
 
 **Governance process:**
-- Submit proposal on Gearbox governance forum
-- Include audit report (required for new adapters)
-- Specify which Credit Manager(s) should whitelist it
-- DAO votes on proposal
-- If passed, adapter becomes available for Credit Accounts
+
+* Submit proposal on Gearbox governance forum
+* Include audit report (required for new adapters)
+* Specify which Credit Manager(s) should whitelist it
+* DAO votes on proposal
+* If passed, adapter becomes available for Credit Accounts
 
 **Note:** Each Credit Manager has its own adapter whitelist. An adapter approved for one Credit Manager isn't automatically available on others.
 
@@ -439,17 +449,17 @@ For architectural background, see [Multicall System](../../concepts/multicall-sy
 
 AbstractAdapter provides these helper functions:
 
-| Function | Description |
-|----------|-------------|
-| `_creditAccount()` | Returns current Credit Account address |
-| `_creditManager()` | Returns Credit Manager address |
-| `_creditFacade()` | Returns Credit Facade address |
-| `_getMaskOrRevert(token)` | Gets token mask, reverts if not allowed |
-| `_execute(callData)` | Executes call on target contract |
-| `_executeSwapSafeApprove(...)` | Executes call with approval management |
-| `targetContract` | Immutable address of wrapped protocol |
+| Function                       | Description                             |
+| ------------------------------ | --------------------------------------- |
+| `_creditAccount()`             | Returns current Credit Account address  |
+| `_creditManager()`             | Returns Credit Manager address          |
+| `_creditFacade()`              | Returns Credit Facade address           |
+| `_getMaskOrRevert(token)`      | Gets token mask, reverts if not allowed |
+| `_execute(callData)`           | Executes call on target contract        |
+| `_executeSwapSafeApprove(...)` | Executes call with approval management  |
+| `targetContract`               | Immutable address of wrapped protocol   |
 
 ## Related
 
-- [Making External Calls](../multicalls/making-external-calls.md) - Using adapters in multicalls
-- [Multicall System](../../concepts/multicall-system.md) - Architectural overview
+* [Making External Calls](../multicalls/multicalls/making-external-calls.md) - Using adapters in multicalls
+* [Multicall System](../../concepts/multicall-system.md) - Architectural overview

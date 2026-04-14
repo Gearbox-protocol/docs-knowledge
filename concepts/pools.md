@@ -1,4 +1,4 @@
-# Pool Architecture
+# Pools
 
 PoolV3 is the central vault for a specific underlying asset (e.g., USDC, WETH). It follows the ERC-4626 tokenized vault standard, allowing users to deposit assets and receive Diesel Tokens (LP tokens) representing their share.
 
@@ -8,9 +8,9 @@ Unlike standard lending protocols, users do not borrow directly from the pool. I
 
 This separation ensures:
 
-- All borrowed funds flow through Credit Accounts with proper collateral checks
-- Lenders earn passive yield without exposure to leverage decisions
-- Risk is isolated at the Credit Manager level
+* All borrowed funds flow through Credit Accounts with proper collateral checks
+* Lenders earn passive yield without exposure to leverage decisions
+* Risk is isolated at the Credit Manager level
 
 ## ERC-4626 Compliance
 
@@ -18,23 +18,23 @@ PoolV3 implements the full ERC-4626 tokenized vault standard. Any tooling built 
 
 **Standard Functions:**
 
-| Function | Purpose |
-|----------|---------|
-| `deposit(assets, receiver)` | Deposit underlying, receive shares |
-| `mint(shares, receiver)` | Mint exact shares, deposit required assets |
-| `withdraw(assets, receiver, owner)` | Withdraw exact assets, burn shares |
-| `redeem(shares, receiver, owner)` | Burn exact shares, receive assets |
-| `convertToShares(assets)` | Preview shares for asset amount |
-| `convertToAssets(shares)` | Preview assets for share amount |
+| Function                            | Purpose                                    |
+| ----------------------------------- | ------------------------------------------ |
+| `deposit(assets, receiver)`         | Deposit underlying, receive shares         |
+| `mint(shares, receiver)`            | Mint exact shares, deposit required assets |
+| `withdraw(assets, receiver, owner)` | Withdraw exact assets, burn shares         |
+| `redeem(shares, receiver, owner)`   | Burn exact shares, receive assets          |
+| `convertToShares(assets)`           | Preview shares for asset amount            |
+| `convertToAssets(shares)`           | Preview assets for share amount            |
 
 **Gearbox Extensions:**
 
-| Function | Purpose |
-|----------|---------|
-| `depositWithReferral` | On-chain referral tracking |
-| `lendCreditAccount` | Credit Manager-only borrowing |
-| `repayCreditAccount` | Credit Manager-only repayment |
-| `dieselRate()` | Share price in RAY (27 decimals) |
+| Function              | Purpose                          |
+| --------------------- | -------------------------------- |
+| `depositWithReferral` | On-chain referral tracking       |
+| `lendCreditAccount`   | Credit Manager-only borrowing    |
+| `repayCreditAccount`  | Credit Manager-only repayment    |
+| `dieselRate()`        | Share price in RAY (27 decimals) |
 
 ## Diesel Rate (Share Price)
 
@@ -42,9 +42,9 @@ The diesel rate represents how many underlying tokens each diesel token (share) 
 
 **Calculation:**
 
-- 1 diesel token = dieselRate / 10^27 underlying tokens
-- The rate grows over time as borrowers pay interest
-- Lenders profit as their shares become worth more underlying
+* 1 diesel token = dieselRate / 10^27 underlying tokens
+* The rate grows over time as borrowers pay interest
+* Lenders profit as their shares become worth more underlying
 
 ## Yield Sources
 
@@ -61,18 +61,18 @@ Withdrawals in Gearbox V3 are subject to a withdrawal fee. This fee is taken fro
 
 **Key considerations:**
 
-- Withdrawals revert if the pool is paused
-- Available liquidity limits maximum withdrawal
-- Fee calculation happens automatically during redeem/withdraw
+* Withdrawals revert if the pool is paused
+* Available liquidity limits maximum withdrawal
+* Fee calculation happens automatically during redeem/withdraw
 
 ## Credit Manager Interaction
 
 Only whitelisted Credit Managers can borrow from the pool:
 
-| Function | Access | Purpose |
-|----------|--------|---------|
+| Function                                   | Access  | Purpose          |
+| ------------------------------------------ | ------- | ---------------- |
 | `lendCreditAccount(amount, creditAccount)` | CM only | Borrow from pool |
-| `repayCreditAccount(repaid, profit, loss)` | CM only | Repay to pool |
+| `repayCreditAccount(repaid, profit, loss)` | CM only | Repay to pool    |
 
 Regular users cannot call these functions. All borrowing flows through the Credit Suite.
 
@@ -80,13 +80,13 @@ Regular users cannot call these functions. All borrowing flows through the Credi
 
 Key state variables for monitoring pool health:
 
-| Field | Description |
-|-------|-------------|
-| `totalAssets` | Total value held by pool |
-| `availableLiquidity` | Borrowable amount |
-| `dieselRate` | Current share price (RAY) |
-| `supplyRate` | Lender APY (RAY) |
-| `baseInterestRate` | Borrower APR (RAY) |
+| Field                | Description               |
+| -------------------- | ------------------------- |
+| `totalAssets`        | Total value held by pool  |
+| `availableLiquidity` | Borrowable amount         |
+| `dieselRate`         | Current share price (RAY) |
+| `supplyRate`         | Lender APY (RAY)          |
+| `baseInterestRate`   | Borrower APR (RAY)        |
 
 ## Interest Rate Determination
 
@@ -96,5 +96,5 @@ The pool does not store interest rate logic. It queries the Interest Rate Model 
 
 For implementation details, see:
 
-- **TypeScript/SDK:** [Reading Data](../sdk-guide/reading-data.md)
-- **Solidity:** [Pool Operations](../solidity-guide/pool-operations.md)
+* **TypeScript/SDK:** [Reading Data](../sdk-guide-typescript/reading-data.md)
+* **Solidity:** [Pool Operations](../solidity-guide/pool-operations.md)

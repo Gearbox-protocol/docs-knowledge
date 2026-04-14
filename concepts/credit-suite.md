@@ -1,4 +1,4 @@
-# Credit Suite Architecture
+# Credit Suite
 
 The Credit Suite is the foundational unit that enables leverage in Gearbox Protocol. It acts as an isolated environment where borrowers interact with DeFi protocols using borrowed funds while ensuring lender safety.
 
@@ -43,12 +43,12 @@ The Credit Manager is the "brain" of the suite. It maintains the registry of Cre
 
 **Key Responsibilities:**
 
-| Function | Purpose |
-|----------|---------|
-| Debt tracking | Maintains total debt and collateral tokens per account |
-| Pool interaction | Borrows and repays via PoolV3 |
-| Quota management | Coordinates with PoolQuotaKeeper for token limits |
-| Health calculation | Computes Health Factors via `calcDebtAndCollateral` |
+| Function           | Purpose                                                |
+| ------------------ | ------------------------------------------------------ |
+| Debt tracking      | Maintains total debt and collateral tokens per account |
+| Pool interaction   | Borrows and repays via PoolV3                          |
+| Quota management   | Coordinates with PoolQuotaKeeper for token limits      |
+| Health calculation | Computes Health Factors via `calcDebtAndCollateral`    |
 
 The Credit Manager is generally not accessed directly by users but by the Facade or Adapters.
 
@@ -58,12 +58,12 @@ The Credit Facade is the "face" of the suite. It serves as the primary entry poi
 
 **Key Responsibilities:**
 
-| Function | Purpose |
-|----------|---------|
-| Multicall execution | Iterates through user-provided calls, routing to Credit Account |
-| Security checks | Performs collateral check (Health Factor > 1) at transaction end |
-| Permission management | Manages BotList permissions for approved bots |
-| Access control | Enforces minDebt, maxDebt, and forbiddenTokenMask limits |
+| Function              | Purpose                                                          |
+| --------------------- | ---------------------------------------------------------------- |
+| Multicall execution   | Iterates through user-provided calls, routing to Credit Account  |
+| Security checks       | Performs collateral check (Health Factor > 1) at transaction end |
+| Permission management | Manages BotList permissions for approved bots                    |
+| Access control        | Enforces minDebt, maxDebt, and forbiddenTokenMask limits         |
 
 ## Credit Configurator (Governance Layer)
 
@@ -71,24 +71,24 @@ The Credit Configurator provides a secure interface for Risk Curators (or the DA
 
 **Key Responsibilities:**
 
-| Function | Purpose |
-|----------|---------|
-| Collateral tokens | Adding/removing allowed tokens |
-| Liquidation thresholds | Setting LT per token |
-| Adapters | Configuring protocol integrations |
-| Fees and limits | Adjusting fee parameters |
+| Function               | Purpose                           |
+| ---------------------- | --------------------------------- |
+| Collateral tokens      | Adding/removing allowed tokens    |
+| Liquidation thresholds | Setting LT per token              |
+| Adapters               | Configuring protocol integrations |
+| Fees and limits        | Adjusting fee parameters          |
 
 ## Configuration Parameters
 
 Risk Curators utilize the Credit Configurator to define the risk profile:
 
-| Parameter | Description |
-|-----------|-------------|
-| **Liquidation Threshold (LT)** | Maximum leverage for a token. LT of 8500 (85%) implies ~6.6x leverage. |
-| **Collateral Tokens** | Allowed tokens in Credit Accounts. Unlisted tokens value at 0. |
-| **Adapters** | Whitelisted protocol integrations (e.g., Uniswap, Curve). |
-| **Debt Limits** | minDebt and maxDebt per account to prevent dust or concentration risk. |
-| **Fees** | feeLiquidation (to protocol) and liquidationPremium (to liquidator). |
+| Parameter                      | Description                                                             |
+| ------------------------------ | ----------------------------------------------------------------------- |
+| **Liquidation Threshold (LT)** | Maximum leverage for a token. LT of 8500 (85%) implies \~6.6x leverage. |
+| **Collateral Tokens**          | Allowed tokens in Credit Accounts. Unlisted tokens value at 0.          |
+| **Adapters**                   | Whitelisted protocol integrations (e.g., Uniswap, Curve).               |
+| **Debt Limits**                | minDebt and maxDebt per account to prevent dust or concentration risk.  |
+| **Fees**                       | feeLiquidation (to protocol) and liquidationPremium (to liquidator).    |
 
 ## Borrowing and Repayment Flow
 
@@ -115,8 +115,8 @@ The Health Factor determines account solvency:
 
 **Health Factor = Total Weighted Value / Total Debt**
 
-- Total Weighted Value: Sum of (asset value * liquidation threshold) for all collateral
-- Total Debt: Principal + accrued interest + quota fees
+* Total Weighted Value: Sum of (asset value \* liquidation threshold) for all collateral
+* Total Debt: Principal + accrued interest + quota fees
 
 When Health Factor drops below 1.0, the account becomes liquidatable.
 
@@ -124,5 +124,5 @@ When Health Factor drops below 1.0, the account becomes liquidatable.
 
 For implementation details, see:
 
-- **TypeScript/SDK:** [SDK Credit Accounts](../sdk-guide/credit-accounts.md)
-- **Solidity:** [Credit Accounts](../solidity-guide/credit-accounts.md)
+* **TypeScript/SDK:** [SDK Credit Accounts](../sdk-guide-typescript/credit-accounts.md)
+* **Solidity:** [Credit Accounts](../solidity-guide/credit-accounts.md)

@@ -5,9 +5,10 @@ Build smart contracts that compose with Gearbox Credit Accounts.
 ## Overview
 
 Protocol integration means building contracts that:
-- Call Gearbox Credit Accounts from external contracts
-- Create automated strategies using multicalls
-- Compose Gearbox with your own protocol logic
+
+* Call Gearbox Credit Accounts from external contracts
+* Create automated strategies using multicalls
+* Compose Gearbox with your own protocol logic
 
 Unlike adapters (which are called BY Credit Accounts), protocol integrations CALL Credit Accounts from outside.
 
@@ -459,7 +460,7 @@ contract StrategyTest is Test {
 
 ## Related
 
-- [Multicalls](../multicalls.md) - Core encoding patterns
-- [Making External Calls](../multicalls/making-external-calls.md) - Using adapters
-- [Controlling Slippage](../multicalls/controlling-slippage.md) - Protecting operations
-- [Adapter Development](./adapter-development.md) - Building adapters
+* [Multicalls](../multicalls/) - Core encoding patterns
+* [Making External Calls](../multicalls/multicalls/making-external-calls.md) - Using adapters
+* [Controlling Slippage](../multicalls/multicalls/controlling-slippage.md) - Protecting operations
+* [Adapter Development](adapter-development.md) - Building adapters
